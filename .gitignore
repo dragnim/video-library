@@ -1,0 +1,10 @@
+node_modules
+build
+.DS_Store
+*.local
+.vite
+
+# Local env / runtime config
+.env
+.env.*
+!.env.example
