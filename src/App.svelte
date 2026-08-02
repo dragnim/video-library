@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SearchBar from "./components/chrome/SearchBar.svelte";
   import TermsFooter from "./components/chrome/TermsFooter.svelte";
   import { location } from "./lib/router/location.svelte";
   import { routes } from "./lib/router/routes";
@@ -30,7 +31,7 @@
   />
 </svelte:head>
 
-<!-- SearchBar, the navy band, lands above the page. -->
+<SearchBar />
 
 <div class="page">
   <div class="video-library-x-padding">
