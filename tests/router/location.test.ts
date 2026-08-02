@@ -39,6 +39,13 @@ describe("reading the location", () => {
     expect(location.pathname).toBe("/");
   });
 
+  it("tolerates a trailing slash on the basename", async () => {
+    vi.stubEnv("VITE_BASENAME", "/video-library/");
+    setUrl("/video-library/search");
+    const { location } = await loadLocationModule();
+    expect(location.pathname).toBe("/search");
+  });
+
   it("seeds a key on the initial entry", async () => {
     setUrl("/");
     const { location } = await loadLocationModule();
@@ -122,6 +129,19 @@ describe("popstate", () => {
     expect(location.search).toBe("?id=1");
     expect(location.action).toBe("POP");
     expect(location.key).toBe("abc123");
+  });
+
+  it("seeds and stores a key when the entry has none", async () => {
+    setUrl("/");
+    const { location } = await loadLocationModule();
+
+    window.history.pushState(null, "", "/watch?id=1");
+    window.dispatchEvent(new PopStateEvent("popstate", { state: null }));
+
+    // Written back, so returning to this entry a second time reads the same
+    // key rather than minting another one.
+    expect(location.key).toBeTruthy();
+    expect(window.history.state).toEqual({ key: location.key });
   });
 
   it("strips the basename on a popstate too", async () => {

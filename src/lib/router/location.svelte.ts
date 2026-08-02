@@ -1,6 +1,6 @@
-// Location history and routing.
+// Where the app is, and the one way to change it.
 
-import { basename } from "../env";
+import { basename as configuredBasename } from "../env";
 
 type NavigationAction = "PUSH" | "REPLACE" | "POP";
 
@@ -8,17 +8,24 @@ interface HistoryState {
   key: string;
 }
 
-/** dvl reads history.action to skip scroll-to-top on back/forward (2.3). */
+/** Normalised to "" at the root, so every URL is `basename + pathname`. */
+const basename = configuredBasename.replace(/\/+$/, "");
+
+/**
+ * `action` has no counterpart in the native history API, and the scroll policy
+ * needs it to leave back/forward alone. `key` identifies the history entry,
+ * which is what the scroll restore keys its stored positions by.
+ */
 export const location = $state({
   pathname: stripBasename(window.location.pathname),
   search: window.location.search,
   action: "POP" as NavigationAction,
-  key: seedKey(),
+  key: ensureKey(),
 });
 
 /**
- * Navigate to `url` (a full `pathname?search` string). `replace: true` uses
- * replaceState instead of pushState, so it doesn't grow history.length.
+ * Navigate to `url`, a basename-free `pathname?search` string. `replace: true`
+ * uses replaceState instead of pushState, so it doesn't grow history.length.
  */
 export function navigate(
   url: string,
@@ -41,24 +48,25 @@ export function navigate(
   location.key = key;
 }
 
-window.addEventListener("popstate", (event) => {
-  const state = event.state as HistoryState | null;
+window.addEventListener("popstate", () => {
   location.pathname = stripBasename(window.location.pathname);
   location.search = window.location.search;
   location.action = "POP";
-  location.key = state?.key ?? createKey();
+  location.key = ensureKey();
 });
 
-function stripBasename(pathname: string): string {
-  if (basename === "/") return pathname; // Base case: keep leading slash for paths
+/** Browser pathname to app pathname. Idempotent: app paths pass through. */
+export function stripBasename(pathname: string): string {
+  if (basename === "") return pathname;
   if (pathname === basename) return "/";
   if (pathname.startsWith(`${basename}/`))
     return pathname.slice(basename.length);
   return pathname;
 }
 
-function addBasename(pathname: string): string {
-  if (basename === "/") return pathname;
+/** App pathname to browser pathname. */
+export function addBasename(pathname: string): string {
+  if (basename === "") return pathname;
   return pathname === "/" ? basename : `${basename}${pathname}`;
 }
 
@@ -73,15 +81,17 @@ function createKey(): string {
 }
 
 /**
- * The first entry loads with history.state === null. Seed it with a key so
- * Phase 3's scroll restore (keyed like react-router's location.key) has
- * something to key the initial entry by.
+ * The key of the current entry, seeded when it has none. Entries we did not
+ * push arrive with `history.state === null` — the initial load, and anything
+ * from before a reload. Returning to one twice has to yield the same key, so
+ * a seeded key is written back rather than only returned.
  */
-function seedKey(): string {
+function ensureKey(): string {
   const existing = window.history.state as HistoryState | null;
   if (existing?.key) return existing.key;
 
   const key = createKey();
-  window.history.replaceState({ key }, "", window.location.href);
+  const state: HistoryState = { key };
+  window.history.replaceState(state, "", window.location.href);
   return key;
 }
