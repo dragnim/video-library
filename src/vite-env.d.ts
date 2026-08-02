@@ -20,4 +20,7 @@ declare const __APP_VERSION__: string;
 
 interface Window {
   DyalogVideoLibrary: { version: string };
+
+  // Set by dist/config.js. Left `unknown` because src/lib/config.ts parses it.
+  DYALOG_VIDEO_CONFIG?: unknown;
 }
