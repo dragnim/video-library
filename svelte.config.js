@@ -4,4 +4,8 @@ import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 export default {
   // Enables TypeScript (and other) syntax inside <script> blocks in .svelte files.
   preprocess: vitePreprocess(),
+
+  compilerOptions: {
+    runes: true,
+  },
 };

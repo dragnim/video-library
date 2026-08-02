@@ -41,6 +41,14 @@ export default tseslint.config(
   },
 
   {
+    // eslint-plugin-svelte routes `.svelte.ts` runes modules through svelte-eslint-parser too (it needs to see rune calls).
+    files: ["**/*.svelte.ts"],
+    languageOptions: {
+      parserOptions: { parser: tseslint.parser },
+    },
+  },
+
+  {
     files: ["*.config.{js,ts}", "tests/**/*.ts"],
     languageOptions: { globals: globals.node },
   },

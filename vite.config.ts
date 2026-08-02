@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: "es2020",
     outDir: "build",
-    // We distribute 2 files: index.js and index.css.
+    // We distribute 2 files: dist/app.js and dist/style.css.
     // Turn off cssCodeSplit to extract everything to one stylesheet.
     cssCodeSplit: false,
     rollupOptions: {
