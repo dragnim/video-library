@@ -4,10 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dyalog Video Library</title>
+
+    <!-- Mock WordPress environment for development. -->
+    <link
+      rel="stylesheet"
+      href="/wp-content/plugins/elementor/assets/css/frontend.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/wp-content/themes/hello-elementor/theme.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/wp-content/themes/hello-elementor/style.min.css"
+    />
+    <link rel="stylesheet" href="/wp-content/themes/dyalog-2026/style.css" />
+    <link
+      rel="stylesheet"
+      href="/wp-content/uploads/elementor/css/post-6.css"
+    />
   </head>
-  <body>
+
+  <!-- Mirrors the live page's body classes (page-id-7145). -->
+  <body
+    class="wp-theme-hello-elementor wp-child-theme-dyalog-2026 elementor-default elementor-kit-6 elementor-page"
+  >
     <!-- In production WordPress renders this container; in dev it lives here so
-         the app has something to mount into. -->
+         the app has something to mount into. Matches video-library.php. -->
     <div id="dyalog-video-library"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

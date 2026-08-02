@@ -1,0 +1,253 @@
+.elementor-kit-6{--e-global-color-primary:#34435E;--e-global-color-secondary:#FF6A13;--e-global-color-text:#232222;--e-global-color-accent:#8986CA;--e-global-color-73c0fc6:#2A3244;--e-global-color-7335702:#FFA300;--e-global-color-fdfca80:#CA2D51;--e-global-color-1a33761:#F2F1F0;--e-global-color-035220e:#FF00FF;--e-global-color-c0b3fe3:#F3F3F3;--e-global-color-c6b2d00:#18502E;--e-global-color-fb2cbaa:#AFECC7;--e-global-color-0679616:#00595E;--e-global-color-26c0fa0:#B9FBFF;--e-global-color-a26a204:#161F6F;--e-global-color-9878b00:#A7B0FF;--e-global-color-3451ea0:#434343;--e-global-color-a4ad2d7:#DADADA;--e-global-color-34476a1:#822626;--e-global-color-6dedca0:#FFD7D7;--e-global-color-1852ace:#003B5C;--e-global-color-d794d3e:#8ED0F5;--e-global-color-139552f:#F6F6D9;--e-global-color-7d904cd:#CBD7C5;--e-global-color-78241ec:#B2B2B2;--e-global-color-a1a74b3:#F7F7F7;--e-global-color-535a0cb:#6D41A1;--e-global-color-36a46a9:#F58221;--e-global-color-194246e:#0B3044;--e-global-color-0227c4e:#FAFAFA;--e-global-color-bc929ed:#E6E6E6;--e-global-color-30d078f:#FFFFFF80;--e-global-color-8e99f93:#F4F4FD;--e-global-color-da2b2ba:#FF833B;--e-global-color-82f884e:#A6A6A6;--e-global-color-de5ee35:#FFFFFF;--e-global-color-521fd37:#526CFE;--e-global-color-2e28ec1:#CA4E00;--e-global-typography-primary-font-family:"Klavika";--e-global-typography-primary-font-size:2.6rem;--e-global-typography-primary-font-weight:500;--e-global-typography-primary-line-height:1.2em;--e-global-typography-secondary-font-family:"Klavika";--e-global-typography-secondary-font-size:32px;--e-global-typography-secondary-font-weight:500;--e-global-typography-secondary-line-height:1.3em;--e-global-typography-secondary-letter-spacing:-0.5px;--e-global-typography-text-font-family:"IBM Plex Sans";--e-global-typography-text-font-size:1.1rem;--e-global-typography-text-font-weight:400;--e-global-typography-text-line-height:1.5em;--e-global-typography-accent-font-family:"Roboto";--e-global-typography-accent-font-weight:500;--e-global-typography-5e2a6da-font-family:"Klavika";--e-global-typography-5e2a6da-font-size:4rem;--e-global-typography-5e2a6da-font-weight:500;--e-global-typography-e48b78f-font-family:"IBM Plex Sans";--e-global-typography-e48b78f-font-size:22px;--e-global-typography-e48b78f-font-weight:500;--e-global-typography-e48b78f-line-height:1.8em;--e-global-typography-90fedff-font-family:"Klavika";--e-global-typography-90fedff-font-size:2.25rem;--e-global-typography-90fedff-font-weight:500;--e-global-typography-90fedff-line-height:1.2em;--e-global-typography-90fedff-letter-spacing:-0.5px;--e-global-typography-9b4efc1-font-family:"Klavika";--e-global-typography-9b4efc1-font-size:1.8rem;--e-global-typography-9b4efc1-font-weight:500;--e-global-typography-9b4efc1-line-height:1.25em;--e-global-typography-9b4efc1-letter-spacing:-0.25px;--e-global-typography-3513434-font-family:"Klavika";--e-global-typography-3513434-font-size:1.45rem;--e-global-typography-3513434-font-weight:500;--e-global-typography-3513434-line-height:1.3em;--e-global-typography-7611867-font-family:"IBM Plex Sans";--e-global-typography-7611867-font-size:1.25rem;--e-global-typography-7611867-font-weight:600;--e-global-typography-7611867-line-height:1.35em;--e-global-typography-c392940-font-family:"IBM Plex Sans";--e-global-typography-c392940-font-weight:600;--e-global-typography-9066358-font-family:"Klavika";--e-global-typography-9066358-font-size:25px;--e-global-typography-9066358-font-weight:400;--e-global-typography-9066358-line-height:1.2em;--e-global-typography-41b0b82-font-family:"IBM Plex Sans";--e-global-typography-41b0b82-font-size:15px;--e-global-typography-41b0b82-font-weight:400;--e-global-typography-41b0b82-line-height:1.8em;--e-global-typography-553dd0e-font-family:"IBM Plex Sans";--e-global-typography-553dd0e-font-size:1rem;--e-global-typography-553dd0e-font-weight:700;--e-global-typography-553dd0e-line-height:1.3em;--e-global-typography-5ef9d97-font-family:"Klavika";--e-global-typography-5ef9d97-font-size:1.4rem;--e-global-typography-5ef9d97-font-weight:400;--e-global-typography-5ef9d97-line-height:1.3em;--e-global-typography-5ef9d97-letter-spacing:-0.2px;--e-global-typography-05e4297-font-family:"Klavika";--e-global-typography-05e4297-font-size:40px;--e-global-typography-05e4297-font-weight:400;--e-global-typography-05e4297-line-height:1.1em;--e-global-typography-14c5535-font-family:"IBM Plex Sans";--e-global-typography-14c5535-font-size:12px;--e-global-typography-14c5535-font-weight:400;--e-global-typography-14c5535-text-decoration:none;--e-global-typography-14c5535-line-height:1em;--e-global-typography-2ee74fb-font-family:"IBM Plex Sans";--e-global-typography-2ee74fb-font-size:1.4rem;--e-global-typography-2ee74fb-font-weight:500;--e-global-typography-2ee74fb-line-height:1.7em;--e-global-typography-7bd9f9a-font-family:"IBM Plex Sans";--e-global-typography-7bd9f9a-font-size:15px;--e-global-typography-7bd9f9a-font-weight:400;--e-global-typography-7bd9f9a-text-decoration:none;--e-global-typography-7bd9f9a-line-height:1.8em;--e-global-typography-c170f6c-font-family:"IBM Plex Sans";--e-global-typography-c170f6c-font-size:14px;--e-global-typography-c170f6c-font-weight:400;--e-global-typography-c170f6c-line-height:1.4em;--e-global-typography-26871a1-font-family:"Klavika";--e-global-typography-26871a1-font-size:16px;--e-global-typography-26871a1-font-weight:400;--e-global-typography-26871a1-line-height:1em;--e-global-typography-17b23ac-font-family:"Klavika";--e-global-typography-17b23ac-font-size:1.4rem;--e-global-typography-17b23ac-font-weight:500;--e-global-typography-609a5a8-font-family:"Be Vietnam Pro";--e-global-typography-609a5a8-font-size:1.25rem;--e-global-typography-609a5a8-font-weight:700;--e-global-typography-e9e49c7-font-family:"Be Vietnam Pro";--e-global-typography-e9e49c7-font-size:14px;--e-global-typography-e9e49c7-font-weight:400;--e-global-typography-e9e49c7-line-height:1.7em;--e-global-typography-c7f3661-font-family:"Klavika";--e-global-typography-c7f3661-font-size:18px;--e-global-typography-c7f3661-font-weight:400;--e-global-typography-c7f3661-font-style:normal;--e-global-typography-c1c7c0f-font-family:"Klavika";--e-global-typography-c1c7c0f-font-size:14px;--e-global-typography-c15169e-font-family:"APL385";--e-global-typography-c15169e-font-weight:500;--e-global-typography-c15169e-line-height:0.8em;--e-global-typography-e95ced4-font-family:"Klavika";--e-global-typography-e95ced4-font-size:52px;--e-global-typography-e95ced4-font-weight:400;--e-global-typography-e95ced4-line-height:1.2em;--e-global-typography-2c8bf2c-font-family:"Be Vietnam Pro";--e-global-typography-2c8bf2c-font-size:20px;--e-global-typography-2c8bf2c-font-weight:500;--e-global-typography-2c8bf2c-line-height:1.8em;--e-global-typography-d57b3c9-font-family:"Klavika";--e-global-typography-d57b3c9-font-size:72px;--e-global-typography-d57b3c9-font-weight:600;--e-global-typography-d57b3c9-line-height:1.1em;--e-global-typography-c82e4c9-font-family:"Be Vietnam Pro";--e-global-typography-c82e4c9-font-size:18px;--e-global-typography-c82e4c9-font-weight:300;--e-global-typography-c82e4c9-line-height:1.8em;--e-global-typography-e2c740c-font-family:"Be Vietnam Pro";--e-global-typography-e2c740c-font-size:14px;--e-global-typography-e2c740c-font-weight:300;--e-global-typography-e2c740c-line-height:1.2em;--e-global-typography-87ceaaf-font-family:"Klavika";--e-global-typography-87ceaaf-font-size:50px;--e-global-typography-87ceaaf-font-weight:400;--e-global-typography-87ceaaf-line-height:1.4em;--e-global-typography-901c52c-font-family:"Klavika";--e-global-typography-901c52c-font-size:50px;--e-global-typography-901c52c-font-weight:600;--e-global-typography-901c52c-line-height:1.1em;--e-global-typography-a0057ee-font-family:"Be Vietnam Pro";--e-global-typography-a0057ee-font-size:17px;--e-global-typography-a0057ee-font-weight:600;--e-global-typography-a0057ee-line-height:1.3em;--e-global-typography-a0057ee-letter-spacing:-0.2px;--e-global-typography-d6d3fa0-font-family:"Be Vietnam Pro";--e-global-typography-d6d3fa0-font-size:17px;--e-global-typography-d6d3fa0-font-weight:600;--e-global-typography-d6d3fa0-line-height:1.3em;--e-global-typography-d6d3fa0-letter-spacing:-0.2px;--e-global-typography-618f35e-font-family:"Klavika";--e-global-typography-618f35e-font-size:80px;--e-global-typography-618f35e-font-weight:600;--e-global-typography-618f35e-line-height:1.1em;--e-global-typography-62f49d3-font-family:"Be Vietnam Pro";--e-global-typography-62f49d3-font-size:15px;--e-global-typography-62f49d3-font-weight:300;--e-global-typography-62f49d3-line-height:1.8em;--e-global-typography-210660d-font-family:"Klavika";--e-global-typography-210660d-font-size:35px;--e-global-typography-210660d-font-weight:400;--e-global-typography-210660d-line-height:1.2em;--e-global-typography-6214f19-font-family:"Klavika";--e-global-typography-6214f19-font-size:50px;--e-global-typography-6214f19-font-weight:600;--e-global-typography-6214f19-line-height:1.1em;--e-global-typography-a82627a-font-family:"Klavika";--e-global-typography-a82627a-font-size:25px;--e-global-typography-a82627a-font-weight:500;--e-global-typography-a82627a-line-height:1.2em;--e-global-typography-d4ec83c-font-family:"Be Vietnam Pro";--e-global-typography-d4ec83c-font-size:17px;--e-global-typography-d4ec83c-font-weight:400;--e-global-typography-d4ec83c-line-height:1.3em;--e-global-typography-d4ec83c-letter-spacing:-0.2px;--e-global-typography-46cac32-font-family:"Be Vietnam Pro";--e-global-typography-46cac32-font-size:1rem;--e-global-typography-46cac32-font-weight:300;--e-global-typography-46cac32-line-height:1.8em;--e-global-typography-9f85109-font-family:"IBM Plex Sans";--e-global-typography-9f85109-font-size:16px;--e-global-typography-9f85109-font-weight:500;background-color:transparent;color:var( --e-global-color-text );font-family:"IBM Plex Sans", Sans-serif;font-size:1.1rem;font-weight:400;line-height:1.5em;background-image:linear-gradient(180deg, #FAFAFA 0%, var( --e-global-color-de5ee35 ) 50%);}.elementor-kit-6 button,.elementor-kit-6 input[type="button"],.elementor-kit-6 input[type="submit"],.elementor-kit-6 .elementor-button{background-color:var( --e-global-color-secondary );font-family:"Klavika", Sans-serif;font-size:18px;font-weight:400;color:var( --e-global-color-1a33761 );}.elementor-kit-6 button:hover,.elementor-kit-6 button:focus,.elementor-kit-6 input[type="button"]:hover,.elementor-kit-6 input[type="button"]:focus,.elementor-kit-6 input[type="submit"]:hover,.elementor-kit-6 input[type="submit"]:focus,.elementor-kit-6 .elementor-button:hover,.elementor-kit-6 .elementor-button:focus{background-color:var( --e-global-color-accent );color:var( --e-global-color-1a33761 );box-shadow:0px 0px 0px 0px rgba(0,0,0,0.5);}.elementor-kit-6 e-page-transition{background-color:var( --e-global-color-1a33761 );}.elementor-kit-6 a{color:var( --e-global-color-2e28ec1 );}.elementor-kit-6 a:hover{color:var( --e-global-color-521fd37 );}.elementor-kit-6 h1{color:var( --e-global-color-73c0fc6 );font-family:var( --e-global-typography-primary-font-family ), Sans-serif;font-size:var( --e-global-typography-primary-font-size );font-weight:var( --e-global-typography-primary-font-weight );line-height:var( --e-global-typography-primary-line-height );}.elementor-kit-6 h2{color:var( --e-global-color-primary );font-family:var( --e-global-typography-90fedff-font-family ), Sans-serif;font-size:var( --e-global-typography-90fedff-font-size );font-weight:var( --e-global-typography-90fedff-font-weight );line-height:var( --e-global-typography-90fedff-line-height );letter-spacing:var( --e-global-typography-90fedff-letter-spacing );word-spacing:var( --e-global-typography-90fedff-word-spacing );}.elementor-kit-6 h3{color:var( --e-global-color-primary );font-family:var( --e-global-typography-9b4efc1-font-family ), Sans-serif;font-size:var( --e-global-typography-9b4efc1-font-size );font-weight:var( --e-global-typography-9b4efc1-font-weight );line-height:var( --e-global-typography-9b4efc1-line-height );letter-spacing:var( --e-global-typography-9b4efc1-letter-spacing );}.elementor-kit-6 h4{color:var( --e-global-color-primary );font-family:var( --e-global-typography-3513434-font-family ), Sans-serif;font-size:var( --e-global-typography-3513434-font-size );font-weight:var( --e-global-typography-3513434-font-weight );line-height:var( --e-global-typography-3513434-line-height );}.elementor-section.elementor-section-boxed > .elementor-container{max-width:1230px;}.e-con{--container-max-width:1230px;}.elementor-widget:not(:last-child){margin-block-end:20px;}.elementor-element{--widgets-spacing:20px 20px;}{}h1.entry-title{display:var(--page-title-display);}@media(max-width:1024px){.elementor-kit-6{--e-global-typography-primary-font-size:2.1rem;--e-global-typography-secondary-font-size:1.6rem;--e-global-typography-text-font-size:16px;--e-global-typography-5e2a6da-font-size:3rem;--e-global-typography-90fedff-font-size:1.875rem;--e-global-typography-90fedff-line-height:1.22em;--e-global-typography-9b4efc1-font-size:1.5625rem;--e-global-typography-9b4efc1-line-height:1.27em;--e-global-typography-3513434-font-size:1.3125rem;--e-global-typography-3513434-line-height:1.3em;--e-global-typography-7611867-font-size:1.1875rem;--e-global-typography-7611867-line-height:1.35em;--e-global-typography-c392940-font-size:1.1rem;--e-global-typography-c392940-line-height:1.4em;--e-global-typography-c392940-letter-spacing:0.5px;--e-global-typography-9066358-font-size:1.5rem;--e-global-typography-553dd0e-font-size:16px;--e-global-typography-5ef9d97-font-size:1.1rem;--e-global-typography-5ef9d97-line-height:1.5em;--e-global-typography-05e4297-font-size:2.8rem;--e-global-typography-05e4297-line-height:1.1em;--e-global-typography-2ee74fb-font-size:16px;--e-global-typography-26871a1-font-size:1rem;--e-global-typography-e95ced4-font-size:2.5rem;--e-global-typography-e95ced4-line-height:1.1em;--e-global-typography-d57b3c9-font-size:2.2rem;--e-global-typography-e2c740c-font-size:0.8rem;--e-global-typography-87ceaaf-font-size:2rem;--e-global-typography-87ceaaf-line-height:1.3em;--e-global-typography-901c52c-font-size:2.2rem;--e-global-typography-a0057ee-font-size:1rem;--e-global-typography-d6d3fa0-font-size:1rem;--e-global-typography-618f35e-font-size:2.2rem;--e-global-typography-62f49d3-font-size:16px;--e-global-typography-210660d-font-size:1.5rem;--e-global-typography-6214f19-font-size:2.2rem;--e-global-typography-a82627a-font-size:1.2rem;--e-global-typography-a82627a-line-height:1em;--e-global-typography-d4ec83c-font-size:0.9rem;--e-global-typography-d4ec83c-line-height:1.5em;--e-global-typography-46cac32-font-size:16px;font-size:16px;}.elementor-kit-6 h1{font-size:var( --e-global-typography-primary-font-size );line-height:var( --e-global-typography-primary-line-height );}.elementor-kit-6 h2{font-size:var( --e-global-typography-90fedff-font-size );line-height:var( --e-global-typography-90fedff-line-height );letter-spacing:var( --e-global-typography-90fedff-letter-spacing );word-spacing:var( --e-global-typography-90fedff-word-spacing );}.elementor-kit-6 h3{font-size:var( --e-global-typography-9b4efc1-font-size );line-height:var( --e-global-typography-9b4efc1-line-height );letter-spacing:var( --e-global-typography-9b4efc1-letter-spacing );}.elementor-kit-6 h4{font-size:var( --e-global-typography-3513434-font-size );line-height:var( --e-global-typography-3513434-line-height );}.elementor-section.elementor-section-boxed > .elementor-container{max-width:1024px;}.e-con{--container-max-width:1024px;}}@media(max-width:767px){.elementor-kit-6{--e-global-typography-primary-font-size:1.6rem;--e-global-typography-secondary-font-size:1.4rem;--e-global-typography-text-font-size:15px;--e-global-typography-5e2a6da-font-size:2rem;--e-global-typography-90fedff-font-size:1.625rem;--e-global-typography-90fedff-line-height:1.25em;--e-global-typography-9b4efc1-font-size:1.375rem;--e-global-typography-9b4efc1-line-height:1.3em;--e-global-typography-3513434-font-size:1.1875rem;--e-global-typography-3513434-line-height:1.35em;--e-global-typography-7611867-font-size:1.125rem;--e-global-typography-7611867-line-height:1.4em;--e-global-typography-c392940-font-size:1.0625rem;--e-global-typography-c392940-line-height:1.4em;--e-global-typography-c392940-letter-spacing:0.5px;--e-global-typography-9066358-font-size:1.3rem;--e-global-typography-41b0b82-font-size:12px;--e-global-typography-553dd0e-font-size:15px;--e-global-typography-5ef9d97-font-size:1.2rem;--e-global-typography-05e4297-font-size:1.8rem;--e-global-typography-2ee74fb-font-size:15px;--e-global-typography-26871a1-font-size:1rem;--e-global-typography-e95ced4-font-size:1.6rem;--e-global-typography-d57b3c9-font-size:1.8rem;--e-global-typography-e2c740c-font-size:0.8rem;--e-global-typography-87ceaaf-font-size:1.2rem;--e-global-typography-901c52c-font-size:1.8rem;--e-global-typography-a0057ee-font-size:1rem;--e-global-typography-d6d3fa0-font-size:1rem;--e-global-typography-618f35e-font-size:1.8rem;--e-global-typography-62f49d3-font-size:15px;--e-global-typography-210660d-font-size:1.8rem;--e-global-typography-6214f19-font-size:1.8rem;--e-global-typography-a82627a-font-size:1.2rem;--e-global-typography-d4ec83c-font-size:0.9rem;--e-global-typography-46cac32-font-size:15px;font-size:15px;}.elementor-kit-6 h1{font-size:var( --e-global-typography-primary-font-size );line-height:var( --e-global-typography-primary-line-height );}.elementor-kit-6 h2{font-size:var( --e-global-typography-90fedff-font-size );line-height:var( --e-global-typography-90fedff-line-height );letter-spacing:var( --e-global-typography-90fedff-letter-spacing );word-spacing:var( --e-global-typography-90fedff-word-spacing );}.elementor-kit-6 h3{font-size:var( --e-global-typography-9b4efc1-font-size );line-height:var( --e-global-typography-9b4efc1-line-height );letter-spacing:var( --e-global-typography-9b4efc1-letter-spacing );}.elementor-kit-6 h4{font-size:var( --e-global-typography-3513434-font-size );line-height:var( --e-global-typography-3513434-line-height );}.elementor-section.elementor-section-boxed > .elementor-container{max-width:767px;}.e-con{--container-max-width:767px;}}/* Start custom CSS *//* Core no-wrap rules */
+.yoast-breadcrumb {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.yoast-breadcrumb span,
+.yoast-breadcrumb a {
+  white-space: nowrap;
+}/* End custom CSS */
+/* Start Custom Fonts CSS */@font-face {
+	font-family: 'Klavika';
+	font-style: normal;
+	font-weight: 300;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaLight.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaLight.woff') format('woff');
+}
+@font-face {
+	font-family: 'Klavika';
+	font-style: italic;
+	font-weight: 300;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaLightItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaLightItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Klavika';
+	font-style: normal;
+	font-weight: 400;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaRegular.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaRegular.woff') format('woff');
+}
+@font-face {
+	font-family: 'Klavika';
+	font-style: italic;
+	font-weight: 400;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaRegularItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaRegularItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Klavika';
+	font-style: normal;
+	font-weight: 700;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaBold.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaBold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Klavika';
+	font-style: italic;
+	font-weight: 700;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaBoldItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaBoldItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Klavika';
+	font-style: normal;
+	font-weight: 500;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaMedium.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaMedium.woff') format('woff');
+}
+@font-face {
+	font-family: 'Klavika';
+	font-style: italic;
+	font-weight: 500;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaMediumItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaMediumItalic.woff') format('woff');
+}
+/* End Custom Fonts CSS */
+/* Start Custom Fonts CSS */@font-face {
+	font-family: 'IBM Plex Sans';
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/font_IBMPlexSans-VariableFont_wdth-wght.ttf') format('truetype');
+}
+/* End Custom Fonts CSS */
+/* Start Custom Fonts CSS */@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 100;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProThin.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProThin.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 100;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProThinItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProThinItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 200;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraLight.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraLight.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 200;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraLightItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraLightItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 300;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProLight.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProLight.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 300;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProLightItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProLightItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 400;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProRegular.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProRegular.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 400;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 500;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProMedium.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProMedium.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 500;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProMediumItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProMediumItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 600;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProSemiBold.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProSemiBold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 600;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProSemiBoldItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProSemiBoldItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 700;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBold.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 700;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBoldItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBoldItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 800;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraBold.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraBold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 800;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraBoldItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProExtraBoldItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: 900;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBlack.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBlack.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: 900;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBlackItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBlackItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: normal;
+	font-weight: bold;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBold.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/BeVietnamProBold.woff') format('woff');
+}
+@font-face {
+	font-family: 'Be Vietnam Pro';
+	font-style: italic;
+	font-weight: bold;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaBoldItalic.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/KlavikaBoldItalic.woff') format('woff');
+}
+/* End Custom Fonts CSS */
+/* Start Custom Fonts CSS */@font-face {
+	font-family: 'APL385';
+	font-style: normal;
+	font-weight: normal;
+	font-display: auto;
+	src: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/APL385.woff2') format('woff2'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/APL385.woff') format('woff'),
+		url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/Apl385.ttf') format('truetype');
+}
+/* End Custom Fonts CSS */

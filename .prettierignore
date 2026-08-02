@@ -1,3 +1,7 @@
 build/
 node_modules/
 package-lock.json
+
+# Vendored copies of the WordPress host's stylesheets.
+# See public/wp-content/README.md.
+public/wp-content/

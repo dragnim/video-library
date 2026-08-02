@@ -1,0 +1,1439 @@
+/* ==========================================================================
+   Theme Name:   Dyalog 2026
+   Author:       Dyalog
+   Template:     hello-elementor
+   Version:      3.0
+   ========================================================================== */
+
+/*
+ * TABLE OF CONTENTS
+ * -----------------
+ *  0. Resets
+ *  1. Custom Fonts
+ *  2. Link Colours
+ *  3. Tags System
+ *  4. Code & Keyboard Styling
+ *  5. Icon Colours (Font Awesome)
+ *  6. Navigation & Menus
+ *  7. Off-Canvas Menu
+ *  8. Sticky Table of Contents
+ *  9. Team Lozenges Animation
+ * 10. Visual Decorations (Dots, Gradient, Grid Dividers, Ducks)
+ * 11. Inline Images
+ * 12. External Link Icons
+ * 13. Download Dyalog APL UI
+ * 14. WordPress / Gutenberg Overrides
+ * 15. Elementor Overrides
+ * 16. Utility Classes
+ * 17. Table of Contents Enhancements
+ */
+
+
+/* ==========================================================================
+   0. RESET
+   This is to reset the weird padding on the headings.
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  margin-block: 0 0.5rem;
+}
+
+/* ==========================================================================
+   1. CUSTOM FONTS
+   Loads the APL385 Unicode font used for APL code samples.
+   The font file is served from the WordPress media library.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'APL385';
+  src:
+    url('https://dyalogprod.gos.dyalog.com/wp-content/themes/dyalog/fonts/Apl385.woff2') format('woff2'),
+    url('https://dyalogprod.gos.dyalog.com/wp-content/themes/dyalog/fonts/Apl385.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ==========================================================================
+   2. LINK COLOURS
+   Author: Mike | Added: 14 Nov 2024 | Updated: 27 Apr 2026
+
+   Three colour schemes for links depending on background context:
+   - .hero-links   : for links inside Hero sections (dark/image backgrounds)
+   - .dark-links   : for links on the Midnight/dark colour scheme sections
+   - .anchor-links : for standard in-page anchor/body links on light backgrounds
+
+   !important is required here to override Elementor's inline colour styles,
+   which have very high specificity and can't be beaten without it.
+   ========================================================================== */
+
+/* PARAGRAPH LINKS - Styles only links inside <p> tags */
+p a {
+	color: #CA4E00 !important;
+	text-decoration: none;
+	border-bottom: 2px solid transparent;
+	transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+p a:hover {
+	color: #526CFE !important;
+	border-bottom-color: currentColor;
+}
+
+/* Hero sections — warm peach tones on dark backgrounds */
+.hero-links a {
+	color: #FFB88F !important;
+	text-decoration: none;
+	border-bottom: 2px solid transparent;
+	transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-links a:hover {
+	color: #FFEDE2 !important;
+	border-bottom-color: currentColor;
+}
+
+/* Midnight/dark sections — orange default, blue-purple on hover */
+.dark-links a {
+    color: #ff6a13 !important;
+}
+.dark-links a:hover {
+    color: #6F85FF !important;
+}
+
+/* Anchor/body links — deeper orange default, blue on hover */
+.anchor-links a {
+    color: #CA4E00 !important;
+}
+.anchor-links a:hover {
+    color: #526CFE !important;
+}
+
+/* Text selection colour — Rose. Author: Mike | Added: 3 Dec 2024 */
+::selection {
+    background-color: #ca2d51;
+    color: #ffffff;
+}
+
+
+/* ==========================================================================
+   3. TAGS SYSTEM
+   Author: MikeM | Added: 18 Mar 2026
+
+   A reusable tag/badge component using CSS custom properties.
+
+   How it works:
+   - The base `.tag` class defines structure (border, padding, radius).
+   - It reads two CSS variables: --tag-bg (fill) and --tag-accent (left border).
+   - Modifier classes (e.g. .tag-supported) set those variables for each type.
+   - To add a new tag type, just create a new modifier class with two variables.
+
+   Usage: <span class="tag tag-supported">Supported</span>
+   ========================================================================== */
+
+.tag {
+    border-radius: 0;
+    padding: 5px 10px 3px 10px;
+    border-left: 5px solid var(--tag-accent);
+    background-color: var(--tag-bg);
+}
+
+/* Orange — used for the current/active release */
+.tag-latest-release {
+    --tag-bg: #ff6a13;
+    --tag-accent: #FFA36C;
+}
+
+/* Teal — actively supported versions */
+.tag-supported {
+    --tag-bg: #1A927D;
+    --tag-accent: #5AB7A7;
+}
+
+/* Red — versions that are no longer supported */
+.tag-unsupported {
+    --tag-bg: #ca2d51;
+    --tag-accent: #EE7D97;
+}
+
+/* Lavender — older versions still functional but not actively maintained */
+.tag-legacy {
+    --tag-bg: #8986CA;
+    --tag-accent: #B4B2E3;
+}
+
+
+/* ==========================================================================
+   4. CODE & KEYBOARD STYLING
+
+   Covers three contexts:
+   a) <pre> blocks      — multi-line code samples with a white card treatment
+   b) <code> tags       — inline code within body text
+   c) .language-apl     — APL-specific font override (APL385 Unicode)
+   d) <kbd> tags        — keyboard key references (e.g. Ctrl+C)
+   ========================================================================== */
+
+/* --- 4a. Code blocks (<pre>) --- */
+/* --- Code blocks --- */
+pre {
+    position: relative;                   /* anchor the copy button */
+    background: #f5f5f5;
+    overflow-x: auto !important;          /* horizontal scroll if code is wide */
+    border: 1px solid #ddd;
+    border-radius: 0px !important;
+    padding: 2.4em 1.25em !important;   /* top room clears the copy icon; bottom matches it so the code sits balanced */
+    margin: 2em 0 !important;
+    font-size: 0.8em !important;
+    line-height: 1.25 !important;
+    font-family: Consolas, "Courier New", monospace !important;
+    tab-size: 4;
+}
+
+/* <code> inside <pre>: inherit pre's font, reset only the highlighter's
+   own padding/background so Prism (or similar) doesn't double up. */
+pre code {
+    font-family: inherit !important;
+    font-size: inherit;
+    line-height: inherit !important;
+    padding: 0;
+    background: none !important;
+    border-radius: 0;
+}
+
+/* --- Inline code --- */
+/* Inline <code> not inside a <pre>: subtle monospace treatment.
+   Transparent background so it sits cleanly on any page background. */
+code {
+    font-family: Consolas, "Courier New", monospace;
+    padding: 0.15em 0.35em;
+    border-radius: 4px;
+    font-size: 0.95em;
+    color: #333;
+    background: none !important;
+}
+
+/* --- APL-specific font --- */
+/* Applies whether language-apl sits on the <pre> or the <code>, and crucially
+   to the inner <code> too, so APL385 is not clobbered by the `pre code` rule.
+   font-variant-ligatures: none stops glyphs merging, which would change meaning. */
+.language-apl,
+.language-apl code,
+code.language-apl {
+    font-family: APL385, monospace !important;
+    font-variant-ligatures: none;
+}
+
+/* Inline APL: inherit surrounding text colour so it doesn't read as a link
+   or error, and suppress any Prism token colouring. */
+:not(pre) > code.language-apl,
+:not(pre) > code.language-apl .token {
+    color: inherit !important;
+    background: transparent !important;
+}
+
+/* --- Copy button --- */
+/* Injected by copy-code.js into each <pre> as
+       <span.copy-code-btn role="button">
+           <span.copy-code-label>COPIED!</span>
+           <span.copy-code-icon><svg/></span>
+       </span>
+   The button is a transparent flex wrapper pinned flush to the top-right
+   corner (the block reserves top padding via `pre` so code never runs under
+   it). The icon child carries the box: background, left/bottom border (the
+   block's own top/right border completes it) and the colour swap on copy.
+   The label sits to its left on the block background and shares the same
+   .copied state, so it fades in and out in sync with the icon's background. */
+.copy-code-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* "COPIED!" label: hidden until the copied state, then fades in with the icon */
+.copy-code-label {
+    padding-right: 0.6em;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 500;
+    font-size: 0.95em;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    white-space: nowrap;
+    color: #a5a5a5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.copy-code-btn.copied .copy-code-label {
+    opacity: 1;
+}
+
+/* The icon box */
+.copy-code-icon {
+    display: inline-flex;
+    padding: 0.3em;
+    line-height: 0;
+    color: #888;
+    background: #f5f5f5;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.copy-code-icon svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+.copy-code-btn:hover .copy-code-icon {
+    color: #333;
+}
+.copy-code-btn.copied .copy-code-icon {
+    color: #ffffff;
+    background: #ca2e51;
+}
+
+/* --- 4d. Keyboard keys (<kbd>) --- */
+
+/* Renders keyboard shortcut references to look like physical keys.
+   The asymmetric border-width (1px 3px 3px 1px) and box-shadow
+   together create the raised/3D key appearance. */
+kbd {
+    background: white;
+    color: #000000;
+    padding: 3px;
+    border: 1px solid #e6e6e6;
+    border-radius: 0.25rem;
+    margin: 0 3px;
+    border-width: 1px 3px 3px 1px;
+    box-shadow: 0 2px 0 1px #a4a4a4;
+    font-weight: bold;
+}
+
+/* Standalone APL font class — for use outside of code blocks,
+   e.g. inline APL glyphs within body copy */
+.APLFont {
+    font-family: APL385, monospace !important;
+}
+
+
+/* ==========================================================================
+   5. ICON COLOURS (Font Awesome)
+   Colours specific Font Awesome icons to visually match their file/service type.
+   ========================================================================== */
+
+.fa-file-pdf     { color: #f30f01; }              /* PDF — red */
+.fa-file-archive { color: #F3CF39; }              /* ZIP/archive — yellow */
+.fa-globe        { color: #EB7223; }              /* Website/external — orange */
+.fa-twitter      { color: #1DA1F2; }              /* Twitter/X — brand blue */
+.fa-book         { color: #5ed1ff; }              /* Documentation — light blue */
+
+/* .fa-file-chm: no built-in Font Awesome icon for CHM files, so a standard
+   icon is recoloured using a CSS filter. The filter values were generated at
+   https://codepen.io/sosuke/pen/Pjoqqp to convert black to #ef6d7f. */
+.fa-file-chm {
+    width: 25px;
+    filter: invert(30%) sepia(14%) saturate(4809%) hue-rotate(237deg) brightness(91%) contrast(88%);
+}
+
+
+/* ==========================================================================
+   6. NAVIGATION & MENUS
+   ========================================================================== */
+
+/* Changes the cursor to a pointer on the hamburger/close button in Elementor's
+   mobile nav, since Elementor renders it as a non-interactive icon by default */
+.eicon-close {
+    cursor: pointer;
+}
+
+/* Make <details>/<summary> elements obviously clickable.
+   Browsers show a default triangle but don't always show pointer cursor. */
+details {
+    cursor: pointer;
+}
+
+/* Removes the default left margin Elementor adds to the TOC ordered list,
+   which otherwise indents the first level unnecessarily */
+ol.elementor-toc__list-wrapper {
+    margin-left: 0;
+}
+
+/* Forces the off-canvas TOC panel to span the full viewport width on mobile */
+#offCanvas-toc div.uael-custom-offcanvas {
+    width: 100vw;
+}
+
+
+/* ==========================================================================
+   7. OFF-CANVAS MENU
+   Author: MikeM | Added: 29 Jan 2026
+
+   A tab-style trigger button that peeks out from the left edge of the screen
+   on mobile, sliding fully into view on hover. Hidden entirely on desktop.
+
+   The button uses position: fixed so it stays visible while the user scrolls.
+   It starts at left: -10px (partially off-screen) and slides to left: 0 on hover.
+
+   !important is needed throughout to override Elementor widget positioning.
+   ========================================================================== */
+
+/* Mobile: show the tab peeking from the left edge */
+@media (max-width: 767px) {
+    .dy_off-canvas-open {
+        position: fixed !important;
+        left: -10px !important;               /* partially hidden off left edge */
+        top: 50% !important;
+        transform: translateY(-50%) !important; /* true vertical centre */
+        z-index: 9999 !important;             /* above all other content */
+        cursor: pointer !important;
+        transition: left 0.3s ease !important;
+    }
+
+    /* Slide fully into view on hover */
+    .dy_off-canvas-open:hover {
+        left: 0 !important;
+    }
+}
+
+/* Desktop: hide the tab entirely */
+@media (min-width: 768px) {
+    .dy_off-canvas-open {
+        display: none !important;
+    }
+}
+
+
+/* ==========================================================================
+   8. STICKY TABLE OF CONTENTS
+   Author: MikeM | Added: 23 Jan 2026 | Updated: 30 Apr 2026
+
+   Makes the TOC widget stick to the top of the viewport as the user scrolls,
+   within a two-column layout. On desktop, the TOC scrolls independently if
+   the content is taller than the screen.
+
+   Setup required in Elementor:
+   - Add class 'toc-sticky' to the TOC widget
+   - Do NOT use Elementor's own sticky feature on the column (conflicts)
+   ========================================================================== */
+
+/* Stick the TOC to the top of the viewport inside its column */
+.elementor .toc-sticky {
+    position: sticky;
+    top: 0px;   /* increase this value if you have a fixed header (e.g. top: 80px) */
+}
+
+/* On desktop only: allow the TOC to scroll independently if it's taller
+   than the viewport. Excluded on mobile to prevent nested scroll issues
+   when the TOC is inside an off-canvas panel. */
+@media (min-width: 1025px) {
+    .elementor .toc-sticky {
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+}
+
+
+/* ==========================================================================
+   9. TEAM LOZENGES ANIMATION
+   Author: Mike | Updated: 29 Jan 2025
+
+   A slow background colour cycle on team member cards, fading between
+   Dyalog lavender (#8986CA) and Dyalog orange (#FF6A13) over 100 seconds.
+
+   Respects the user's OS/browser reduced-motion preference — if set,
+   the animation is disabled and the lavender fallback colour is shown instead.
+   Note: there is also companion JS on the page and within the card loops.
+   ========================================================================== */
+
+@keyframes team-ani-bg-animation {
+    0%   { background-color: #8986CA; }
+    50%  { background-color: #FF6A13; }
+    100% { background-color: #8986CA; }
+}
+
+.team-ani-bg {
+    background-color: #8986CA;                /* fallback / reduced-motion colour */
+    animation: team-ani-bg-animation 100s linear infinite;
+}
+
+/* Stop the animation for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .team-ani-bg {
+        animation: none !important;
+        background-color: #8986CA !important;
+    }
+}
+
+
+/* ==========================================================================
+   10. VISUAL DECORATIONS
+
+   10a. Faded Dots Background
+   10b. Dyalog Gradient
+   10c. Grid Dividers
+   ========================================================================== */
+
+/* --- 10a. Faded Dots Background ---
+   Overlays a subtle white dot grid on a container using a ::after pseudo-element.
+   The radial gradient mask fades the dots out toward the centre, leaving them
+   most visible near the edges. Works on containers and image wrappers.
+
+   The dot pattern is an inline SVG data URI — no external image required.
+   The pattern tile is 8x8px, rendered at 16x16px (via background-size) for spacing.
+   The tile defines four dots: top-left, and three at the tile edges (y=8, x=8, x=8 y=8)
+   which when tiled create the staggered grid pattern.
+
+   z-index layering:
+   - ::after (the dots) sits at z-index: 1
+   - Direct children are pushed to z-index: 2 so they render above the dots
+   - position: relative on the parent is required for this to work
+   ========================================================================== */
+
+.faded-dots-bg {
+    position: relative;   /* required for z-index stacking of ::after and children */
+}
+.faded-dots-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;   /* clicks pass through to content below */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><pattern id='grid' x='0' y='0' width='8' height='8' patternUnits='userSpaceOnUse'><rect width='1' height='1' fill='%23FFFFFF' fill-opacity='0.1'/><rect y='8' width='1' height='1' fill='%23FFFFFF' fill-opacity='0.2'/><rect x='8' width='1' height='1' fill='%23FFFFFF' fill-opacity='0.2'/><rect x='8' y='8' width='1' height='1' fill='%23FFFFFF' fill-opacity='0.2'/></pattern><rect width='100%' height='100%' fill='url(%23grid)'/></svg>");
+    background-repeat: repeat;
+    background-size: 16px 16px;   /* scales the 8px tile up for looser dot spacing */
+    /* Fade effect: transparent at centre, fully visible dots at edges.
+       The mask only affects this ::after layer — not the content above it. */
+    -webkit-mask-image: radial-gradient(circle at center, transparent 0%, black 95%);
+    mask-image: radial-gradient(circle at center, transparent 0%, black 95%);
+}
+/* Push all direct children above the dot overlay */
+.faded-dots-bg > * {
+    position: relative;
+    z-index: 2;
+}
+/* Exception: a nested dy-glow container sits level with the dots layer,
+   so the dots (::after, painted last) render over the glow */
+.faded-dots-bg > .dy-glow {
+    z-index: 1;
+}
+
+/* --- 10b. Dyalog Gradient ---
+   A two-colour soft radial gradient: blue-purple on the left, orange on the right.
+   Uses hsla colours at low opacity (0.2) so it works as a tint over any background.
+   The three background-image declarations are: Safari prefix, then standard syntax.
+   (The old Firefox 3.6 -moz- prefix has been removed — no longer needed.) */
+
+.dy-gradient {
+    background-color: transparent !important;
+
+    /* Safari */
+    background-image:
+        -webkit-radial-gradient(59% 49%, hsla(240, 96%, 66%, 0.2) 0px, transparent 50%),
+        -webkit-radial-gradient(69% 51%, hsla(22, 100%, 54%, 0.2) 0px, transparent 50%) !important;
+
+    /* Standard */
+    background-image:
+        radial-gradient(at 59% 49%, hsla(240, 96%, 66%, 0.2) 0px, transparent 50%),
+        radial-gradient(at 69% 51%, hsla(22, 100%, 54%, 0.2) 0px, transparent 50%) !important;
+}
+
+/* ============================================================
+   RISING DUCK
+   Added by: MikeM — 24 July 2026
+   ------------------------------------------------------------
+   A duck image that lives inside the .duck-tainer element. It
+   starts hidden just below the container, then slowly rises up
+   so most of him is visible. Clicking him plays a quack and
+   makes him drop quickly out of sight (as if startled), after
+   which he slowly rises again.
+
+   States (classes toggled by the JS):
+     - default    : parked below, hidden, not clickable
+     - .is-up     : raised into view, clickable
+     - .is-scared : fast drop back out of view
+
+   Mobile hiding is handled in the JS (it skips creating the
+   duck on small screens), so no media query is needed here.
+   ============================================================ */
+
+.duck-tainer {
+  position: relative;
+  overflow: hidden !important;   /* override Elementor's overflow */
+}
+
+#rising-duck {
+  position: absolute;
+  width: 85px;                         /* duck size — adjust to taste */
+  height: 99px;                        /* duck size — adjust to taste */
+  object-fit: contain;
+  cursor: pointer;
+  z-index: 9999;
+  pointer-events: none;
+  bottom: -119px;                      /* hidden position: -(height + 20) */
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+  transition: bottom 2500ms ease-out;  /* rise speed — adjust to taste */
+}
+
+#rising-duck.is-up {
+  bottom: -20px;                       /* how much peeks out: closer to 0 = more shown */
+  pointer-events: auto;
+}
+
+#rising-duck.is-scared {
+  transition: bottom 150ms cubic-bezier(0.5, 0, 1, 0.4); /* startled-drop speed */
+  bottom: -119px;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Front Card Effects
+   Added by: MikeM — 28 July 2026
+   ============================================================ */
+
+/* Dyalog front cards: desaturate/resaturate with side peeking kept */
+.dy-front-box {
+  filter: grayscale(1) !important;
+  transition: filter 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  will-change: filter;
+}
+
+/* Resaturate hovered/focused card */
+.dy-front-box:hover,
+.dy-front-box:focus-visible {
+  filter: grayscale(0) !important;
+}
+
+/* Keep neighbouring carousel items visible at the sides */
+.elementor-widget-loop-carousel:has(.dy-front-box) .swiper,
+.elementor-widget-loop-carousel:has(.dy-front-box) .swiper-container,
+.elementor-widget-loop-carousel:has(.dy-front-box) .swiper-wrapper,
+.elementor-widget-loop-carousel:has(.dy-front-box) .swiper-slide {
+  overflow: visible !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dy-front-box {
+    transition: none !important;
+  }
+}
+
+.grid-dividers {
+    position: relative;
+    --divider:     #E6E6E6;
+    --grid-width:  1100px;
+    --solid-span:  120px;   /* width of the non-faded centre — increase for a longer solid line */
+}
+
+/* Draw dividers on the Elementor background overlay if present */
+.grid-dividers > .elementor-background-overlay {
+    background-image:
+        /* Horizontal line */
+        linear-gradient(
+            to right,
+            transparent,
+            var(--divider) calc(50% - var(--solid-span) / 2),
+            var(--divider) calc(50% + var(--solid-span) / 2),
+            transparent
+        ),
+        /* Vertical line */
+        linear-gradient(
+            to bottom,
+            transparent,
+            var(--divider) calc(50% - var(--solid-span) / 2),
+            var(--divider) calc(50% + var(--solid-span) / 2),
+            transparent
+        );
+
+    background-size:
+        var(--grid-width) 1px,
+        1px 100%;
+
+    background-position:
+        center center,
+        center center;
+
+    background-repeat: no-repeat;
+}
+
+/* Fallback when no Elementor overlay element exists */
+.grid-dividers:not(:has(> .elementor-background-overlay)) {
+    background-image:
+        linear-gradient(
+            to right,
+            transparent,
+            var(--divider) calc(50% - var(--solid-span) / 2),
+            var(--divider) calc(50% + var(--solid-span) / 2),
+            transparent
+        ),
+        linear-gradient(
+            to bottom,
+            transparent,
+            var(--divider) calc(50% - var(--solid-span) / 2),
+            var(--divider) calc(50% + var(--solid-span) / 2),
+            transparent
+        );
+
+    background-size:
+        var(--grid-width) 1px,
+        1px 100%;
+
+    background-position:
+        center center,
+        center center;
+
+    background-repeat: no-repeat;
+}
+
+/* Hide dividers on mobile — not meaningful in a single-column stacked layout */
+@media (max-width: 767px) {
+    .grid-dividers,
+    .grid-dividers > .elementor-background-overlay {
+        background-image: none !important;
+    }
+}
+
+/* ================================================
+   Dyalog card effect (global stylesheet)
+
+   Usage:
+   Add the class "dy-card-effect" to any Elementor
+   container (or any block-level element) to apply
+   the effect. Add "dy-dark" as well when it sits on
+   a dark background.
+
+   Markup is injected automatically by
+   dy-card-effect.js, nothing else to add per
+   container.
+
+   Includes:
+   - Faded side borders with a solid bottom border
+   - 5px border radius
+   - Subtle background gradient
+   - Animated grid tiles
+   - Interactive hover tiles
+   - Light and dark variants
+   ================================================ */
+
+.dy-card-effect {
+	/* Grid settings */
+	--dy-cell: 72px;
+
+	/* Light variant colours */
+	--dy-line-color: rgba(0, 59, 92, 0.126);
+	--dy-tile-color: rgba(0, 59, 92, 0.084);
+	--dy-hover-color: rgba(0, 59, 92, 0.18);
+
+	/* Container border and background colours */
+	--dy-border-color: #e6e6e6;
+	--dy-background-color: #f2f1f0;
+
+	position: relative;
+
+	/* Reserve space for the gradient border */
+	border: 1px solid transparent !important;
+	border-radius: 5px;
+
+	/*
+	 * Background layers:
+	 * 1. Solid bottom border
+	 * 2. Left border fading from transparent to solid
+	 * 3. Right border fading from transparent to solid
+	 * 4. Container background fading in towards the bottom
+	 */
+	background-image:
+		linear-gradient(
+			var(--dy-border-color),
+			var(--dy-border-color)
+		),
+		linear-gradient(
+			to bottom,
+			transparent 0%,
+			var(--dy-border-color) 40%
+		),
+		linear-gradient(
+			to bottom,
+			transparent 0%,
+			var(--dy-border-color) 40%
+		),
+		linear-gradient(
+			180deg,
+			transparent 0%,
+			var(--dy-background-color) 100%
+		) !important;
+
+	background-repeat: no-repeat !important;
+
+	background-size:
+		100% 1px,
+		1px 100%,
+		1px 100%,
+		auto !important;
+
+	background-position:
+		bottom,
+		left top,
+		right top,
+		50% 100% !important;
+
+	background-origin:
+		border-box,
+		border-box,
+		border-box,
+		padding-box !important;
+
+	background-clip:
+		border-box,
+		border-box,
+		border-box,
+		padding-box !important;
+}
+
+/* Dark-section values */
+.dy-card-effect.dy-dark {
+	--dy-line-color: rgba(255, 255, 255, 0.084);
+	--dy-tile-color: rgba(255, 255, 255, 0.056);
+	--dy-hover-color: rgba(255, 255, 255, 0.14);
+}
+
+/*
+ * Increase the grid-line opacity on low-DPI screens,
+ * where faint 1px lines can become difficult to see.
+ */
+@media (max-resolution: 1.25dppx) {
+	.dy-card-effect {
+		--dy-line-color: rgba(0, 59, 92, 0.22);
+	}
+
+	.dy-card-effect.dy-dark {
+		--dy-line-color: rgba(255, 255, 255, 0.16);
+	}
+}
+
+/*
+ * Main effect layer, injected by dy-card-effect.js.
+ * The vertical mask fades the effect at the top and bottom.
+ * The first 5% is fully hidden, then the effect fades in
+ * gradually until 25%.
+ */
+.dy-bg {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	border-radius: inherit;
+	pointer-events: none;
+
+	-webkit-mask-image: linear-gradient(
+		to bottom,
+		transparent 0%,
+		transparent 5%,
+		#000 25%,
+		#000 75%,
+		transparent 100%
+	);
+
+	mask-image: linear-gradient(
+		to bottom,
+		transparent 0%,
+		transparent 5%,
+		#000 25%,
+		#000 75%,
+		transparent 100%
+	);
+}
+
+/*
+ * Fade the grid, animated tiles and hover tiles at
+ * the left and right edges.
+ */
+.dy-grid,
+.dy-tiles,
+.dy-hovergrid {
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent 0%,
+		#000 8%,
+		#000 92%,
+		transparent 100%
+	);
+
+	mask-image: linear-gradient(
+		to right,
+		transparent 0%,
+		#000 8%,
+		#000 92%,
+		transparent 100%
+	);
+}
+
+/* Shared full-size effect layers */
+.dy-grid,
+.dy-tiles,
+.dy-tiles-inner,
+.dy-hovergrid,
+.dy-hovergrid-inner {
+	position: absolute;
+	inset: 0;
+}
+
+/* SVG grid */
+.dy-grid svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.dy-grid path {
+	fill: none;
+	stroke: var(--dy-line-color);
+	stroke-width: 1;
+}
+
+/*
+ * Clear the grid and tiles from the centre so they do
+ * not interfere with the container content.
+ */
+.dy-grid svg,
+.dy-tiles-inner,
+.dy-hovergrid-inner {
+	-webkit-mask-image: radial-gradient(
+		60% 65% at 50% 50%,
+		transparent 0%,
+		transparent 32%,
+		#000 72%
+	);
+
+	mask-image: radial-gradient(
+		60% 65% at 50% 50%,
+		transparent 0%,
+		transparent 32%,
+		#000 72%
+	);
+
+	/*
+	 * Centre the grid when the container dimensions are
+	 * not exact multiples of the grid-cell size.
+	 */
+	transform: translate(
+		var(--grid-ox, 0px),
+		var(--grid-oy, 0px)
+	);
+}
+
+/* Animated tiles */
+.dy-tile {
+	position: absolute;
+	left: calc(var(--c) * var(--dy-cell));
+	top: calc(var(--r) * var(--dy-cell));
+	width: var(--dy-cell);
+	height: var(--dy-cell);
+
+	background-color:
+		var(--dy-tile-fill, var(--dy-tile-color));
+
+	opacity: 0;
+
+	animation-name: dy-card-tile;
+	animation-duration: 12s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+
+@keyframes dy-card-tile {
+	0%,
+	40% {
+		opacity: 0;
+	}
+
+	47%,
+	60% {
+		opacity: 1;
+	}
+
+	67%,
+	100% {
+		opacity: 0;
+	}
+}
+
+/* Interactive hover layer */
+.dy-hovergrid,
+.dy-hovergrid-inner,
+.dy-hovercell {
+	pointer-events: none;
+}
+
+.dy-hovergrid-inner {
+	overflow: hidden;
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fill,
+		var(--dy-cell)
+	);
+	grid-auto-rows: var(--dy-cell);
+}
+
+.dy-hovercell {
+	background-color: var(--dy-hover-color);
+	opacity: 0;
+	transition: opacity 1.2s ease-out;
+}
+
+.dy-hovercell.is-on {
+	opacity: 1;
+	transition: opacity 0.09s ease-out;
+}
+
+/* Reduced-motion: remove the animated tiles and the
+   interactive hover layer entirely. The grid itself stays,
+   since it's static and not a motion effect. */
+@media (prefers-reduced-motion: reduce) {
+	.dy-tile {
+		display: none;
+	}
+
+	.dy-hovergrid {
+		display: none;
+	}
+}
+
+.dy-card-effect.dy-brand {
+	--dy-line-color: rgba(255, 255, 255, 0.14);
+	--dy-tile-color: rgba(255, 255, 255, 0.08);
+	--dy-hover-color: rgba(255, 255, 255, 0.18);
+
+	--dy-border-color: rgba(255, 255, 255, 0.22);
+	--dy-background-color: #003B5C;
+
+	background-color: #003B5C !important;
+	background-image:
+		linear-gradient(
+			rgba(255, 255, 255, 0.22),
+			rgba(255, 255, 255, 0.22)
+		),
+		linear-gradient(
+			to bottom,
+			transparent 0%,
+			rgba(255, 255, 255, 0.22) 40%
+		),
+		linear-gradient(
+			to bottom,
+			transparent 0%,
+			rgba(255, 255, 255, 0.22) 40%
+		),
+		linear-gradient(
+			180deg,
+			#003B5C 0%,
+			#003B5C 100%
+		) !important;
+
+	color: #ffffff;
+}
+
+
+/* ==========================================================================
+   11. INLINE IMAGES
+   A card-like wrapper for images used inline within body content.
+   Adds padding, rounded corners, a soft shadow, and a white background
+   so images don't bleed into surrounding text or coloured sections.
+   ========================================================================== */
+
+.dy-content-image {
+    padding: 20px !important;
+    margin: 20px !important;
+    border-radius: 15px !important;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px !important;
+    background-color: #fff;
+}
+
+
+/* ==========================================================================
+   12. EXTERNAL LINK ICONS
+   Author: MikeM | Added: February 2026
+
+   Appends a small external-link arrow icon after any <a> tag inside an
+   .ex-link container, or after an <a> tag with .ex-link directly on it.
+
+   The icon is injected via ::after using a CSS mask over a background-color.
+   This means it inherits the link's current text colour automatically,
+   including hover states — no separate hover rule needed.
+
+   Usage:
+     <span class="ex-link"><a href="...">Visit site</a></span>
+     <a class="ex-link" href="...">Visit site</a>
+   ========================================================================== */
+
+.ex-link a::after,
+a.ex-link::after {
+    content: '' !important;
+    display: inline-block !important;
+    width: 0.75em !important;
+    height: 0.75em !important;
+    margin-left: 0.2em !important;
+    background-color: currentColor !important;   /* inherits link/hover colour */
+    -webkit-mask-image: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/icon_general_external-link_04.svg') !important;
+    mask-image: url('https://dyalogprod.gos.dyalog.com/wp-content/uploads/icon_general_external-link_04.svg') !important;
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    vertical-align: baseline !important;
+}
+
+
+/* ==========================================================================
+   13. DOWNLOAD DYALOG APL UI
+   Styles for the download page OS selection grid and registration modal.
+   ========================================================================== */
+
+/* Hide elements before JS reveals them (e.g. platform-specific content) */
+.hidden {
+    display: none;
+}
+
+/* Ensure consistent font family across the download grid and register form */
+.download-dyalog,
+#register {
+    font-family: var(--e-global-typography-text-font-family);
+}
+
+/* Two-column OS selection grid */
+.download-dyalog {
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* Individual OS option card */
+.download-dyalog > div {
+    border: 1px solid #ccc;
+    background-color: var(--e-global-color-1a33761);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+    text-align: center;
+    width: 220px;
+}
+
+/* Large OS icon sizing */
+.os-icon {
+    font-size: 6em;
+}
+
+/* Registration form input padding */
+form#register input {
+    padding: 0.5em;
+}
+
+/* Standard text input field */
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0px 5px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Modal overlay — full-screen semi-transparent backdrop */
+.modal {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: black;             /* fallback for browsers without rgba */
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Modal content panel */
+.modal-content {
+    margin: 15% auto;
+    width: 80%;
+    background-color: var(--e-global-color-1a33761);
+}
+
+
+/* ==========================================================================
+   14. WORDPRESS / GUTENBERG OVERRIDES
+   ========================================================================== */
+
+/* ===============================================
+   Dyalog Spacing Utility Classes
+   -----------------------------------------------
+   Purpose: Quick, consistent margin classes to add
+   extra gap between Gutenberg blocks/elements when
+   the theme's default spacing isn't enough.
+
+   Usage: Add the class name to an element's
+   "Additional CSS Class(es)" field in the block
+   settings panel.
+
+   Naming:
+     mt   = margin-top
+     mb   = margin-bottom
+     mtb  = margin-top + margin-bottom
+     size = sm (16px) / md (32px) / lg (48px) / xl (64px)
+
+   Sizes are named, not numbered, so the pixel
+   values can be adjusted later without the class
+   name becoming misleading.
+
+   Example: dy-mt-md adds margin above the block.
+
+   Added 07/07/2026 by MikeM
+   =============================================== */
+
+/* ===== Margin Top ===== */
+.dy-mt-sm { margin-top: 16px; }
+.dy-mt-md { margin-top: 32px; }
+.dy-mt-lg { margin-top: 48px; }
+.dy-mt-xl { margin-top: 64px; }
+
+/* ===== Margin Bottom ===== */
+.dy-mb-sm { margin-bottom: 16px; }
+.dy-mb-md { margin-bottom: 32px; }
+.dy-mb-lg { margin-bottom: 48px; }
+.dy-mb-xl { margin-bottom: 64px; }
+
+/* ===== Margin Top + Bottom ===== */
+.dy-mtb-sm { margin-top: 16px; margin-bottom: 16px; }
+.dy-mtb-md { margin-top: 32px; margin-bottom: 32px; }
+.dy-mtb-lg { margin-top: 48px; margin-bottom: 48px; }
+.dy-mtb-xl { margin-top: 64px!important; margin-bottom: 64px!important; }
+
+/* Custom horizontal rule for Gutenberg blocks.
+   The default <hr> is often too heavy; this is a 1px hairline with generous spacing. */
+hr.dy-hr {
+    border: none;
+    border-top: 1px solid #e6e6e6;
+    margin: 2em 0 !important;
+}
+
+/* Fix for bold body text. Author: Mike | Added: 3 Dec 2024 */
+strong {
+    font-weight: bold !important;
+}
+/* APL comparison table */
+.apl-change-table table {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: auto;
+	border: none;
+}
+
+/* Remove WordPress's heavy table borders */
+.apl-change-table td {
+	border: none !important;
+	vertical-align: top;
+	padding: 0.45rem 0.6rem;
+	line-height: 1.35;
+}
+
+/* First column: NEW / OLD */
+.apl-change-table td:first-child {
+	width: 4rem;
+	white-space: nowrap;
+}
+
+/* Second column: APL code */
+.apl-change-table td:nth-child(2) {
+	width: 34ch;
+	white-space: nowrap;
+}
+
+/* Explanation cells */
+.apl-change-table td[rowspan] {
+	width: auto;
+}
+
+/* Light horizontal rule after each OLD row */
+.apl-change-table tr:nth-child(even) td,
+.apl-change-table td[rowspan] {
+	border-bottom: 1px solid #d8d8d8 !important;
+}
+
+/* Make inline APL code look like the old site, not like boxed code blocks */
+.apl-change-table code.language-apl {
+	display: inline;
+	max-width: none;
+	overflow: visible;
+	white-space: pre;
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+	font-size: 0.9em;
+	line-height: 1.2;
+}
+
+/* ==========================================================================
+   15. ELEMENTOR OVERRIDES
+   ========================================================================== */
+
+/* Removes the unwanted bottom margin on the last paragraph inside an
+   Elementor text editor widget, which otherwise creates extra white space
+   between the text and the widget's bottom edge */
+.elementor-widget-text-editor p:last-child {
+    margin-bottom: 0;
+}
+
+/* Adds consistent bottom spacing around lists inside Elementor containers,
+   covering both HTML widgets and text editor widgets */
+.e-con-inner .elementor-widget.elementor-widget-html ul,
+.e-con-inner .elementor-widget.elementor-widget-html ol,
+.e-con-inner .elementor-widget.elementor-widget-text-editor ul,
+.e-con-inner .elementor-widget.elementor-widget-text-editor ol {
+    margin-bottom: 10px;
+}
+
+
+/* ==========================================================================
+   16. UTILITY CLASSES
+   ========================================================================== */
+
+/* .hidden is defined in section 13 but applies globally */
+
+/* ==========================================================================
+   17. TABLE OF CONTENTS
+   Styles for the UAEL (Ultimate Addons for Elementor) TOC widget on docs pages.
+   The TOC shows H2s with collapsible H3 children, controlled by JS on the page.
+   See the wiki for full implementation details.
+   ========================================================================== */
+
+/* Hide H3 children by default — JS adds .toc-open to reveal them */
+.uael-toc-list > li > ul {
+    display: none;
+    padding-left: 12px;
+}
+
+/* H2 links: flex layout so the arrow and text sit on the same baseline */
+.uael-toc-list > li > a {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Right-pointing arrow before every H2 that has children */
+.uael-toc-list > li > a::before {
+    content: '▶';
+    font-size: 9px;
+    display: inline-block;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* Suppress the arrow on H2s that have no H3 children */
+.uael-toc-list > li:not(:has(> ul)) > a::before {
+    content: none;
+}
+
+/* Rotate arrow 90° when the H3 list is expanded */
+.uael-toc-list > li.toc-open > a::before {
+    transform: rotate(90deg);
+}
+
+/* Indent childless H2 items so their text aligns with arrowed items */
+.uael-toc-list > li.no-children > a {
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+/* Active state — UAEL's scroll spy adds .toc-active as the user scrolls.
+   Also highlights the parent H2 when a child H3 is active (.toc-active-parent). */
+.uael-toc-list a.toc-active,
+.uael-toc-list > li > a.toc-active-parent {
+    color: #526CFE !important;
+    font-weight: normal;
+}
+
+/* ==========================================================================
+   6. CALLOUT BOXES
+   Styled callout boxes for NOTE and TIP content within documentation.
+   Usage: <p class="note"><strong>NOTE:</strong> Your text here</p>
+          <p class="tip"><strong>TIP:</strong> Your text here</p>
+
+   Both share the same structure:
+   - Coloured background and left accent border
+   - The <strong> label is styled separately as a small-caps header
+   - Links inside are styled to stay within the callout's colour scheme
+   ========================================================================== */
+
+/* --- NOTE: brand blue --- */
+p.note {
+    background-color: #D5DFE4;
+    border: 1px solid #003B5C;
+    border-left: 6px solid #003B5C;
+    border-radius: 0 5px 5px 0;
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #001E2E;
+}
+p.note > strong:first-child {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    color: #003B5C;
+}
+p.note a {
+    color: #003B5C !important;
+    text-decoration: none;
+    border-bottom: 1px solid #003B5C;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+p.note a:hover {
+    color: #00283E !important;
+    border-bottom: 1px solid #00283E;
+}
+/* --- TIP: brand amber --- */
+p.tip {
+    background-color: #FFE1AA;
+    border: 1px solid #FFA300;
+    border-left: 6px solid #FFA300;
+    border-radius: 0 5px 5px 0;
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #2B1C00;
+}
+p.tip > strong:first-child {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    color: #805200;
+}
+p.tip a {
+    color: #805200 !important;
+    text-decoration: none;
+    border-bottom: 1px solid #805200;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+p.tip a:hover {
+    color: #553700 !important;
+    border-bottom: 1px solid #553700;
+}
