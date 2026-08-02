@@ -14,6 +14,7 @@ async function loadLocationModule() {
 
 afterEach(() => {
   vi.unstubAllEnvs();
+  vi.restoreAllMocks();
 });
 
 describe("reading the location", () => {
@@ -154,5 +155,56 @@ describe("popstate", () => {
     window.dispatchEvent(new PopStateEvent("popstate", { state: priorState }));
 
     expect(location.pathname).toBe("/search");
+  });
+});
+
+describe("scroll policy", () => {
+  // The scroll is deferred to the next frame, so every case has to wait one.
+  function nextFrame() {
+    return new Promise((resolve) => requestAnimationFrame(resolve));
+  }
+
+  it("takes scroll restoration off the browser at init", async () => {
+    setUrl("/");
+    window.history.scrollRestoration = "auto";
+    await loadLocationModule();
+
+    expect(window.history.scrollRestoration).toBe("manual");
+  });
+
+  it("scrolls to the top on a push", async () => {
+    setUrl("/");
+    const { navigate } = await loadLocationModule();
+    const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+
+    navigate("/search");
+    await nextFrame();
+
+    expect(scrollTo).toHaveBeenCalledWith(0, 0);
+  });
+
+  it("does not scroll when the caller keeps the position", async () => {
+    setUrl("/");
+    const { navigate } = await loadLocationModule();
+    const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+
+    navigate("/?pg=3", { replace: true, keepScroll: true });
+    await nextFrame();
+
+    expect(scrollTo).not.toHaveBeenCalled();
+  });
+
+  it("does not scroll on back/forward", async () => {
+    setUrl("/");
+    await loadLocationModule();
+    const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+
+    window.history.pushState({ key: "abc123" }, "", "/watch");
+    window.dispatchEvent(
+      new PopStateEvent("popstate", { state: { key: "abc123" } }),
+    );
+    await nextFrame();
+
+    expect(scrollTo).not.toHaveBeenCalled();
   });
 });

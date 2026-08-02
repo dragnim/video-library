@@ -23,13 +23,23 @@ export const location = $state({
   key: ensureKey(),
 });
 
+// The browser would otherwise restore a scroll position against a list that
+// has not been fetched yet, and fight the list's own restore. We do it here.
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 /**
- * Navigate to `url`, a basename-free `pathname?search` string. `replace: true`
- * uses replaceState instead of pushState, so it doesn't grow history.length.
+ * Navigate to `url`, a basename-free `pathname?search` string.
+ *
+ * `replace: true` uses replaceState instead of pushState, so it doesn't grow
+ * history.length. `keepScroll: true` suppresses the scroll to top, for a
+ * caller writing the page it has scrolled to; dvl instead inferred that from
+ * the shape of the URL change, which nothing enforced.
  */
 export function navigate(
   url: string,
-  options: { replace?: boolean } = {},
+  options: { replace?: boolean; keepScroll?: boolean } = {},
 ): void {
   const { pathname, search } = splitUrl(url);
   const key = createKey();
@@ -46,6 +56,19 @@ export function navigate(
   location.search = search;
   location.action = options.replace ? "REPLACE" : "PUSH";
   location.key = key;
+
+  if (!options.keepScroll) scrollToTop();
+}
+
+/**
+ * Back/forward never comes through here, which is the point: the list's own
+ * restore puts the user back, and a scroll to top would fight it.
+ *
+ * requestAnimationFrame defers the scroll to after the browser paint, working
+ * around Firefox overriding scrollTo during SPA DOM transitions.
+ */
+function scrollToTop(): void {
+  requestAnimationFrame(() => window.scrollTo(0, 0));
 }
 
 window.addEventListener("popstate", () => {
