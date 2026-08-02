@@ -23,6 +23,9 @@ function requiredUrl(name: string, value: string | undefined): string {
   return url;
 }
 
+/** True under `npm run dev`, for guards that should not ship. */
+export const dev = import.meta.env.DEV;
+
 /** DCMS videos collection, e.g. `https://dcms.dyalog.com/videos`. */
 export const apiVideos = requiredUrl(
   "VITE_API_VIDEOS",

@@ -1,7 +1,116 @@
 /*
- * Global styles placeholder. 
+ * The global tier: tokens, a minimal reset, and the mutations the app makes to
+ * the page around it. Everything with anatomy is a component <style> block,
+ * where Svelte's scoping hash already outranks Elementor's tag-level rules.
+ *
+ * Nothing here goes in an @layer. Unlayered CSS beats every named layer
+ * whatever the specificity, Elementor's sheets are unlayered, and reaching for
+ * !important to win that fight is how dvl ended up with 65 of them.
+ *
+ * Two breakpoints, so component styles agree with each other rather than
+ * inventing tiers: 1000px and 640px, both desktop-first.
  */
 
-body {
+#dyalog-video-library {
+  /*
+   * Bound to the site's Elementor kit, each with the design handoff value as
+   * its fallback. Only the four semantically-named tokens bind: the other 35
+   * are hash ids, Elementor renames them on a palette edit, and three of dvl's
+   * references resolve to nothing today for exactly that reason.
+   */
+  --dyalog-video-library-primary: var(--e-global-color-primary, #0d3b5c);
+  --dyalog-video-library-secondary: var(--e-global-color-secondary, #e8541e);
+  --dyalog-video-library-text: var(--e-global-color-text, #2c343c);
+  /* No handoff counterpart; the fallback is the kit value as a snapshot. */
+  --dyalog-video-library-accent: var(--e-global-color-accent, #8986ca);
+
+  /*
+   * Shades of a bound token are mixed from it rather than hard-coded, so a kit
+   * edit pulls them along instead of leaving half the palette behind. The
+   * handoff value each one replaces is in the comment.
+   */
+  --dyalog-video-library-primary-dark: color-mix(
+    in srgb,
+    var(--dyalog-video-library-primary) 85%,
+    black
+  ); /* handoff: #0a2f49 */
+  --dyalog-video-library-link: color-mix(
+    in srgb,
+    var(--dyalog-video-library-secondary) 85%,
+    black
+  ); /* handoff: #c9430d */
+  --dyalog-video-library-on-primary: #ffffff;
+
+  /* No kit counterpart: hard-coded from the handoff. */
+  --dyalog-video-library-rule: #e3e3e3;
+}
+
+/* Minimal reset, scoped to the mount id. An id is 1,0,0 and outranks
+   essentially every Elementor class selector, which is what makes the
+   !important declarations unnecessary. */
+#dyalog-video-library {
+  box-sizing: border-box;
+  color: var(--dyalog-video-library-text);
+  line-height: 1.5;
+}
+
+#dyalog-video-library *,
+#dyalog-video-library *::before,
+#dyalog-video-library *::after {
+  box-sizing: inherit;
+}
+
+#dyalog-video-library :where(h1, h2, h3, h4, h5, h6, p, ol, ul, figure) {
   margin: 0;
+}
+
+#dyalog-video-library :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+#dyalog-video-library :where(img, video) {
+  display: block;
+  max-width: 100%;
+}
+
+/* Typography comes from the page: Klavika is loaded by WordPress and the app
+   ships no fonts. Elementor and the browser both style these elements
+   directly, so they are put back to inheriting rather than restated. */
+#dyalog-video-library
+  :where(h1, h2, h3, h4, h5, h6, button, input, select, textarea) {
+  font-family: inherit;
+}
+
+#dyalog-video-library :focus-visible {
+  outline: 2px solid var(--dyalog-video-library-secondary);
+  outline-offset: 2px;
+}
+
+/*
+ * Mutations to the WordPress page around the app. Global and unscoped by
+ * necessity: these elements are the theme's, not ours. post-7145 is the live
+ * post id of the video library page.
+ */
+.grid-container {
+  margin: 0 !important;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+body:not([class*="elementor-page-"]) .site-main {
+  padding: 0;
+}
+
+.site-main.post-7145 {
+  margin: 0 !important;
+  max-width: 100vw !important;
+}
+
+.video-library-x-padding {
+  width: 100%;
+  max-width: 1230px;
+  padding: 0 0.4rem;
 }
