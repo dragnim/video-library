@@ -1,16 +1,27 @@
 import { http, HttpResponse } from "msw";
 import type {
-  Video,
-  VideosListResponse,
-  RecommendedVideosResponse,
-  EventApiResponse,
-} from "./types";
+  RawEvent,
+  RawPresenter,
+  RawVideo,
+} from "../../src/lib/api/normalise";
 
 const BASE_URL = "http://localhost:8081";
 
+/** The list envelope. Only `data` and `total` are read; the rest is what the API sends. */
+export interface VideoListResponse {
+  data: RawVideo[];
+  total: number;
+  from: number;
+  to: number;
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  links: { url: string | null; label: string; active: boolean }[];
+}
+
 // Shared mock data for recommendation-style endpoints (GET /videos/recommended
 // and GET /videos/:id/recommendations)
-const mockRecommendedVideos: Video[] = [
+const mockRecommendedVideos: RawVideo[] = [
   {
     youtube_id: "rec1",
     title: "Related Video 1",
@@ -53,7 +64,7 @@ const mockRecommendedVideos: Video[] = [
 // `event` is the full name and `event_shortname` the slug, mirroring the live
 // API; `presented_at` (talk date) is deliberately a few days before
 // `published_at` so code that confuses the two shows up in tests.
-const mockVideos: Video[] = [
+const mockVideos: RawVideo[] = [
   {
     youtube_id: "vid001",
     title: "Introduction to APL",
@@ -238,7 +249,7 @@ const mockVideos: Video[] = [
 
 // Helper function to filter videos based on query parameters
 function filterVideos(
-  videos: Video[],
+  videos: RawVideo[],
   params: {
     search?: string | null;
     from?: string | null;
@@ -246,7 +257,7 @@ function filterVideos(
     presenter_id?: string | null;
     event?: string | null;
   },
-): Video[] {
+): RawVideo[] {
   let filtered = [...videos];
 
   // Filter by search query - supports:
@@ -301,10 +312,10 @@ function filterVideos(
 
 // Helper function to paginate results
 function paginateVideos(
-  videos: Video[],
+  videos: RawVideo[],
   page: number,
   perPage: number,
-): { data: Video[]; from: number; to: number; lastPage: number } {
+): { data: RawVideo[]; from: number; to: number; lastPage: number } {
   const total = videos.length;
   const lastPage = Math.max(1, Math.ceil(total / perPage));
   const safePage = Math.min(Math.max(1, page), lastPage);
@@ -369,7 +380,7 @@ export const handlers = [
 
     // Special case: empty results for specific search term
     if (search === "nonexistent") {
-      return HttpResponse.json<VideosListResponse>({
+      return HttpResponse.json<VideoListResponse>({
         data: [],
         total: 0,
         from: 0,
@@ -399,7 +410,7 @@ export const handlers = [
       lastPage,
     } = paginateVideos(filtered, page, perPage);
 
-    return HttpResponse.json<VideosListResponse>({
+    return HttpResponse.json<VideoListResponse>({
       data,
       total: filtered.length,
       from: fromIdx,
@@ -425,7 +436,7 @@ export const handlers = [
 
     // Empty recommendations
     if (videoId === "norecs") {
-      return HttpResponse.json<RecommendedVideosResponse>([]);
+      return HttpResponse.json<RawVideo[]>([]);
     }
 
     // Success case - recommended videos (returns plain array, not paginated)
@@ -434,7 +445,7 @@ export const handlers = [
       n ?? mockRecommendedVideos.length,
     );
 
-    return HttpResponse.json<RecommendedVideosResponse>(result);
+    return HttpResponse.json<RawVideo[]>(result);
   }),
 
   // GET /videos/{id}/recommendations?n={n} (per-video recommendations, used by
@@ -449,7 +460,7 @@ export const handlers = [
       n ?? mockRecommendedVideos.length,
     );
 
-    return HttpResponse.json<RecommendedVideosResponse>(result);
+    return HttpResponse.json<RawVideo[]>(result);
   }),
 
   // GET /videos/{id} (single video)
@@ -464,11 +475,11 @@ export const handlers = [
     // Look up video from mock data
     const video = mockVideos.find((v) => v.youtube_id === id);
     if (video) {
-      return HttpResponse.json<Video>(video);
+      return HttpResponse.json<RawVideo>(video);
     }
 
     // Fallback for any other ID (for backwards compatibility with existing tests)
-    return HttpResponse.json<Video>({
+    return HttpResponse.json<RawVideo>({
       youtube_id: id,
       title: "Introduction to APL",
       presenter: "John Smith & Jane Doe",
@@ -488,7 +499,7 @@ export const handlers = [
   // on every live row, which is why event dates are derived from their videos.
   // Every mock event has videos in mockVideos, so has_videos does not filter here.
   http.get(`${BASE_URL}/events`, () => {
-    return HttpResponse.json<EventApiResponse[]>([
+    return HttpResponse.json<RawEvent[]>([
       {
         id: 1,
         title: "Dyalog '22",
@@ -522,7 +533,7 @@ export const handlers = [
   // GET /presenters
   // API returns array of objects { id, name }
   http.get(`${BASE_URL}/presenters`, () => {
-    return HttpResponse.json([
+    return HttpResponse.json<RawPresenter[]>([
       { id: 1, name: "John Smith" },
       { id: 2, name: "Jane Doe" },
       { id: 3, name: "Alice Cooper" },

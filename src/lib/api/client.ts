@@ -4,9 +4,8 @@
 type ParamValue = string | number | boolean | number[] | string[] | undefined;
 
 /**
- * Build a request URL, omitting parameters with no value. `0` and `false` are
- * values. An empty `event` makes the API filter out every video rather than none
- * (Dyalog/Jarvis issue 115); `presenter_id` follows the same rule.
+ * Build a request URL. Empty values are omitted, `0` and `false` are not: an
+ * empty `event` filters out every video (Dyalog/Jarvis issue 115).
  */
 export function buildUrl(
   base: string,

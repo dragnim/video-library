@@ -6,17 +6,12 @@ export interface Presenter {
   name: string;
 }
 
-/** A presenter named on a video. `id` is null when names and ids disagree. */
-export interface VideoPresenter {
-  id: number | null;
-  name: string;
-}
-
 export interface Video {
   /** Identity everywhere, including `/watch?v=`. */
   youtubeId: string;
   title: string;
-  presenters: VideoPresenter[];
+  /** Names come from the roster. */
+  presenterIds: number[];
   /** Full event name, e.g. "Dyalog '22". */
   event: string;
   /** Event slug, e.g. "dyalog-22". What `?event=` carries. */
@@ -39,10 +34,7 @@ export interface DyalogEvent {
   type: string;
 }
 
-/**
- * One page of a list. `total` is how many matched, not how many are here.
- * The API's `links` array is dropped: pagination derives from `total`.
- */
+/** One page of a list. `total` is how many matched, not how many are here. */
 export interface Page<T> {
   items: T[];
   total: number;

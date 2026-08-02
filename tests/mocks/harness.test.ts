@@ -6,17 +6,17 @@
 
 import { describe, expect, it } from "vitest";
 import { apiEvents, apiPresenters, apiVideos } from "../../src/lib/env";
-import type { EventApiResponse, Presenter, VideosListResponse } from "./types";
+import type { RawEvent, RawPresenter } from "../../src/lib/api/normalise";
+import type { VideoListResponse } from "./handlers";
 
 describe("MSW harness", () => {
   it("answers on the URLs defined in vitest.config.ts", async () => {
-    // Reading these from src/lib/env.ts rather than hardcoding them is the
-    // check: if 0.2's env block and the handlers' BASE_URL ever drift apart,
-    // this request goes unhandled and the test fails.
+    // Reading these from src/lib/env.ts is the check: if the pinned env values
+    // and the handlers' BASE_URL drift apart, the request goes unhandled.
     const response = await fetch(apiVideos);
     expect(response.ok).toBe(true);
 
-    const body = (await response.json()) as VideosListResponse;
+    const body = (await response.json()) as VideoListResponse;
     expect(body.total).toBe(15);
     expect(body.data).toHaveLength(10); // default per_page
     expect(body.data[0].youtube_id).toBe("vid001");
@@ -26,7 +26,7 @@ describe("MSW harness", () => {
     // 5 of the 15 fixture videos are dyalog-22. A canned handler would return
     // all 15 here, so this is what distinguishes the ported logic from a stub.
     const response = await fetch(`${apiVideos}?event=dyalog-22`);
-    const body = (await response.json()) as VideosListResponse;
+    const body = (await response.json()) as VideoListResponse;
 
     expect(body.total).toBe(5);
     expect(body.data.map((v) => v.event_shortname)).toEqual(
@@ -36,7 +36,7 @@ describe("MSW harness", () => {
 
   it("paginates", async () => {
     const response = await fetch(`${apiVideos}?page=2&per_page=10`);
-    const body = (await response.json()) as VideosListResponse;
+    const body = (await response.json()) as VideoListResponse;
 
     expect(body.current_page).toBe(2);
     expect(body.last_page).toBe(2);
@@ -47,7 +47,7 @@ describe("MSW harness", () => {
 
   it("serves the events and presenters rosters", async () => {
     const eventsResponse = await fetch(apiEvents);
-    const events = (await eventsResponse.json()) as EventApiResponse[];
+    const events = (await eventsResponse.json()) as RawEvent[];
     expect(events.map((e) => e.url_slug)).toEqual([
       "dyalog-22",
       "dyalog-23",
@@ -55,7 +55,7 @@ describe("MSW harness", () => {
     ]);
 
     const presentersResponse = await fetch(apiPresenters);
-    const presenters = (await presentersResponse.json()) as Presenter[];
+    const presenters = (await presentersResponse.json()) as RawPresenter[];
     expect(presenters).toHaveLength(4);
   });
 

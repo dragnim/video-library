@@ -20,7 +20,7 @@ describe("fetchJson", () => {
       http.get(apiVideos, () => new HttpResponse(null, { status: 500 })),
     );
 
-    // dvl renders an empty list here, so a broken API looks like an empty library.
+    // dvl renders an empty list here: a broken API looks like an empty library.
     await expect(fetchJson(apiVideos)).rejects.toThrow(/failed: 500/);
     await expect(fetchJson(apiVideos)).rejects.toThrow(apiVideos);
   });
