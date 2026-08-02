@@ -11,16 +11,23 @@ export default defineConfig(({ mode }) => ({
   },
   // In production the assets live alongside the WordPress theme; in dev we serve
   // from the root so the dev server and client-side routes line up.
-  base: mode === "production" ? "/wp-content/themes/dyalog/video-library" : "/",
+  base:
+    mode === "production"
+      ? "/wp-content/themes/dyalog-2026/video-library"
+      : "/",
   publicDir: "public",
   build: {
     target: "es2020",
     outDir: "build",
+    // We distribute 2 files: index.js and index.css.
+    // Turn off cssCodeSplit to extract everything to one stylesheet.
+    cssCodeSplit: false,
     rollupOptions: {
       output: {
-        // Predictable filenames so the WordPress theme can reference them:
-        // build/dist/index.js and build/dist/index.css.
-        entryFileNames: "dist/index.js",
+        // IIFE required for our embedding in WordPress. The theme file embeds a standard
+        // JavaScript file in the page and we inject the app into an existing element.
+        format: "iife",
+        entryFileNames: "dist/app.js",
         assetFileNames: "dist/[name].[ext]",
       },
     },

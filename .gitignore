@@ -4,7 +4,5 @@ build
 *.local
 .vite
 
-# Local env / runtime config
-.env
 .env.*
-!.env.example
+!.env.production
