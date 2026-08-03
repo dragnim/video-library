@@ -54,6 +54,14 @@
   --dyalog-video-library-skeleton: #ecebe8;
   --dyalog-video-library-radius: 3px;
 
+  /* Over a thumbnail: the scrim's three stops, and the two colours the text
+     above it uses. */
+  --dyalog-video-library-scrim-strong: rgba(6, 26, 41, 0.96);
+  --dyalog-video-library-scrim-mid: rgba(6, 26, 41, 0.72);
+  --dyalog-video-library-scrim-soft: rgba(6, 26, 41, 0.42);
+  --dyalog-video-library-eyebrow: #ffa877;
+  --dyalog-video-library-on-scrim: #cfe0ec;
+
   /* The browse grid's tier. A media query cannot read a custom property, so the
      two breakpoints live here and every container that lays out on them reads
      the result: the results grid and the skeleton grid standing in for it. */

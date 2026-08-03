@@ -2,8 +2,8 @@
  * Reference copy of dist/config.js, the video library's runtime configuration.
  * Edit it on the server and refresh.
  *
- * Every field is optional. With no hero the front page shows the newest videos
- * and the most recent event. Typos and a third secondary id are reported in the
+ * Every field is optional. With no hero the front page shows the three newest
+ * videos and no event card. Typos and a third secondary id are reported in the
  * browser console.
  */
 window.DYALOG_VIDEO_CONFIG = {
