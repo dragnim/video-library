@@ -3,10 +3,15 @@
   import TermsFooter from "./components/chrome/TermsFooter.svelte";
   import { location } from "./lib/router/location.svelte";
   import { routes } from "./lib/router/routes";
+  import { loadRosters } from "./lib/state/rosters.svelte";
 
   // A capitalised variable renders as a component, and re-renders when it
   // changes. Unregistered paths fall through to home; see routes.ts.
   const Current = $derived(routes[location.pathname] ?? routes["/"]);
+
+  // Presenter names and event names are wanted by whatever renders first, and
+  // the two requests do not depend on the route.
+  loadRosters();
 
   let outlet: HTMLElement;
   let focusedKey = "";
