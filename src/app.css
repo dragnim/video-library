@@ -42,7 +42,11 @@
   --dyalog-video-library-on-primary: #ffffff;
 
   /* No kit counterpart: hard-coded from the handoff. */
+  --dyalog-video-library-page-bg: #fbfaf9;
   --dyalog-video-library-rule: #e3e3e3;
+  --dyalog-video-library-divider-light: #ecebe8;
+  --dyalog-video-library-chip: #f1f0ee;
+  --dyalog-video-library-chip-border: #e0dedb;
   --dyalog-video-library-muted: #6d7680;
   --dyalog-video-library-card-border: #dcdad6;
   --dyalog-video-library-card-hover-border: #c9b8ab;
