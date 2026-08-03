@@ -57,7 +57,46 @@ export function navigate(
   location.action = options.replace ? "REPLACE" : "PUSH";
   location.key = key;
 
-  if (!options.keepScroll) scrollToTop();
+  if (options.keepScroll) {
+    // The caller has the position it wants, so this entry is already restored.
+    restoredKey = key;
+  } else {
+    scrollToTop();
+  }
+}
+
+const SCROLL_KEY_PREFIX = "vl-scroll:";
+
+let restoredKey: string | null = null;
+let pendingFrame: number | null = null;
+
+// The offset the user is at, per history entry, so Back can land on it. Written
+// on a frame rather than on every scroll event.
+window.addEventListener(
+  "scroll",
+  () => {
+    if (pendingFrame !== null) return;
+    pendingFrame = requestAnimationFrame(() => {
+      pendingFrame = null;
+      sessionStorage.setItem(
+        SCROLL_KEY_PREFIX + location.key,
+        String(window.scrollY),
+      );
+    });
+  },
+  { passive: true },
+);
+
+/**
+ * Scroll to where the user was on this history entry, once. A long list settles
+ * once per appended page, and only the first of those should move the viewport.
+ */
+export function restoreScroll(): void {
+  if (restoredKey === location.key) return;
+  restoredKey = location.key;
+
+  const saved = sessionStorage.getItem(SCROLL_KEY_PREFIX + location.key);
+  if (saved !== null) window.scrollTo(0, Number(saved));
 }
 
 /**
