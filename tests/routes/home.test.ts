@@ -1,0 +1,112 @@
+// That the page is wired, not that it is pretty: the engine, the bar's total,
+// the sentinel and the empty state's way out.
+
+import { render, screen } from "@testing-library/svelte";
+import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import Home from "../../src/routes/Home.svelte";
+import { location } from "../../src/lib/router/location.svelte";
+import { loadRosters, rosters } from "../../src/lib/state/rosters.svelte";
+import {
+  installIntersectionObserver,
+  type MockIntersectionObserver,
+} from "../mocks/intersectionObserver";
+import { server } from "../mocks/server";
+
+function setUrl(path: string) {
+  window.history.replaceState(null, "", path);
+  window.dispatchEvent(new PopStateEvent("popstate", { state: null }));
+}
+
+/** The list's own requests. The featured strip's fallback asks for three. */
+function recordListRequests() {
+  const seen: URL[] = [];
+  server.events.on("request:start", ({ request }) => {
+    const url = new URL(request.url);
+    if (
+      url.pathname === "/videos" &&
+      url.searchParams.get("per_page") !== "3"
+    ) {
+      seen.push(url);
+    }
+  });
+  return seen;
+}
+
+async function cards(count: number) {
+  await vi.waitFor(() => {
+    expect(screen.getAllByRole("article")).toHaveLength(count);
+  });
+}
+
+let observer: MockIntersectionObserver;
+
+beforeAll(async () => {
+  loadRosters();
+  await vi.waitFor(() => {
+    expect(rosters.status).toBe("loaded");
+  });
+});
+
+beforeEach(() => {
+  observer = installIntersectionObserver();
+});
+
+afterEach(() => {
+  observer.restore();
+  server.events.removeAllListeners();
+});
+
+describe("Home", () => {
+  it("renders the first page, its total, and the next page on demand", async () => {
+    setUrl("/?perpage=5");
+    render(Home);
+
+    await cards(5);
+    expect(screen.getByText("Browse all 15")).toBeInTheDocument();
+
+    observer.intersect();
+
+    await cards(10);
+  });
+
+  it("restores the pages a cold ?pg= names in one request", async () => {
+    const requests = recordListRequests();
+    setUrl("/?pg=3&perpage=5");
+    render(Home);
+
+    await cards(15);
+
+    expect(requests).toHaveLength(1);
+    expect(requests[0].searchParams.get("page")).toBe("1");
+    expect(requests[0].searchParams.get("per_page")).toBe("15");
+  });
+
+  it("offers a way out of filters that match nothing", async () => {
+    setUrl("/?q=nonexistent");
+    render(Home);
+
+    await vi.waitFor(() => {
+      expect(
+        screen.getByText(/No videos match these filters/),
+      ).toBeInTheDocument();
+    });
+    // Not "That's all 0 videos", which is the footer's other branch.
+    expect(screen.queryByText(/That's all/)).toBeNull();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Clear filters" }),
+    );
+
+    expect(new URLSearchParams(location.search).get("q")).toBeNull();
+    await cards(15);
+  });
+});
