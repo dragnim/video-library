@@ -57,7 +57,6 @@
   .row {
     display: grid;
     grid-template-columns: 11fr 20fr;
-    margin-bottom: 1rem;
     background: #ffffff;
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
