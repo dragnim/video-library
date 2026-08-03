@@ -17,5 +17,8 @@ import { restoreScroll } from "./location.svelte";
 export function onSettled(page: number): void {
   restoreScroll();
 
+  // The write rebuilds the query from the filter vocabulary, so a param outside
+  // it is dropped: a `?utm_source=` survives until the user scrolls, where dvl
+  // copied the query string and kept it.
   if (page > 1) setFilters({ page }, { replace: true, keepScroll: true });
 }
