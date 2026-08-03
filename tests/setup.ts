@@ -3,7 +3,13 @@
 import "@testing-library/jest-dom/vitest";
 
 import { afterAll, afterEach, beforeAll } from "vitest";
+import { installIntersectionObserver } from "./mocks/intersectionObserver";
 import { server } from "./mocks/server";
+
+// The list's sentinel constructs an IntersectionObserver on mount and jsdom has
+// none, so anything rendering a list needs one to exist. A test that drives the
+// sentinel installs its own, which it can fire.
+installIntersectionObserver();
 
 // A request to a URL no handler matches fails the test by name, rather than resolving to nothing and mysteriously rendering empty later.
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));

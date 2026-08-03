@@ -16,9 +16,7 @@ describe("the shell", () => {
     setUrl("/");
     render(App);
 
-    expect(
-      screen.getByRole("heading", { name: "Browse the library" }),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Browse all")).toBeInTheDocument();
   });
 
   it("renders home for a path no route claims", () => {
@@ -26,9 +24,7 @@ describe("the shell", () => {
     render(App);
 
     expect(location.pathname).toBe("/nothing-here");
-    expect(
-      screen.getByRole("heading", { name: "Browse the library" }),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Browse all")).toBeInTheDocument();
   });
 
   it("sets the document title", () => {
