@@ -47,6 +47,7 @@
   --dyalog-video-library-card-border: #dcdad6;
   --dyalog-video-library-card-hover-border: #c9b8ab;
   --dyalog-video-library-card-hover-shadow: 0 2px 8px rgba(6, 26, 41, 0.12);
+  --dyalog-video-library-skeleton: #ecebe8;
   --dyalog-video-library-radius: 3px;
 
   /* The browse grid's tier. A media query cannot read a custom property, so the
