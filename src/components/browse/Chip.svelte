@@ -29,7 +29,11 @@
 </button>
 
 <style>
-  .chip {
+  /* The mount id, since the kit styles `button:hover` and `:focus`, which
+     outranks the scoping hash. `:global`, or Svelte prunes the rule: the id is
+     on the mount element, not in this markup. The active pair takes the id too,
+     or this rule would outrank it. */
+  :global(#dyalog-video-library) .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
@@ -43,8 +47,8 @@
     cursor: pointer;
   }
 
-  .chip.active,
-  .chip[aria-pressed="true"] {
+  :global(#dyalog-video-library) .chip.active,
+  :global(#dyalog-video-library) .chip[aria-pressed="true"] {
     background: var(--dyalog-video-library-primary);
     border-color: var(--dyalog-video-library-primary);
     color: var(--dyalog-video-library-on-primary);

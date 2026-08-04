@@ -157,6 +157,26 @@ describe("touch targets at 640px", () => {
   });
 });
 
+describe("buttons against the kit", () => {
+  // Elementor's kit styles `button:hover` and `button:focus` at 0,2,1, which
+  // outranks a scoped class at 0,2,0, so anything styling a button raises its
+  // rule to the mount id. Removing the id looks like tidying and turns every
+  // button in the app accent purple on hover.
+  it.each([
+    ["components/browse/Chip.svelte", ".chip"],
+    ["components/browse/BrowseBar.svelte", "li button"],
+    ["components/browse/ListControls.svelte", ".icon"],
+    ["components/results/InfiniteListFooter.svelte", ".load-more"],
+    ["components/chrome/SearchBar.svelte", "button"],
+    ["components/chrome/TermsFooter.svelte", ".toggle"],
+    ["routes/Home.svelte", ".clear"],
+  ])("%s raises %s to the mount id", (file, selector) => {
+    expect(styles(file)).toContain(
+      `:global(#dyalog-video-library) ${selector}`,
+    );
+  });
+});
+
 describe("winning against Elementor", () => {
   it("puts nothing in a layer", () => {
     for (const file of components) {

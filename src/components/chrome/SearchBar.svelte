@@ -72,6 +72,7 @@
     font-weight: 400;
     line-height: 1.3;
     letter-spacing: -0.5px;
+    color: #ffffff;
   }
 
   /* The heading's Link renders the anchor, so the selector has to reach into
@@ -92,7 +93,9 @@
     font-size: 1.1em;
   }
 
-  button {
+  /* The mount id, since the kit styles `button:hover` and `:focus`, which
+     outranks the scoping hash. `:global`, or Svelte prunes the rule. */
+  :global(#dyalog-video-library) button {
     display: inline-flex;
     align-items: center;
     gap: 4px;

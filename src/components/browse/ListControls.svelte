@@ -11,8 +11,7 @@
     { value: "oldest", label: "Oldest" },
   ];
 
-  // The one thing that cannot live in the stylesheet: the prefix is a runtime
-  // value, and the mask below takes its colour from a token either way.
+  // assetsPrefix obtained at runtime, cannot come from stylesheet
   const icon = (file: string) => `url(${assetsPrefix}/${file})`;
 </script>
 
@@ -72,8 +71,11 @@
     gap: 0.5rem;
   }
 
-  /* One SVG per arrangement, tinted by the mask rather than shipped twice. */
-  .icon {
+  /* One SVG per arrangement, tinted by the mask rather than shipped twice. The
+     tint is a background colour, and the kit styles `button:hover` and
+     `:focus`, so the rule takes the mount id to outrank it. `:global`, or
+     Svelte prunes the rule. */
+  :global(#dyalog-video-library) .icon {
     width: 24px;
     height: 24px;
     padding: 0;
@@ -86,7 +88,7 @@
     cursor: pointer;
   }
 
-  .icon[aria-pressed="true"] {
+  :global(#dyalog-video-library) .icon[aria-pressed="true"] {
     background-color: var(--dyalog-video-library-secondary);
   }
 
@@ -158,7 +160,9 @@
       min-height: 44px;
     }
 
-    .icon {
+    /* The id again: a media query adds no specificity, so the rule above would
+       otherwise keep its width. */
+    :global(#dyalog-video-library) .icon {
       width: 44px;
       mask-size: 24px;
     }

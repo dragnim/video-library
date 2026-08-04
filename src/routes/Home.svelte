@@ -45,7 +45,11 @@
 {#if empty}
   <p class="empty">
     No videos match these filters.
-    <button type="button" onclick={() => setFilters(DEFAULT_FILTERS)}>
+    <button
+      type="button"
+      class="clear"
+      onclick={() => setFilters(DEFAULT_FILTERS)}
+    >
       Clear filters
     </button>
   </p>
@@ -65,7 +69,9 @@
     color: var(--dyalog-video-library-muted);
   }
 
-  button {
+  /* The mount id, since the kit styles `button:hover` and `:focus`, which
+     outranks the scoping hash. `:global`, or Svelte prunes the rule. */
+  :global(#dyalog-video-library) .clear {
     padding: 0.5rem 1rem;
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);

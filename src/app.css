@@ -1,7 +1,12 @@
 /*
  * The global tier: tokens, a minimal reset, and the mutations the app makes to
  * the page around it. Everything with anatomy is a component <style> block,
- * where Svelte's scoping hash already outranks Elementor's tag-level rules.
+ * where Svelte's scoping hash outranks an unqualified Elementor tag rule.
+ *
+ * A component that styles a button raises the rule to
+ * `:global(#dyalog-video-library)`. Elementor's kit styles `button:hover` and
+ * `button:focus`, and a pseudo-class outranks the hash on its own: 0,2,1
+ * against 0,2,0.
  *
  * Nothing here goes in an @layer. Unlayered CSS beats every named layer
  * whatever the specificity, Elementor's sheets are unlayered, and reaching for

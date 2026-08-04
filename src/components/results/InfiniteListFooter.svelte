@@ -95,8 +95,11 @@
     color: var(--dyalog-video-library-muted);
   }
 
-  .load-more,
-  .retry {
+  /* The mount id, since the kit styles `button:hover` and `:focus`, which
+     outranks the scoping hash. `:global`, or Svelte prunes the rule. The
+     disabled rule takes the id too, or this one would outrank it. */
+  :global(#dyalog-video-library) .load-more,
+  :global(#dyalog-video-library) .retry {
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
     background: #ffffff;
@@ -111,7 +114,7 @@
     padding: 0.625rem 1.5rem;
   }
 
-  .load-more[aria-disabled="true"] {
+  :global(#dyalog-video-library) .load-more[aria-disabled="true"] {
     cursor: default;
     color: var(--dyalog-video-library-muted);
   }

@@ -1,8 +1,6 @@
 <script lang="ts">
-  // The filter row: what is being browsed, the chips that narrow it, and the
-  // controls over how it is arranged. Every chip writes the URL through
-  // setFilters, which is what keeps the chips and the advanced-search panel
-  // showing one state rather than two copies of it.
+  // The filter row: what is being browsed, the selection dropdowns that narrow results, and the controls over how it is arranged.
+  // Dropdowns write the URL through setFilters.
   import { filters, setFilters } from "../../lib/state/filters.svelte";
   import { rosters } from "../../lib/state/rosters.svelte";
   import Chip from "./Chip.svelte";
@@ -206,18 +204,23 @@
     font-size: 0.8125rem;
   }
 
-  li button {
+  /* The mount id, since the kit styles `button:hover` and `:focus`, which
+     outranks the scoping hash. `:global`, or Svelte prunes the rule. `color` is
+     stated because the kit's base rule sets it as well, and a menu item that
+     inherits nothing is near-white on white. */
+  :global(#dyalog-video-library) li button {
     display: block;
     width: 100%;
     padding: 0.375rem 0.5rem;
     border: 0;
     background: none;
+    color: inherit;
     text-align: left;
     font-size: 0.8125rem;
     cursor: pointer;
   }
 
-  li button:hover {
+  :global(#dyalog-video-library) li button:hover {
     background: var(--dyalog-video-library-divider-light);
   }
 

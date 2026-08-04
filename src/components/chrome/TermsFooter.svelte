@@ -154,7 +154,9 @@
     padding: 1.25rem;
   }
 
-  .toggle {
+  /* The mount id, since the kit styles `button:hover` and `:focus`, which
+     outranks the scoping hash. `:global`, or Svelte prunes the rule. */
+  :global(#dyalog-video-library) .toggle {
     padding: 0;
     border: none;
     background: none;
