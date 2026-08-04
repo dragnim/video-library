@@ -1,5 +1,6 @@
 <script lang="ts">
   import SearchBar from "./components/chrome/SearchBar.svelte";
+  import Tabs from "./components/browse/Tabs.svelte";
   import TermsFooter from "./components/chrome/TermsFooter.svelte";
   import { location } from "./lib/router/location.svelte";
   import { routes } from "./lib/router/routes";
@@ -16,10 +17,11 @@
   let outlet: HTMLElement;
   let focusedKey = "";
 
-  // A push replaces the page under the link that was clicked, leaving keyboard
-  // focus on <body>. Keyed by the history entry rather than the pathname, so a
-  // push to the path already shown still moves focus. Back/forward is left
-  // alone, for the reason the scroll policy leaves it alone.
+  // When links are clicked, they update location history via JavaScript, sometimes meaning the clicked element is no longer on the new page.
+  // Browser then focuses on <body> (top of document) by default, which is confusing for someone using the app that looks like the same page with multiple views.
+  // Our workaround is to put the focus on a fixed "outlet" element on navigation, so that keyboard users and screen readers are not refocused to the top of the page on every action.
+  // `location.action === "PUSH"` means that this only happens on our SPA navigations, not on user forward/back (so they preserve expected default behaviours).
+  // Compare location.key rather than location.pathname because a push (e.g. ?q=search+query) doesn't always change the pathname so search queries would still move the focus in that case
   $effect(() => {
     if (location.action === "PUSH" && location.key !== focusedKey) {
       focusedKey = location.key;
@@ -37,6 +39,8 @@
 </svelte:head>
 
 <SearchBar />
+
+<Tabs />
 
 <div class="page">
   <div class="video-library-x-padding">

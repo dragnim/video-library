@@ -51,7 +51,6 @@
   .band {
     display: flex;
     justify-content: center;
-    margin-bottom: 1.25rem;
     background-color: var(--dyalog-video-library-primary-dark);
     color: var(--dyalog-video-library-on-primary);
   }
