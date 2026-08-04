@@ -2,8 +2,11 @@
   import { assetsPrefix } from "../../lib/env";
   import Link from "../../lib/router/Link.svelte";
   import { location, navigate } from "../../lib/router/location.svelte";
+  import { searchPanel } from "../../lib/state/searchPanel.svelte";
   import { parseFilters } from "../../lib/utils/browseFilters";
   import { performSearch } from "../../lib/utils/performSearch";
+
+  const PANEL_ID = "video-library-advanced-options";
 
   // On a watch page the video title is the h1, so the band steps down to h2.
   const heading = $derived(location.pathname === "/watch" ? "h2" : "h1");
@@ -37,13 +40,33 @@
         Search
       </button>
 
-      <!-- The advanced-options toggle button sits here, beside Search, and
-           arrives with the panel it opens. -->
+      <button
+        type="button"
+        title="Advanced Options"
+        aria-label="Advanced Options"
+        aria-expanded={searchPanel.open}
+        aria-controls={PANEL_ID}
+        onclick={() => searchPanel.toggle()}
+      >
+        <img
+          src="{assetsPrefix}/{searchPanel.open
+            ? 'icon_video-chevron-up_01.svg'
+            : 'icon_video-library_advanced-options_01.svg'}"
+          alt=""
+          aria-hidden="true"
+          width="24"
+          height="24"
+        />
+      </button>
     </form>
 
     <!-- The mode strip goes here, between the form and the advanced-search
          panel: Videos / Events / Presenters with their counts. It needs
          location.pathname for the active tab and the three totals. -->
+
+    <!-- Kept in the DOM while closed, so aria-controls always names an element
+         that exists. Its controls arrive with the pickers. -->
+    <div id={PANEL_ID} class="panel" hidden={!searchPanel.open}></div>
   </div>
 </section>
 
