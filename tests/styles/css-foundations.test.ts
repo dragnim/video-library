@@ -152,6 +152,7 @@ describe("touch targets at 640px", () => {
   it.each([
     ["the arrangement toggle", "components/browse/ListControls.svelte"],
     ["the year selects", "components/browse/YearRangePicker.svelte"],
+    ["the presenter type-ahead", "components/browse/PresenterPicker.svelte"],
     ["Load more", "components/results/InfiniteListFooter.svelte"],
   ])("gives %s a 44px minimum height", (_, file) => {
     const block = mediaBlock(styles(file), "@media (max-width: 640px)");
@@ -169,6 +170,7 @@ describe("buttons against the kit", () => {
     ["components/browse/ListControls.svelte", ".icon"],
     ["components/browse/Videos.svelte", ".clear"],
     ["components/browse/YearRangePicker.svelte", ".all"],
+    ["components/browse/PresenterPicker.svelte", ".chip"],
     ["components/results/InfiniteListFooter.svelte", ".load-more"],
     ["components/chrome/SearchBar.svelte", "button"],
     ["components/chrome/TermsFooter.svelte", ".toggle"],
