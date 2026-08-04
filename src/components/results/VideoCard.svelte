@@ -93,13 +93,13 @@
   }
 
   .presenters {
-    padding: 0 0.75rem 0.5rem;
+    padding: 0 0 0 0.75rem;
     font-size: 0.875rem;
     font-weight: 700;
   }
 
   .meta {
-    padding: 0 1.25rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .meta p {
