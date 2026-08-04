@@ -28,7 +28,15 @@ export interface BrowseFilters {
 }
 
 /** The API's `sort` accepts nothing else. */
-const VALID_SORTS = ["relevance", "newest", "oldest"];
+export const VALID_SORTS = ["relevance", "newest", "oldest"];
+
+/**
+ * What each surface offers, in the order it offers them. Browsing has no query
+ * for a result to be relevant to, so date order is the only choice it makes
+ * sense to hand someone there; `relevance` stays valid in the URL either way.
+ */
+export const BROWSE_SORTS = ["newest", "oldest"];
+export const SEARCH_SORTS = ["relevance", "newest", "oldest"];
 
 export function normaliseSort(sort: string | null | undefined): string {
   if (!sort) return DEFAULT_FILTERS.sort;
@@ -112,6 +120,33 @@ export function parseFilters(search: string): BrowseFilters {
       MAX_PERPAGE,
     ),
   };
+}
+
+/** The subset of the vocabulary the advanced-search panel owns. */
+export function hasAdvancedFilters(filters: BrowseFilters): boolean {
+  return (
+    filters.event !== "" ||
+    filters.presenterIds.length !== 0 ||
+    filters.from !== "" ||
+    filters.to !== ""
+  );
+}
+
+/**
+ * The advanced subset as one comparable string. Two filter states with the same
+ * signature are the same question, so a change to `sort` or `pg` is not one.
+ *
+ * `serialiseFilters` is not reused here: it also emits `sort`, `pg` and
+ * `perpage`, and a signature that moved when the sort changed would reopen a
+ * panel the user had dismissed.
+ */
+export function advancedSignature(filters: BrowseFilters): string {
+  return [
+    filters.event,
+    filters.presenterIds.join(","),
+    filters.from,
+    filters.to,
+  ].join("|");
 }
 
 /**

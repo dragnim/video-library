@@ -4,12 +4,27 @@
   import { assetsPrefix } from "../../lib/env";
   import { filters, setFilters } from "../../lib/state/filters.svelte";
   import { layout } from "../../lib/state/layout.svelte";
+  import { BROWSE_SORTS } from "../../lib/utils/browseFilters";
 
-  const SORTS = [
-    { value: "relevance", label: "Relevance" },
-    { value: "newest", label: "Newest" },
-    { value: "oldest", label: "Oldest" },
-  ];
+  interface Props {
+    /** The sorts this surface offers, named in browseFilters. */
+    sorts?: string[];
+  }
+
+  let { sorts = BROWSE_SORTS }: Props = $props();
+
+  // The URL is canonical, so a sort this surface does not offer is still shown
+  // when the URL carries one. Otherwise the select reports an order the list is
+  // not in.
+  const options = $derived(
+    sorts.includes(filters.current.sort)
+      ? sorts
+      : [...sorts, filters.current.sort],
+  );
+
+  // Each label is its value capitalised. A sort that wants a different label
+  // needs a map here.
+  const label = (sort: string) => sort[0].toUpperCase() + sort.slice(1);
 
   // assetsPrefix obtained at runtime, cannot come from stylesheet
   const icon = (file: string) => `url(${assetsPrefix}/${file})`;
@@ -51,8 +66,8 @@
       value={filters.current.sort}
       onchange={(event) => setFilters({ sort: event.currentTarget.value })}
     >
-      {#each SORTS as sort (sort.value)}
-        <option value={sort.value}>{sort.label}</option>
+      {#each options as sort (sort)}
+        <option value={sort}>{label(sort)}</option>
       {/each}
     </select>
   </span>

@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
+  advancedSignature,
+  hasAdvancedFilters,
   parseFilters,
   serialiseFilters,
   DEFAULT_FILTERS,
@@ -194,5 +196,70 @@ describe("serialiseFilters", () => {
       perpage: 40,
     };
     expect(parseFilters(serialiseFilters(filters).toString())).toEqual(filters);
+  });
+});
+
+// The four fields the advanced-search panel owns: event, presenter_id, from, to.
+const ADVANCED: Array<[string, Partial<typeof DEFAULT_FILTERS>]> = [
+  ["event", { event: "dyalog-22" }],
+  ["presenterIds", { presenterIds: [7] }],
+  ["from", { from: "2019-01-01" }],
+  ["to", { to: "2024-12-31" }],
+];
+
+describe("hasAdvancedFilters", () => {
+  it("is false for the defaults", () => {
+    expect(hasAdvancedFilters(DEFAULT_FILTERS)).toBe(false);
+  });
+
+  it.each(ADVANCED)("is true for %s alone", (_, field) => {
+    expect(hasAdvancedFilters({ ...DEFAULT_FILTERS, ...field })).toBe(true);
+  });
+
+  it("ignores the fields the panel does not own", () => {
+    expect(
+      hasAdvancedFilters({
+        ...DEFAULT_FILTERS,
+        q: "apl",
+        sort: "oldest",
+        page: 4,
+        perpage: 40,
+      }),
+    ).toBe(false);
+  });
+});
+
+describe("advancedSignature", () => {
+  it.each(ADVANCED)("changes for %s", (_, field) => {
+    expect(advancedSignature({ ...DEFAULT_FILTERS, ...field })).not.toBe(
+      advancedSignature(DEFAULT_FILTERS),
+    );
+  });
+
+  it("is unchanged across q, sort, perpage and pg", () => {
+    // A panel dismissed by the user stays dismissed when the sort changes.
+    expect(
+      advancedSignature({
+        ...DEFAULT_FILTERS,
+        q: "apl",
+        sort: "oldest",
+        page: 4,
+        perpage: 40,
+      }),
+    ).toBe(advancedSignature(DEFAULT_FILTERS));
+  });
+
+  it("separates the four, so a value cannot slide between fields", () => {
+    const from = advancedSignature({ ...DEFAULT_FILTERS, from: "x" });
+    const to = advancedSignature({ ...DEFAULT_FILTERS, to: "x" });
+
+    expect(from).not.toBe(to);
+  });
+
+  it("tells one presenter list from another", () => {
+    const one = advancedSignature({ ...DEFAULT_FILTERS, presenterIds: [1, 2] });
+    const two = advancedSignature({ ...DEFAULT_FILTERS, presenterIds: [1, 3] });
+
+    expect(one).not.toBe(two);
   });
 });
