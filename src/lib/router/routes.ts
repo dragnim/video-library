@@ -1,8 +1,6 @@
 import type { Component } from "svelte";
 import Home from "../../routes/Home.svelte";
-import Scratch from "../../routes/Scratch.svelte";
 import Events from "../../components/browse/Events.svelte";
-import Example from "../../components/browse/Example.svelte";
 
 /**
  * Every route the app answers to. Flat: no nesting, no ranking, no path
@@ -15,6 +13,4 @@ import Example from "../../components/browse/Example.svelte";
 export const routes: Record<string, Component> = {
   "/": Home,
   "/events": Events,
-  "/example": Example,
-  "/scratch": Scratch,
 };

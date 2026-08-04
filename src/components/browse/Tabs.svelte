@@ -10,7 +10,6 @@
   const tabs: Tab[] = [
     { label: "Videos", path: "/" },
     { label: "Events", path: "/events" },
-    { label: "Example", path: "/example" },
   ];
 
   // -1 when the current route is none of these tabs (eg. /watch), in which

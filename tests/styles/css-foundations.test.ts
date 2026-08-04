@@ -67,6 +67,9 @@ describe("design tokens", () => {
     ["scrim-soft", "rgba\\(6, 26, 41, 0\\.42\\)"],
     ["eyebrow", "#ffa877"],
     ["on-scrim", "#cfe0ec"],
+    ["on-scrim-strong", "#ffffff"],
+    ["thumb-bg", "#111111"],
+    ["surface", "#ffffff"],
     ["on-primary", "#ffffff"],
     ["radius", "3px"],
     ["grid-columns", "3"],
@@ -140,14 +143,13 @@ describe("the skeleton fade", () => {
     expect(skeleton).not.toContain("mask-image");
     expect(skeleton).toContain(".skeletons::after");
     expect(skeleton).toContain(
-      "linear-gradient( to bottom, rgba(251, 250, 249, 0), rgba(251, 250, 249, 0.96) 65% )",
+      "linear-gradient( to bottom, color-mix(in srgb, var(--dyalog-video-library-page-bg) 0%, transparent), color-mix(in srgb, var(--dyalog-video-library-page-bg) 96%, transparent) 65% )",
     );
   });
 });
 
 describe("touch targets at 640px", () => {
   it.each([
-    ["chips", "components/browse/Chip.svelte"],
     ["the arrangement toggle", "components/browse/ListControls.svelte"],
     ["Load more", "components/results/InfiniteListFooter.svelte"],
   ])("gives %s a 44px minimum height", (_, file) => {
@@ -163,17 +165,27 @@ describe("buttons against the kit", () => {
   // rule to the mount id. Removing the id looks like tidying and turns every
   // button in the app accent purple on hover.
   it.each([
-    ["components/browse/Chip.svelte", ".chip"],
-    ["components/browse/BrowseBar.svelte", "li button"],
     ["components/browse/ListControls.svelte", ".icon"],
+    ["components/browse/Videos.svelte", ".clear"],
     ["components/results/InfiniteListFooter.svelte", ".load-more"],
     ["components/chrome/SearchBar.svelte", "button"],
     ["components/chrome/TermsFooter.svelte", ".toggle"],
-    ["routes/Home.svelte", ".clear"],
   ])("%s raises %s to the mount id", (file, selector) => {
     expect(styles(file)).toContain(
       `:global(#dyalog-video-library) ${selector}`,
     );
+  });
+});
+
+describe("colours come from tokens", () => {
+  // A literal in a component is a colour the palette cannot reach, and the
+  // handoff white was in eight components before it was one token.
+  it.each(components)("%s names no colour of its own", (file) => {
+    const source = styles(file);
+
+    expect(source).not.toMatch(/#[0-9a-f]{3,8}\b/i);
+    expect(source).not.toMatch(/\b(?:rgba?|hsla?)\(/i);
+    expect(source).not.toMatch(/:\s*(?:white|black)\b/i);
   });
 });
 

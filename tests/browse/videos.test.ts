@@ -1,4 +1,4 @@
-// That the page is wired, not that it is pretty: the engine, the bar's total,
+// That the view is wired, not that it is pretty: the engine, the bar's total,
 // the sentinel and the empty state's way out.
 
 import { render, screen } from "@testing-library/svelte";
@@ -12,7 +12,7 @@ import {
   it,
   vi,
 } from "vitest";
-import Home from "../../src/routes/Home.svelte";
+import Videos from "../../src/components/browse/Videos.svelte";
 import { location } from "../../src/lib/router/location.svelte";
 import { loadRosters, rosters } from "../../src/lib/state/rosters.svelte";
 import {
@@ -26,17 +26,11 @@ function setUrl(path: string) {
   window.dispatchEvent(new PopStateEvent("popstate", { state: null }));
 }
 
-/** The list's own requests. The featured strip's fallback asks for three. */
 function recordListRequests() {
   const seen: URL[] = [];
   server.events.on("request:start", ({ request }) => {
     const url = new URL(request.url);
-    if (
-      url.pathname === "/videos" &&
-      url.searchParams.get("per_page") !== "3"
-    ) {
-      seen.push(url);
-    }
+    if (url.pathname === "/videos") seen.push(url);
   });
   return seen;
 }
@@ -65,10 +59,10 @@ afterEach(() => {
   server.events.removeAllListeners();
 });
 
-describe("Home", () => {
+describe("Videos", () => {
   it("renders the first page, its total, and the next page on demand", async () => {
     setUrl("/?perpage=5");
-    render(Home);
+    render(Videos);
 
     await cards(5);
     expect(screen.getByText("Browse all 15")).toBeInTheDocument();
@@ -81,7 +75,7 @@ describe("Home", () => {
   it("restores the pages a cold ?pg= names in one request", async () => {
     const requests = recordListRequests();
     setUrl("/?pg=3&perpage=5");
-    render(Home);
+    render(Videos);
 
     await cards(15);
 
@@ -92,7 +86,7 @@ describe("Home", () => {
 
   it("offers a way out of filters that match nothing", async () => {
     setUrl("/?q=nonexistent");
-    render(Home);
+    render(Videos);
 
     await vi.waitFor(() => {
       expect(
