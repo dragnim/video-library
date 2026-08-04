@@ -22,17 +22,19 @@
     gap: var(--dyalog-video-library-grid-gap);
   }
 
-  /* An opaque overlay in the page background #fbfaf9, so the row dissolves
-     downward into the page. A mask-image reads alpha only, which makes the
-     colour stops inert and runs the fade the other way. */
+  /* An opaque overlay in the page background, so the row dissolves downward into
+     the page. A mask-image reads alpha only, which makes the colour stops inert
+     and runs the fade the other way. color-mix, since a var() cannot go inside
+     rgba() and both stops are the page background at an alpha. */
   .skeletons::after {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(251, 250, 249, 0),
-      rgba(251, 250, 249, 0.96) 65%
+      color-mix(in srgb, var(--dyalog-video-library-page-bg) 0%, transparent),
+      color-mix(in srgb, var(--dyalog-video-library-page-bg) 96%, transparent)
+        65%
     );
     pointer-events: none;
   }

@@ -198,7 +198,7 @@
     display: block;
     overflow: hidden;
     border-radius: var(--dyalog-video-library-radius);
-    background: #111111;
+    background: var(--dyalog-video-library-thumb-bg);
   }
 
   .thumb.hero {
@@ -237,7 +237,7 @@
     flex-direction: column;
     gap: 0.375rem;
     padding: 1rem;
-    color: #ffffff;
+    color: var(--dyalog-video-library-on-scrim-strong);
   }
 
   .eyebrow {
@@ -271,7 +271,7 @@
     flex-direction: column;
     gap: 0.25rem;
     padding: 0.875rem 1rem;
-    background: #ffffff;
+    background: var(--dyalog-video-library-surface);
     border: 1px solid var(--dyalog-video-library-card-border);
     border-left: 3px solid var(--dyalog-video-library-secondary);
     border-radius: var(--dyalog-video-library-radius);

@@ -102,7 +102,7 @@
   :global(#dyalog-video-library) .retry {
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
-    background: #ffffff;
+    background: var(--dyalog-video-library-surface);
     color: var(--dyalog-video-library-primary);
     font-weight: 600;
     cursor: pointer;

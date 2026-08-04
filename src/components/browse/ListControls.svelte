@@ -150,7 +150,7 @@
     padding: 0.25rem 0.5rem;
     border: 1px solid var(--dyalog-video-library-chip-border);
     border-radius: var(--dyalog-video-library-radius);
-    background: #ffffff;
+    background: var(--dyalog-video-library-surface);
     color: inherit;
   }
 

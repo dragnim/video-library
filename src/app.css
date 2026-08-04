@@ -48,6 +48,8 @@
 
   /* No kit counterpart: hard-coded from the handoff. */
   --dyalog-video-library-page-bg: #fbfaf9;
+  /* Cards and form controls, which sit a step above the page background. */
+  --dyalog-video-library-surface: #ffffff;
   --dyalog-video-library-rule: #e3e3e3;
   --dyalog-video-library-divider-light: #ecebe8;
   --dyalog-video-library-chip: #f1f0ee;
@@ -59,13 +61,15 @@
   --dyalog-video-library-skeleton: #ecebe8;
   --dyalog-video-library-radius: 3px;
 
-  /* Over a thumbnail: the scrim's three stops, and the two colours the text
-     above it uses. */
+  /* Over a thumbnail: the scrim's three stops, the three colours the text above
+     it uses, and the letterbox a thumbnail is laid on. */
   --dyalog-video-library-scrim-strong: rgba(6, 26, 41, 0.96);
   --dyalog-video-library-scrim-mid: rgba(6, 26, 41, 0.72);
   --dyalog-video-library-scrim-soft: rgba(6, 26, 41, 0.42);
   --dyalog-video-library-eyebrow: #ffa877;
   --dyalog-video-library-on-scrim: #cfe0ec;
+  --dyalog-video-library-on-scrim-strong: #ffffff;
+  --dyalog-video-library-thumb-bg: #111111;
 
   /* The browse grid's tier. A media query cannot read a custom property, so the
      two breakpoints live here and every container that lays out on them reads

@@ -71,7 +71,7 @@
     font-weight: 400;
     line-height: 1.3;
     letter-spacing: -0.5px;
-    color: #ffffff;
+    color: var(--dyalog-video-library-on-primary);
   }
 
   /* The heading's Link renders the anchor, so the selector has to reach into
@@ -87,7 +87,7 @@
     padding: 0 1.25rem;
     border: 0;
     border-radius: 6px;
-    background-color: #ffffff;
+    background-color: var(--dyalog-video-library-surface);
     color: var(--dyalog-video-library-text);
     font-size: 1.1em;
   }
