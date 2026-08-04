@@ -151,6 +151,7 @@ describe("the skeleton fade", () => {
 describe("touch targets at 640px", () => {
   it.each([
     ["the arrangement toggle", "components/browse/ListControls.svelte"],
+    ["the year selects", "components/browse/YearRangePicker.svelte"],
     ["Load more", "components/results/InfiniteListFooter.svelte"],
   ])("gives %s a 44px minimum height", (_, file) => {
     const block = mediaBlock(styles(file), "@media (max-width: 640px)");
@@ -167,6 +168,7 @@ describe("buttons against the kit", () => {
   it.each([
     ["components/browse/ListControls.svelte", ".icon"],
     ["components/browse/Videos.svelte", ".clear"],
+    ["components/browse/YearRangePicker.svelte", ".all"],
     ["components/results/InfiniteListFooter.svelte", ".load-more"],
     ["components/chrome/SearchBar.svelte", "button"],
     ["components/chrome/TermsFooter.svelte", ".toggle"],
