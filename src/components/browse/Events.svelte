@@ -1,10 +1,28 @@
 <script lang="ts">
-  // Show events cards
+  import EventRow from "../results/EventRow.svelte";
   import { rosters } from "../../lib/state/rosters.svelte";
-  let events = $derived(rosters.events);
+  import {
+    eventSummaries,
+    loadEventSummaries,
+  } from "../../lib/data/eventSummaries.svelte";
+
+  loadEventSummaries();
+
+  // A copy: sorting in place would mutate the roster's own array.
+  const events = $derived(
+    [...rosters.events].sort((a, b) => a.fullname.localeCompare(b.fullname)),
+  );
 </script>
 
-<h1>Eventts</h1>
-{#each events as event (event.shortname)}
-  <p>{event.fullname}</p>
-{/each}
+<div class="list">
+  {#each events as event (event.shortname)}
+    <EventRow {event} summary={eventSummaries.get(event.shortname)} />
+  {/each}
+</div>
+
+<style>
+  .list {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

@@ -1,5 +1,40 @@
 import { describe, expect, it } from "vitest";
-import { formatDate } from "../../src/lib/utils/formatDate";
+import { formatDate, formatDateRange } from "../../src/lib/utils/formatDate";
+
+describe("formatDateRange", () => {
+  it("shows one label for an event inside a single month", () => {
+    expect(
+      formatDateRange(
+        new Date("2022-10-09T00:00:00Z"),
+        new Date("2022-10-12T00:00:00Z"),
+        "short",
+      ),
+    ).toBe("Oct 2022");
+  });
+
+  it("shows both ends for an event spanning two months", () => {
+    expect(
+      formatDateRange(
+        new Date("2022-10-30T00:00:00Z"),
+        new Date("2022-11-02T00:00:00Z"),
+        "short",
+      ),
+    ).toBe("Oct 2022 to Nov 2022");
+  });
+
+  it("shows whichever end it has when only one is dated", () => {
+    expect(
+      formatDateRange(new Date("2022-10-09T00:00:00Z"), null, "short"),
+    ).toBe("Oct 2022");
+    expect(
+      formatDateRange(null, new Date("2022-10-09T00:00:00Z"), "short"),
+    ).toBe("Oct 2022");
+  });
+
+  it("renders nothing for an event with no dated talk", () => {
+    expect(formatDateRange(null, null, "short")).toBe("");
+  });
+});
 
 describe("formatDate", () => {
   it("abbreviates the month for the grid card", () => {
