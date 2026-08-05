@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import App from "../../src/App.svelte";
 import SearchBar from "../../src/components/chrome/SearchBar.svelte";
 import { location } from "../../src/lib/router/location.svelte";
+import { searchPanel } from "../../src/lib/state/searchPanel.svelte";
 import { server } from "../mocks/server";
 
 function setUrl(path: string) {
@@ -58,20 +59,37 @@ describe("SearchBar", () => {
 });
 
 describe("the advanced-options toggle", () => {
-  it("names the panel it controls, and says whether it is showing", async () => {
+  it("names a panel that is empty until it is opened", async () => {
     setUrl("/");
+    // The panel is a session's worth of state, so a case about the closed panel
+    // says so rather than depending on the case before it.
+    searchPanel.open = false;
     render(SearchBar);
     const panel = document.getElementById(
       toggle().getAttribute("aria-controls")!,
-    );
+    )!;
 
-    const before = toggle().getAttribute("aria-expanded") === "true";
-    expect(panel?.hidden).toBe(!before);
+    expect(toggle()).toHaveAttribute("aria-expanded", "false");
+    expect(panel).toBeEmptyDOMElement();
 
     await userEvent.click(toggle());
 
-    expect(toggle().getAttribute("aria-expanded")).toBe(String(!before));
-    expect(panel?.hidden).toBe(before);
+    expect(toggle()).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByLabelText("Event")).toBeInTheDocument();
+  });
+
+  it("leaves no panel control reachable by Tab while closed", async () => {
+    setUrl("/");
+    searchPanel.open = false;
+    render(SearchBar);
+
+    // react-collapsible keeps dvl's children mounted, so its closed panel holds
+    // a dozen focus stops.
+    for (let i = 0; i < 6; i++) {
+      await userEvent.tab();
+      expect(screen.queryByLabelText("Event")).toBeNull();
+      expect(screen.queryByLabelText("Presenter")).toBeNull();
+    }
   });
 
   it("issues no request: the panel is a rune, not a filter", async () => {

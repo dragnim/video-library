@@ -2,7 +2,8 @@
   // A type-ahead over the presenter roster, and a removable token per presenter
   // already filtered on. The URL carries ids; the roster is where the names are.
   import type { Attachment } from "svelte/attachments";
-  import { filters, setFilters } from "../../lib/state/filters.svelte";
+  import { filters } from "../../lib/state/filters.svelte";
+  import { applyFilters } from "../../lib/state/searchPanel.svelte";
   import { rosters } from "../../lib/state/rosters.svelte";
 
   /** What the type-ahead offers at once. */
@@ -49,19 +50,15 @@
     // Deduped by id, so choosing a presenter twice does not put the id in the
     // URL twice and leave two tokens that remove each other. dvl dedupes by
     // name, which ties two presenters sharing one together.
-    setFilters(
-      { presenterIds: [...new Set([...current.presenterIds, id])] },
-      { replace: true },
-    );
+    applyFilters({ presenterIds: [...new Set([...current.presenterIds, id])] });
     query = "";
     activeIndex = 0;
   }
 
   function remove(id: number): void {
-    setFilters(
-      { presenterIds: current.presenterIds.filter((each) => each !== id) },
-      { replace: true },
-    );
+    applyFilters({
+      presenterIds: current.presenterIds.filter((each) => each !== id),
+    });
   }
 
   function removeLabel(name: string): string {

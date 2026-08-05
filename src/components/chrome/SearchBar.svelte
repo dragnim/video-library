@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { slide } from "svelte/transition";
+  import AdvancedOptions from "../browse/AdvancedOptions.svelte";
   import { assetsPrefix } from "../../lib/env";
   import Link from "../../lib/router/Link.svelte";
   import { location, navigate } from "../../lib/router/location.svelte";
@@ -64,9 +66,17 @@
          panel: Videos / Events / Presenters with their counts. It needs
          location.pathname for the active tab and the three totals. -->
 
-    <!-- Kept in the DOM while closed, so aria-controls always names an element
-         that exists. Its controls arrive with the pickers. -->
-    <div id={PANEL_ID} class="panel" hidden={!searchPanel.open}></div>
+    <!-- The wrapper is always here, so aria-controls names an element that
+         exists in both states. Closed removes the controls outright rather than
+         hiding them: react-collapsible keeps dvl's mounted, so its visually
+         closed panel holds a dozen focusable controls. -->
+    <div id={PANEL_ID}>
+      {#if searchPanel.open}
+        <div transition:slide={{ duration: 175 }}>
+          <AdvancedOptions />
+        </div>
+      {/if}
+    </div>
   </div>
 </section>
 

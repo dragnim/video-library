@@ -3,8 +3,12 @@
 import "@testing-library/jest-dom/vitest";
 
 import { afterAll, afterEach, beforeAll } from "vitest";
+import { installAnimate } from "./mocks/animate";
 import { installIntersectionObserver } from "./mocks/intersectionObserver";
 import { server } from "./mocks/server";
+
+// The advanced-search panel slides, and jsdom has no Web Animations API.
+installAnimate();
 
 // The list's sentinel constructs an IntersectionObserver on mount and jsdom has
 // none, so anything rendering a list needs one to exist. A test that drives the

@@ -153,6 +153,7 @@ describe("touch targets at 640px", () => {
     ["the arrangement toggle", "components/browse/ListControls.svelte"],
     ["the year selects", "components/browse/YearRangePicker.svelte"],
     ["the presenter type-ahead", "components/browse/PresenterPicker.svelte"],
+    ["the event select", "components/browse/AdvancedOptions.svelte"],
     ["Load more", "components/results/InfiniteListFooter.svelte"],
   ])("gives %s a 44px minimum height", (_, file) => {
     const block = mediaBlock(styles(file), "@media (max-width: 640px)");

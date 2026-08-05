@@ -1,8 +1,9 @@
 <script lang="ts">
   // From and to year, as two selects over the library's span. The lists
   // constrain each other, so an inverted range cannot be picked. A view over the
-  // URL: each change writes through setFilters and nothing is held here.
-  import { filters, setFilters } from "../../lib/state/filters.svelte";
+  // URL: each change writes through applyFilters and nothing is held here.
+  import { filters } from "../../lib/state/filters.svelte";
+  import { applyFilters } from "../../lib/state/searchPanel.svelte";
 
   /** The year of the oldest talk in the library. */
   const MIN_YEAR = 2008;
@@ -51,13 +52,10 @@
 
   // Whole years, as the API's dates: the range covers both years entirely.
   const write = (from: number | null, to: number | null) =>
-    setFilters(
-      {
-        from: from === null ? "" : `${from}-01-01`,
-        to: to === null ? "" : `${to}-12-31`,
-      },
-      { replace: true },
-    );
+    applyFilters({
+      from: from === null ? "" : `${from}-01-01`,
+      to: to === null ? "" : `${to}-12-31`,
+    });
 
   const chosen = (value: string) =>
     value === "" ? null : Number.parseInt(value, 10);
