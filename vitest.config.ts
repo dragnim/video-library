@@ -12,6 +12,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+    // The integration tests render the whole app against MSW, and vitest runs
+    // files in parallel: one takes a few hundred ms alone and several seconds
+    // with 35 others competing for the same cores. High enough to absorb that,
+    // low enough that a genuine hang still fails.
+    testTimeout: 15000,
     setupFiles: ["./tests/setup.ts"],
     clearMocks: true,
     // Set variables here so tests never depends on .env* files
