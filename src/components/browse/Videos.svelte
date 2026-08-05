@@ -10,7 +10,10 @@
   import { onSettled } from "../../lib/router/onSettled";
   import { filters, setFilters } from "../../lib/state/filters.svelte";
   import { layout } from "../../lib/state/layout.svelte";
-  import { DEFAULT_FILTERS } from "../../lib/utils/browseFilters";
+  import { BROWSE_SORTS, DEFAULT_FILTERS } from "../../lib/utils/browseFilters";
+
+  // /search offers relevance as well, so the choice belongs to the route.
+  let { sorts = BROWSE_SORTS }: { sorts?: string[] } = $props();
 
   const list = createVideoList({
     mode: "infinite",
@@ -23,7 +26,7 @@
   const empty = $derived(list.state.kind === "ready" && list.state.total === 0);
 </script>
 
-<BrowseBar {total} />
+<BrowseBar {total} {sorts} />
 
 {#if layout.isGrid}
   <ResultGrid {items} />

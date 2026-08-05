@@ -133,6 +133,15 @@ export function hasAdvancedFilters(filters: BrowseFilters): boolean {
 }
 
 /**
+ * Whether these filters narrow the library to an answer, rather than arranging
+ * all of it. `sort`, `perpage` and `pg` are arrangement, so the featured strip
+ * survives a sort but not a query.
+ */
+export function isSearch(filters: BrowseFilters): boolean {
+  return filters.q !== "" || hasAdvancedFilters(filters);
+}
+
+/**
  * The advanced subset as one comparable string. Two filter states with the same
  * signature are the same question, so a change to `sort` or `pg` is not one.
  *

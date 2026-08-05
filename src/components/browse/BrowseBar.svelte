@@ -2,13 +2,16 @@
   // The filter row: what is being browsed, the selection dropdowns that narrow results, and the controls over how it is arranged.
   // Dropdowns write the URL through setFilters.
   import ListControls from "./ListControls.svelte";
+  import { BROWSE_SORTS } from "../../lib/utils/browseFilters";
 
   interface Props {
     /** Null until the first page lands: a loading list has no total. */
     total?: number | null;
+    /** The sorts this surface offers, for ListControls. */
+    sorts?: string[];
   }
 
-  let { total = null }: Props = $props();
+  let { total = null, sorts = BROWSE_SORTS }: Props = $props();
 
   const heading = $derived(
     total === null ? "Browse all" : `Browse all ${total}`,
@@ -18,7 +21,7 @@
 <div class="bar">
   <span class="heading">{heading}</span>
 
-  <ListControls />
+  <ListControls {sorts} />
 </div>
 
 <style>

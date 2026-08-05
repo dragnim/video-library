@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   advancedSignature,
   hasAdvancedFilters,
+  isSearch,
   parseFilters,
   serialiseFilters,
   DEFAULT_FILTERS,
@@ -262,4 +263,31 @@ describe("advancedSignature", () => {
 
     expect(one).not.toBe(two);
   });
+});
+
+describe("isSearch", () => {
+  it("is false for the defaults, which are the whole library", () => {
+    expect(isSearch(DEFAULT_FILTERS)).toBe(false);
+  });
+
+  it("is true for a query", () => {
+    expect(isSearch({ ...DEFAULT_FILTERS, q: "apl" })).toBe(true);
+  });
+
+  it.each([
+    { event: "dyalog-22" },
+    { presenterIds: [1] },
+    { from: "2020-01-01" },
+    { to: "2023-12-31" },
+  ])("is true for %o, which narrows the library", (field) => {
+    expect(isSearch({ ...DEFAULT_FILTERS, ...field })).toBe(true);
+  });
+
+  // The featured strip survives a sort; it is arrangement, not a question.
+  it.each([{ sort: "oldest" }, { perpage: 40 }, { page: 3 }])(
+    "is false for %o, which only arranges",
+    (field) => {
+      expect(isSearch({ ...DEFAULT_FILTERS, ...field })).toBe(false);
+    },
+  );
 });
