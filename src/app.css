@@ -61,6 +61,10 @@
   --dyalog-video-library-skeleton: #ecebe8;
   --dyalog-video-library-radius: 3px;
 
+  /* Every select, input and button in the advanced-search panel, so the three
+     columns' controls line up in one row. */
+  --dyalog-video-library-control-height: 32px;
+
   /* Over a thumbnail: the scrim's three stops, the three colours the text above
      it uses, and the letterbox a thumbnail is laid on. */
   --dyalog-video-library-scrim-strong: rgba(6, 26, 41, 0.96);

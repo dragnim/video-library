@@ -114,7 +114,8 @@
   }
 
   select {
-    padding: 0.25rem 0.5rem;
+    height: var(--dyalog-video-library-control-height);
+    padding: 0 0.5rem;
     border: 1px solid var(--dyalog-video-library-chip-border);
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
@@ -124,7 +125,8 @@
   /* The mount id, since the kit styles `button:hover` and `:focus`, which
      outranks the scoping hash. `:global`, or Svelte prunes the rule. */
   :global(#dyalog-video-library) .all {
-    padding: 0.25rem 0.75rem;
+    height: var(--dyalog-video-library-control-height);
+    padding: 0 0.75rem;
     border: 1px solid var(--dyalog-video-library-chip-border);
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);

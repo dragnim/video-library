@@ -72,6 +72,7 @@ describe("design tokens", () => {
     ["surface", "#ffffff"],
     ["on-primary", "#ffffff"],
     ["radius", "3px"],
+    ["control-height", "32px"],
     ["grid-columns", "3"],
     ["grid-gap", "20px"],
   ])("--dyalog-video-library-%s is %s", (token, value) => {

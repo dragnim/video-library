@@ -27,42 +27,60 @@
 
   <div class="column">
     <h3>Filter by Event</h3>
-    <!-- dvl's "Any" string sentinel is not ported: it had to be mapped back to
-         "" wherever the value was read. The option carries "" itself. -->
-    <select
-      aria-label="Event"
-      value={filters.current.event}
-      onchange={(event) => applyFilters({ event: event.currentTarget.value })}
-    >
-      <option value="">Any</option>
-      {#each events as event (event.id)}
-        <option value={event.shortname}>{event.fullname}</option>
-      {/each}
-    </select>
+    <span class="field">
+      <label for="video-library-event">Event</label>
+      <!-- dvl's "Any" string sentinel is not ported: it had to be mapped back to
+           "" wherever the value was read. The option carries "" itself. -->
+      <select
+        id="video-library-event"
+        value={filters.current.event}
+        onchange={(event) => applyFilters({ event: event.currentTarget.value })}
+      >
+        <option value="">Any</option>
+        {#each events as event (event.id)}
+          <option value={event.shortname}>{event.fullname}</option>
+        {/each}
+      </select>
+    </span>
   </div>
 </div>
 
 <style>
   .panel {
     display: flex;
+    justify-content: space-between;
     gap: 1.5rem;
     padding: 0.75rem 0 1rem;
   }
 
+  /* Heading, then label, then control in every column, so the controls line up
+     across the row and the presenter tokens hang below without moving them. */
   .column {
     display: flex;
     flex-direction: column;
+    align-items: start;
     gap: 0.375rem;
   }
 
-  h3 {
+  /* The mount id, since the kit styles headings and would otherwise take this
+     one to its own dark colour against the navy band. */
+  :global(#dyalog-video-library) h3 {
     margin: 0;
+    color: var(--dyalog-video-library-on-primary);
     font-size: 0.9375rem;
     font-weight: 600;
   }
 
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+  }
+
   select {
-    padding: 0.25rem 0.5rem;
+    height: var(--dyalog-video-library-control-height);
+    padding: 0 0.5rem;
     border: 1px solid var(--dyalog-video-library-chip-border);
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
