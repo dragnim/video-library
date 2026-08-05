@@ -1,5 +1,9 @@
 import type { Presenter } from "../api/types";
-import { DEFAULT_FILTERS, serialiseFilters } from "./browseFilters";
+import {
+  DEFAULT_FILTERS,
+  defaultSortFor,
+  serialiseFilters,
+} from "./browseFilters";
 
 /** A field as the form exposes it. */
 interface FormMember {
@@ -98,7 +102,9 @@ export function performSearch(navigate: Navigate, targetPath = "/search") {
       presenterIds: asList(targetPresenters)
         .map((id) => Number(id))
         .filter((id) => !Number.isNaN(id)),
-      sort: asString(targetSort) || DEFAULT_FILTERS.sort,
+      // The search bar carries no sort field, so a free text submit lands on
+      // the query-aware default.
+      sort: asString(targetSort) || defaultSortFor(targetQ),
       // The panel's own Per Page select, falling back to the shared default
       // rather than a second hardcoded 20.
       perpage: Number(paginate) || DEFAULT_FILTERS.perpage,

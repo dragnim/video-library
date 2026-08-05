@@ -38,9 +38,23 @@ export const VALID_SORTS = ["relevance", "newest", "oldest"];
 export const BROWSE_SORTS = ["newest", "oldest"];
 export const SEARCH_SORTS = ["relevance", "newest", "oldest"];
 
-export function normaliseSort(sort: string | null | undefined): string {
-  if (!sort) return DEFAULT_FILTERS.sort;
-  return VALID_SORTS.indexOf(sort) === -1 ? DEFAULT_FILTERS.sort : sort;
+export function normaliseSort(
+  sort: string | null | undefined,
+  fallback = DEFAULT_FILTERS.sort,
+): string {
+  if (!sort) return fallback;
+  return VALID_SORTS.indexOf(sort) === -1 ? fallback : sort;
+}
+
+/**
+ * The sort to use when nothing in the URL names one. A free text query has
+ * something for a result to be relevant to, so relevance is the useful answer;
+ * without one the API's relevance order is arbitrary.
+ *
+ * An explicit `sort` always wins, so the Sort control stays sticky once used.
+ */
+export function defaultSortFor(q: string): string {
+  return q === "" ? DEFAULT_FILTERS.sort : "relevance";
 }
 
 /**
@@ -102,10 +116,11 @@ export function clampPerpage(perpage: number): number {
 export function parseFilters(search: string): BrowseFilters {
   // URLSearchParams strips a single leading "?" itself.
   const params = new URLSearchParams(search);
+  const q = params.get("q") ?? DEFAULT_FILTERS.q;
 
   return {
-    q: params.get("q") ?? DEFAULT_FILTERS.q,
-    sort: normaliseSort(params.get("sort")),
+    q,
+    sort: normaliseSort(params.get("sort"), defaultSortFor(q)),
     event: params.get("event") ?? DEFAULT_FILTERS.event,
     presenterIds: (params.get("presenter_id") ?? "")
       .split(",")

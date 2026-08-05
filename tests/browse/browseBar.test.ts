@@ -3,10 +3,10 @@
 
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import BrowseBar from "../../src/components/browse/BrowseBar.svelte";
 import ListControls from "../../src/components/browse/ListControls.svelte";
-import { location } from "../../src/lib/router/location.svelte";
+import { location, navigate } from "../../src/lib/router/location.svelte";
 import { layout } from "../../src/lib/state/layout.svelte";
 import { SEARCH_SORTS } from "../../src/lib/utils/browseFilters";
 
@@ -37,6 +37,48 @@ describe("BrowseBar", () => {
 
     void rerender({ total: 631 });
     expect(screen.getByText("Browse all 631")).toBeInTheDocument();
+  });
+
+  describe("Back", () => {
+    const back = () => screen.queryByRole("button", { name: /Back/ });
+
+    it("appears on results reached from somewhere", () => {
+      navigate("/search?q=apl");
+      render(BrowseBar);
+
+      expect(back()).toBeInTheDocument();
+    });
+
+    it("returns to where the question was asked", async () => {
+      navigate("/search?q=apl");
+      render(BrowseBar);
+
+      await userEvent.click(back()!);
+
+      // history.back() lands on a later task, so popstate has not fired yet.
+      await vi.waitFor(() => expect(location.pathname).toBe("/"));
+    });
+
+    it("stays off unfiltered browsing", () => {
+      navigate("/");
+      render(BrowseBar);
+
+      expect(back()).toBeNull();
+    });
+
+    it("appears on a filtered home, which is results and not the front page", () => {
+      navigate("/?q=apl");
+      render(BrowseBar);
+
+      expect(back()).toBeInTheDocument();
+    });
+
+    it("stays off a cold deep link, where Back would leave the app", () => {
+      setUrl("/search?q=apl");
+      render(BrowseBar);
+
+      expect(back()).toBeNull();
+    });
   });
 });
 

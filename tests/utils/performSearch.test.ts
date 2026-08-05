@@ -62,6 +62,22 @@ describe("performSearch", () => {
     expect(params.get("sort")).toBe("oldest");
   });
 
+  describe("the sort a submit does not name", () => {
+    it("is relevance for a free text query", () => {
+      const navigate = vi.fn();
+      performSearch(navigate)(formLike({ q: "apl" }));
+
+      expect(navigatedTo(navigate).params.get("sort")).toBe("relevance");
+    });
+
+    it("is date order with no query", () => {
+      const navigate = vi.fn();
+      performSearch(navigate)(formLike({ "ao-event": "dyalog-22" }));
+
+      expect(navigatedTo(navigate).params.get("sort")).toBe("newest");
+    });
+  });
+
   it("resets to page 1", () => {
     const navigate = vi.fn();
     performSearch(navigate)(formLike({ q: "apl" }), [], "", "", "newest");

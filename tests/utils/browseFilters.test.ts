@@ -53,6 +53,24 @@ describe("parseFilters", () => {
     });
   });
 
+  describe("the sort a URL does not name", () => {
+    it("is relevance when there is a query to be relevant to", () => {
+      expect(parseFilters("?q=tacit").sort).toBe("relevance");
+    });
+
+    it("is date order when there is not", () => {
+      expect(parseFilters("?event=dyalog-22").sort).toBe("newest");
+    });
+
+    it("gives way to an explicit sort, so the Sort control sticks", () => {
+      expect(parseFilters("?q=tacit&sort=oldest").sort).toBe("oldest");
+    });
+
+    it("catches a sort the API would reject", () => {
+      expect(parseFilters("?q=tacit&sort=popular").sort).toBe("relevance");
+    });
+  });
+
   it("decodes percent-encoded queries", () => {
     expect(parseFilters("?q=APL+%26+Dyalog").q).toBe("APL & Dyalog");
   });

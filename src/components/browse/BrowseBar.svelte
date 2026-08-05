@@ -2,7 +2,9 @@
   // The filter row: what is being browsed, the selection dropdowns that narrow results, and the controls over how it is arranged.
   // Dropdowns write the URL through setFilters.
   import ListControls from "./ListControls.svelte";
-  import { BROWSE_SORTS } from "../../lib/utils/browseFilters";
+  import { back, location } from "../../lib/router/location.svelte";
+  import { filters } from "../../lib/state/filters.svelte";
+  import { BROWSE_SORTS, isSearch } from "../../lib/utils/browseFilters";
 
   interface Props {
     /** Null until the first page lands: a loading list has no total. */
@@ -16,9 +18,20 @@
   const heading = $derived(
     total === null ? "Browse all" : `Browse all ${total}`,
   );
+
+  // Results answer a question the user asked, so they get a way back to where
+  // they asked it. Unfiltered browsing is the front page and has nowhere to go.
+  // At depth 0 Back leaves the app, which is what a cold deep link looks like.
+  const showBack = $derived(isSearch(filters.current) && location.depth > 0);
 </script>
 
 <div class="bar">
+  {#if showBack}
+    <button type="button" class="back" onclick={back}>
+      <span aria-hidden="true">&larr;</span> Back
+    </button>
+  {/if}
+
   <span class="heading">{heading}</span>
 
   <ListControls {sorts} />
@@ -32,7 +45,6 @@
     top: 0;
     z-index: 5;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 0.75rem;
     padding: 0.625rem 0;
@@ -41,9 +53,32 @@
     background: var(--dyalog-video-library-page-bg);
   }
 
+  /* Takes the free space, so the controls stay right and the heading stays
+     beside the Back button when there is one. */
   .heading {
+    margin-right: auto;
     font-size: 0.9375rem;
     font-weight: 700;
     white-space: nowrap;
+  }
+
+  /* The mount id, since the kit styles `button:hover` and `:focus`, which
+     outranks the scoping hash. `:global`, or Svelte prunes the rule. */
+  :global(#dyalog-video-library) .back {
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--dyalog-video-library-chip-border);
+    border-radius: var(--dyalog-video-library-radius);
+    background: var(--dyalog-video-library-surface);
+    color: var(--dyalog-video-library-primary);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    :global(#dyalog-video-library) .back {
+      min-height: 44px;
+    }
   }
 </style>
