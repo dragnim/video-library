@@ -1,6 +1,7 @@
 import type { Component } from "svelte";
 import Home from "../../routes/Home.svelte";
 import Events from "../../components/browse/Events.svelte";
+import Presenters from "../../components/browse/Presenters.svelte";
 import Search from "../../routes/Search.svelte";
 import Watch from "../../routes/Watch.svelte";
 
@@ -15,6 +16,7 @@ import Watch from "../../routes/Watch.svelte";
 export const routes: Record<string, Component> = {
   "/": Home,
   "/events": Events,
+  "/presenters": Presenters,
   "/search": Search,
   "/watch": Watch,
 };

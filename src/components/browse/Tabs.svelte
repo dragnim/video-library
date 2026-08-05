@@ -19,6 +19,7 @@
     // is covered by nothing: no destination is current there.
     { label: "Videos", href: "/", covers: ["/", "/search"] },
     { label: "Events", href: "/events", covers: ["/events"] },
+    { label: "Presenters", href: "/presenters", covers: ["/presenters"] },
   ];
 </script>
 

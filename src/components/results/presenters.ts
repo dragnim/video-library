@@ -31,6 +31,22 @@ export function presenterHref(id: number): string {
   return `/search?${serialiseFilters({ presenterIds: [id] }).toString()}`;
 }
 
+export interface EventLabel {
+  slug: string;
+  /** The roster's full name, or the slug for an event it does not carry. */
+  label: string;
+}
+
+/** Empty while the roster is loading, as `presenterLabels` is. */
+export function eventLabels(slugs: string[]): EventLabel[] {
+  if (rosters.status === "loading") return [];
+
+  return slugs.map((slug) => ({
+    slug,
+    label: rosters.event(slug)?.fullname ?? slug,
+  }));
+}
+
 export function eventHref(shortname: string): string {
   return `/search?${serialiseFilters({ event: shortname }).toString()}`;
 }

@@ -1,23 +1,23 @@
 <script lang="ts">
-  import EventRow from "../results/EventRow.svelte";
+  import PresenterRow from "../results/PresenterRow.svelte";
   import { rosters } from "../../lib/state/rosters.svelte";
   import { loadSummaries, summaries } from "../../lib/data/summaries.svelte";
 
   loadSummaries();
 
   // A copy: sorting in place would mutate the roster's own array.
-  const events = $derived(
-    [...rosters.events].sort((a, b) => a.fullname.localeCompare(b.fullname)),
+  const presenters = $derived(
+    [...rosters.presenters].sort((a, b) => a.name.localeCompare(b.name)),
   );
 </script>
 
 <svelte:head>
-  <title>Events | Dyalog Video Library</title>
+  <title>Presenters | Dyalog Video Library</title>
 </svelte:head>
 
 <div class="list">
-  {#each events as event (event.shortname)}
-    <EventRow {event} summary={summaries.event(event.shortname)} />
+  {#each presenters as presenter (presenter.id)}
+    <PresenterRow {presenter} summary={summaries.presenter(presenter.id)} />
   {/each}
 </div>
 

@@ -19,6 +19,15 @@ describe("the shell", () => {
     expect(screen.getByText("Browse all")).toBeInTheDocument();
   });
 
+  it("renders the presenter list at /presenters", async () => {
+    setUrl("/presenters");
+    render(App);
+
+    expect(
+      await screen.findByRole("heading", { name: "Alice Cooper", level: 2 }),
+    ).toBeInTheDocument();
+  });
+
   it("renders home for a path no route claims", () => {
     setUrl("/nothing-here");
     render(App);

@@ -34,6 +34,10 @@ describe("the browse strip", () => {
       "href",
       "/events",
     );
+    expect(screen.getByRole("link", { name: "Presenters" })).toHaveAttribute(
+      "href",
+      "/presenters",
+    );
   });
 
   it("marks the route the user is on, and only that one", () => {
@@ -66,7 +70,7 @@ describe("the browse strip", () => {
     setUrl("/watch?v=vid001");
     render(Tabs);
 
-    for (const label of ["Videos", "Events"]) {
+    for (const label of ["Videos", "Events", "Presenters"]) {
       expect(screen.getByRole("link", { name: label })).not.toHaveAttribute(
         "aria-current",
       );
