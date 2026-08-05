@@ -51,6 +51,17 @@ describe("the browse strip", () => {
     );
   });
 
+  // A search renders the same view with filters, not a place of its own.
+  it("marks Videos on a search", () => {
+    setUrl("/search?q=apl");
+    render(Tabs);
+
+    expect(screen.getByRole("link", { name: "Videos" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+  });
+
   it("marks nothing on a route that is not a destination", () => {
     setUrl("/watch?v=vid001");
     render(Tabs);
