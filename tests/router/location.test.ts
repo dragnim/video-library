@@ -51,7 +51,14 @@ describe("reading the location", () => {
     setUrl("/");
     const { location } = await loadLocationModule();
     expect(location.key).toBeTruthy();
-    expect(window.history.state).toEqual({ key: location.key });
+    expect(window.history.state).toEqual({ key: location.key, depth: 0 });
+  });
+
+  // The entry we arrived on: whatever precedes it is not ours to go back to.
+  it("seeds the initial entry at depth 0", async () => {
+    setUrl("/");
+    const { location } = await loadLocationModule();
+    expect(location.depth).toBe(0);
   });
 
   it("keeps an existing key instead of reseeding", async () => {
@@ -142,7 +149,7 @@ describe("popstate", () => {
     // Written back, so returning to this entry a second time reads the same
     // key rather than minting another one.
     expect(location.key).toBeTruthy();
-    expect(window.history.state).toEqual({ key: location.key });
+    expect(window.history.state).toEqual({ key: location.key, depth: 0 });
   });
 
   it("strips the basename on a popstate too", async () => {
@@ -206,5 +213,53 @@ describe("scroll policy", () => {
     await nextFrame();
 
     expect(scrollTo).not.toHaveBeenCalled();
+  });
+});
+
+describe("depth", () => {
+  it("counts a push, so a page can tell whether Back stays in the app", async () => {
+    setUrl("/");
+    const { location, navigate } = await loadLocationModule();
+    expect(location.depth).toBe(0);
+
+    navigate("/watch?v=vid001");
+    expect(location.depth).toBe(1);
+
+    navigate("/events");
+    expect(location.depth).toBe(2);
+  });
+
+  it("is unchanged by a replace, which stands in the same place", async () => {
+    setUrl("/");
+    const { location, navigate } = await loadLocationModule();
+
+    navigate("/search?q=apl");
+    navigate("/search?q=apl&sort=oldest", { replace: true });
+
+    expect(location.depth).toBe(1);
+  });
+
+  it("comes back out of history.state on a popstate", async () => {
+    setUrl("/");
+    const { location } = await loadLocationModule();
+
+    window.history.pushState({ key: "abc123", depth: 4 }, "", "/events");
+    window.dispatchEvent(
+      new PopStateEvent("popstate", { state: { key: "abc123", depth: 4 } }),
+    );
+
+    expect(location.depth).toBe(4);
+  });
+
+  // An entry from before a reload has our key but no depth we can trust.
+  it("reads a stateless entry as depth 0", async () => {
+    setUrl("/");
+    const { location, navigate } = await loadLocationModule();
+    navigate("/events");
+
+    window.history.pushState(null, "", "/watch?v=vid001");
+    window.dispatchEvent(new PopStateEvent("popstate", { state: null }));
+
+    expect(location.depth).toBe(0);
   });
 });

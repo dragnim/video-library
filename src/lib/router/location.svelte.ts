@@ -6,6 +6,11 @@ type NavigationAction = "PUSH" | "REPLACE" | "POP";
 
 interface HistoryState {
   key: string;
+  /**
+   * How many pushes of ours this entry sits above the one we arrived on. 0
+   * means Back leaves the app, which is what a cold deep link looks like.
+   */
+  depth: number;
 }
 
 /** Normalised to "" at the root, so every URL is `basename + pathname`. */
@@ -14,13 +19,14 @@ const basename = configuredBasename.replace(/\/+$/, "");
 /**
  * `action` has no counterpart in the native history API, and the scroll policy
  * needs it to leave back/forward alone. `key` identifies the history entry,
- * which is what the scroll restore keys its stored positions by.
+ * which is what the scroll restore keys its stored positions by. `depth` is
+ * what a page needs to know before offering its own Back.
  */
 export const location = $state({
   pathname: stripBasename(window.location.pathname),
   search: window.location.search,
   action: "POP" as NavigationAction,
-  key: ensureKey(),
+  ...readState(),
 });
 
 // The browser would otherwise restore a scroll position against a list that
@@ -43,7 +49,9 @@ export function navigate(
 ): void {
   const { pathname, search } = splitUrl(url);
   const key = createKey();
-  const state: HistoryState = { key };
+  // A replace stands in the same place in history, so it inherits the depth.
+  const depth = options.replace ? location.depth : location.depth + 1;
+  const state: HistoryState = { key, depth };
   const href = addBasename(pathname) + search;
 
   if (options.replace) {
@@ -56,6 +64,7 @@ export function navigate(
   location.search = search;
   location.action = options.replace ? "REPLACE" : "PUSH";
   location.key = key;
+  location.depth = depth;
 
   if (options.keepScroll) {
     // The caller has the position it wants, so this entry is already restored.
@@ -111,11 +120,18 @@ function scrollToTop(): void {
 }
 
 window.addEventListener("popstate", () => {
+  const { key, depth } = readState();
   location.pathname = stripBasename(window.location.pathname);
   location.search = window.location.search;
   location.action = "POP";
-  location.key = ensureKey();
+  location.key = key;
+  location.depth = depth;
 });
+
+/** Go back one entry. Only meaningful while `location.depth` is above 0. */
+export function back(): void {
+  window.history.back();
+}
 
 /** Browser pathname to app pathname. Idempotent: app paths pass through. */
 export function stripBasename(pathname: string): string {
@@ -143,17 +159,18 @@ function createKey(): string {
 }
 
 /**
- * The key of the current entry, seeded when it has none. Entries we did not
- * push arrive with `history.state === null` — the initial load, and anything
- * from before a reload. Returning to one twice has to yield the same key, so
- * a seeded key is written back rather than only returned.
+ * The current entry's key and depth, seeded when it has none. Entries we did
+ * not push arrive with `history.state === null` — the initial load, and
+ * anything from before a reload. Returning to one twice has to yield the same
+ * key, so a seeded entry is written back rather than only returned.
+ *
+ * A seeded entry is depth 0: whatever precedes it is not ours to go back to.
  */
-function ensureKey(): string {
+function readState(): { key: string; depth: number } {
   const existing = window.history.state as HistoryState | null;
-  if (existing?.key) return existing.key;
+  if (existing?.key) return { key: existing.key, depth: existing.depth ?? 0 };
 
-  const key = createKey();
-  const state: HistoryState = { key };
+  const state: HistoryState = { key: createKey(), depth: 0 };
   window.history.replaceState(state, "", window.location.href);
-  return key;
+  return state;
 }

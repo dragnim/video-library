@@ -94,6 +94,34 @@ describe("the states a video can be in", () => {
   });
 });
 
+describe("the way back", () => {
+  // No browse destination is current on a leaf, so the page says so itself.
+  it("offers Back when the viewer arrived through the app", async () => {
+    setUrl("?v=vid001");
+    // A push of ours behind this entry, which is what makes Back ours to offer.
+    window.history.pushState({ key: "k", depth: 1 }, "", "/watch?v=vid001");
+    window.dispatchEvent(
+      new PopStateEvent("popstate", { state: { key: "k", depth: 1 } }),
+    );
+    render(Watch);
+
+    expect(
+      await screen.findByRole("button", { name: /Back/ }),
+    ).toBeInTheDocument();
+  });
+
+  it("offers the library instead on a cold deep link", async () => {
+    setUrl("?v=vid001");
+    render(Watch);
+
+    // Nothing of ours behind this entry, so Back would leave the site.
+    expect(screen.queryByRole("button", { name: /Back/ })).toBeNull();
+    expect(
+      await screen.findByRole("link", { name: /Library/ }),
+    ).toHaveAttribute("href", "/");
+  });
+});
+
 describe("the consent gate", () => {
   it("contacts nothing until the viewer asks, then embeds nocookie", async () => {
     setUrl("?v=vid001");

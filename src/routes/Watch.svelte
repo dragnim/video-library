@@ -9,7 +9,7 @@
   import { ApiError } from "../lib/api/client";
   import type { Video } from "../lib/api/types";
   import { getRecommendations, getVideo } from "../lib/api/videos";
-  import { location, navigate } from "../lib/router/location.svelte";
+  import { back, location, navigate } from "../lib/router/location.svelte";
   import {
     eventHref,
     presenterHref,
@@ -75,6 +75,13 @@
       .catch(() => {});
   });
 
+  /**
+   * A single video is a leaf: no browse destination is current here, so the page
+   * says where it came from itself. Back rather than a link to the results,
+   * because only the history entry carries the scroll position in the list.
+   */
+  const canGoBack = $derived(location.depth > 0);
+
   // Named around the `$state` rune: a variable called `state` makes `$state`
   // ambiguous with store-value syntax and the file stops type-checking.
   const video = $derived(watchState.kind === "ready" ? watchState.video : null);
@@ -123,6 +130,18 @@
     {@html `${LD_JSON.open}${jsonLd}${LD_JSON.close}`}
   {/if}
 </svelte:head>
+
+{#if canGoBack}
+  <button type="button" class="back" onclick={back}>
+    <span aria-hidden="true">&larr;</span> Back
+  </button>
+{:else}
+  <!-- Arrived cold, so there is nothing of ours behind this entry to go back to
+       and the only honest offer is the way up. -->
+  <Link href="/" class="back"
+    ><span aria-hidden="true">&larr;</span> Library</Link
+  >
+{/if}
 
 {#if watchState.kind === "loading"}
   <Spinner />
@@ -184,6 +203,26 @@
 {/if}
 
 <style>
+  /* The mount id, since the kit styles bare buttons. :global, or Svelte prunes
+     the rule, and Link's anchor is another component's markup either way. */
+  :global(#dyalog-video-library) .back {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--dyalog-video-library-link);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  :global(#dyalog-video-library) .back:hover {
+    color: var(--dyalog-video-library-accent);
+    text-decoration: underline;
+  }
+
   .unavailable {
     padding: 6rem 0;
     text-align: center;
