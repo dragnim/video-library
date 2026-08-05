@@ -1,6 +1,9 @@
 <script lang="ts">
+  // The browse destinations. Links rather than ARIA tabs: each one is a route,
+  // so it bookmarks, middle-clicks and survives back/forward, and announcing
+  // "tab" would promise a panel swap instead of a navigation.
   import Link from "../../lib/router/Link.svelte";
-  import { location, navigate } from "../../lib/router/location.svelte";
+  import { location } from "../../lib/router/location.svelte";
 
   type Tab = {
     label: string;
@@ -11,48 +14,24 @@
     { label: "Videos", path: "/" },
     { label: "Events", path: "/events" },
   ];
-
-  // -1 when the current route is none of these tabs (eg. /watch), in which
-  // case no tab shows as selected.
-  const activeIndex = $derived(
-    tabs.findIndex((tab) => tab.path === location.pathname),
-  );
-
-  // Arrow-key roving focus between tabs, per the WAI-ARIA tabs pattern. This
-  // is "automatic activation": moving focus also navigates, same as a click.
-  const handleKeydown = (event: KeyboardEvent) => {
-    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-    if (activeIndex === -1) return;
-
-    const delta = event.key === "ArrowRight" ? 1 : -1;
-    const nextIndex = (activeIndex + delta + tabs.length) % tabs.length;
-
-    navigate(tabs[nextIndex].path);
-    (event.currentTarget as HTMLElement)
-      .closest("[role='tablist']")
-      ?.querySelector<HTMLElement>(`#tab-${nextIndex}`)
-      ?.focus();
-  };
 </script>
 
-<div class="band">
-  <ul role="tablist" class="video-library-x-padding">
-    {#each tabs as tab, index (tab.path)}
-      <li role="presentation">
+<nav class="band" aria-label="Browse">
+  <ul class="video-library-x-padding">
+    {#each tabs as tab (tab.path)}
+      <li>
+        <!-- Absent rather than "false" on the others: aria-current has no false
+             value, and the string would announce every tab as the current one. -->
         <Link
           href={tab.path}
-          id="tab-{index}"
-          role="tab"
-          aria-selected={index === activeIndex}
-          tabindex={index === activeIndex ? 0 : -1}
-          onkeydown={handleKeydown}
+          aria-current={tab.path === location.pathname ? "page" : undefined}
         >
           {tab.label}
         </Link>
       </li>
     {/each}
   </ul>
-</div>
+</nav>
 
 <style>
   .band {
@@ -61,7 +40,7 @@
     background-color: var(--dyalog-video-library-primary-dark);
   }
 
-  ul[role="tablist"] {
+  ul {
     display: flex;
     list-style: none;
     margin: 0;
@@ -71,7 +50,7 @@
 
   /* The tab is Link's anchor, so the selector has to reach into another
      component's markup. */
-  ul[role="tablist"] :global(a[role="tab"]) {
+  ul :global(a) {
     display: inline-block;
     padding: 0.5rem 1rem;
     border-radius: var(--dyalog-video-library-radius)
@@ -81,7 +60,7 @@
     text-decoration: none;
   }
 
-  ul[role="tablist"] :global(a[role="tab"][aria-selected="true"]) {
+  ul :global(a[aria-current="page"]) {
     color: var(--dyalog-video-library-text);
     background-color: var(--dyalog-video-library-page-bg);
   }
