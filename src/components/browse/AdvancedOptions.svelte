@@ -20,7 +20,7 @@
     <YearRangePicker />
   </div>
 
-  <div class="column">
+  <div class="column grow">
     <h3>Filter by Presenter</h3>
     <PresenterPicker />
   </div>
@@ -54,12 +54,23 @@
   }
 
   /* Heading, then label, then control in every column, so the controls line up
-     across the row and the presenter tokens hang below without moving them. */
+     across the row and the presenter tokens hang below without moving them.
+     A select is as wide as its longest option, and these two keep that width:
+     truncating an event name loses the thing the user is choosing by. */
   .column {
     display: flex;
     flex-direction: column;
     align-items: start;
     gap: 0.375rem;
+    flex: 0 0 auto;
+  }
+
+  /* The type-ahead takes the rest, and `min-width: 0` makes it the column that
+     yields when the band runs out of room. */
+  .grow {
+    flex: 1;
+    min-width: 0;
+    align-items: stretch;
   }
 
   /* The mount id, since the kit styles headings and would otherwise take this

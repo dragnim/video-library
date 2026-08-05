@@ -196,6 +196,7 @@
     left: 0;
     z-index: 10;
     min-width: 220px;
+    width: 100%;
     max-height: 320px;
     overflow-y: auto;
     background: var(--dyalog-video-library-surface);
