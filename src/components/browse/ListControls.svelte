@@ -42,7 +42,8 @@
     ></button>
 
     <label class="switch">
-      <input type="checkbox" bind:checked={layout.isGrid} />
+      <!-- The checkbox is the control; the track is what it looks like. -->
+      <input class="sr-only" type="checkbox" bind:checked={layout.isGrid} />
       <span class="track"></span>
       <span class="sr-only">Show results as a grid</span>
     </label>
@@ -136,17 +137,6 @@
 
   .switch input:checked + .track::after {
     transform: translateX(0.75rem);
-  }
-
-  /* The checkbox is the control; the track is what it looks like. */
-  .sr-only,
-  .switch input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
   }
 
   .switch input:focus-visible + .track {

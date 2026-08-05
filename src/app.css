@@ -153,6 +153,25 @@ body:not([class*="elementor-page-"]) .site-main {
 }
 
 /*
+ * Text for a screen reader to read and nothing to see, and the real control
+ * behind something styled to look like one. Global because it is a technique
+ * rather than a component's styling: two copies of it drift in a way only a
+ * screen reader can hear. `white-space` because a 1px box otherwise wraps the
+ * text to one character per line.
+ *
+ * The mount id, since one of these is an input and the kit styles form controls
+ * at 0,1,1: a kit height would win and leave the hidden control taking up room.
+ */
+#dyalog-video-library .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/*
  * The two breakpoints, desktop-first. Last in the file because a media query
  * adds no specificity: the padding override below has to come after the rule
  * it overrides.

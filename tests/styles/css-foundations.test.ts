@@ -82,6 +82,25 @@ describe("design tokens", () => {
   });
 });
 
+describe("the screen-reader utility", () => {
+  it("is declared in the sheet, with the two parts that are easy to lose", () => {
+    // The mount id, or a kit rule on inputs outranks it. See the kit note below.
+    expect(app).toContain("#dyalog-video-library .sr-only {");
+    expect(app).toMatch(/\.sr-only \{[^}]*clip-path: inset\(50%\)/);
+    // A 1px box wraps the text to one character per line without it.
+    expect(app).toMatch(/\.sr-only \{[^}]*white-space: nowrap/);
+  });
+
+  // A second copy cannot be seen to have drifted: only a screen reader hears it.
+  it("is declared nowhere else", () => {
+    const owners = components.filter((file) =>
+      /\.sr-only\s*[,{]/.test(styles(file)),
+    );
+
+    expect(owners).toEqual([]);
+  });
+});
+
 describe("the two breakpoints", () => {
   it("are the only two, across the sheet and every component", () => {
     const widths = new Set<string>();
