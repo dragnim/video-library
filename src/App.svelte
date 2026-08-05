@@ -58,6 +58,11 @@
     justify-content: center;
   }
 
+  /* Every route starts clear of the tab band above it. */
+  .outlet {
+    margin-top: 0.75rem;
+  }
+
   /* Focused programmatically on a route change, so it gets no ring: the
      global :focus-visible rule covers focus the user asked for. */
   .outlet:focus {

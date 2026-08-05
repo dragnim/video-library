@@ -88,7 +88,9 @@ describe("the two breakpoints", () => {
 
     for (const source of [app, ...components.map((file) => styles(file))]) {
       for (const query of source.match(/@media[^{]+/g) ?? []) {
-        widths.add(query.trim());
+        // Width queries only. A preference query such as
+        // prefers-reduced-motion is not a breakpoint.
+        if (query.includes("width")) widths.add(query.trim());
       }
     }
 

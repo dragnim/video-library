@@ -6,6 +6,7 @@ import { buildUrl, fetchJson } from "./client";
 import {
   normaliseVideo,
   normaliseVideoPage,
+  normaliseVideos,
   type RawVideo,
   type RawVideoPage,
 } from "./normalise";
@@ -49,4 +50,17 @@ export async function getVideo(youtubeId: string): Promise<Video> {
   const url = buildUrl(`${apiVideos}/${encodeURIComponent(youtubeId)}`);
 
   return normaliseVideo(await fetchJson<Partial<RawVideo>>(url));
+}
+
+/** What to watch next. A plain array, not a page: there is nothing to count. */
+export async function getRecommendations(
+  youtubeId: string,
+  count: number,
+): Promise<Video[]> {
+  const url = buildUrl(
+    `${apiVideos}/${encodeURIComponent(youtubeId)}/recommendations`,
+    { n: count },
+  );
+
+  return normaliseVideos(await fetchJson<Partial<RawVideo>[]>(url));
 }

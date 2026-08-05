@@ -25,12 +25,27 @@ export function buildUrl(
   return url.href;
 }
 
+/**
+ * A request that reached the API and came back an error. `status` is what lets
+ * a caller tell a 404 from a network failure: `/watch?v=` for a deleted video
+ * has to say the video is gone, not that the library is down.
+ */
+export class ApiError extends Error {
+  constructor(
+    readonly status: number,
+    url: string,
+  ) {
+    super(`Request for ${url} failed: ${status}`);
+    this.name = "ApiError";
+  }
+}
+
 /** GET a JSON document. `T` is unchecked here; normalise.ts verifies it. */
 export async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`Request for ${url} failed: ${response.status}`);
+    throw new ApiError(response.status, url);
   }
 
   try {

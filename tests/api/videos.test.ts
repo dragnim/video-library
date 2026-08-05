@@ -5,7 +5,11 @@ import { describe, expect, it } from "vitest";
 import { http, HttpResponse } from "msw";
 import { server } from "../mocks/server";
 import { apiVideos } from "../../src/lib/env";
-import { getVideo, listVideos } from "../../src/lib/api/videos";
+import {
+  getRecommendations,
+  getVideo,
+  listVideos,
+} from "../../src/lib/api/videos";
 import { DEFAULT_FILTERS } from "../../src/lib/utils/browseFilters";
 
 /** Intercepts the next request and hands back its query params. */
@@ -154,6 +158,13 @@ describe("getVideo", () => {
     await expect(getVideo("notfound")).rejects.toThrow(/failed: 404/);
   });
 
+  it("carries the status, so a missing video reads apart from a dead API", async () => {
+    await expect(getVideo("notfound")).rejects.toMatchObject({
+      name: "ApiError",
+      status: 404,
+    });
+  });
+
   it("escapes the id rather than pasting it into the path", async () => {
     let path = "";
     server.use(
@@ -166,5 +177,43 @@ describe("getVideo", () => {
     await getVideo("a/b?c");
 
     expect(path.endsWith("/a%2Fb%3Fc")).toBe(true);
+  });
+});
+
+describe("getRecommendations", () => {
+  it("asks for the count it is given", async () => {
+    let params: URLSearchParams | undefined;
+    server.use(
+      http.get(`${apiVideos}/:id/recommendations`, ({ request }) => {
+        params = new URL(request.url).searchParams;
+        return HttpResponse.json([]);
+      }),
+    );
+
+    await getRecommendations("vid001", 8);
+
+    expect(params?.get("n")).toBe("8");
+  });
+
+  it("returns normalised videos from a plain array", async () => {
+    const videos = await getRecommendations("vid001", 8);
+
+    expect(videos.length).toBeGreaterThan(0);
+    for (const video of videos) {
+      expect(video.youtubeId).not.toBe("");
+      expect(video.thumbnail).not.toBe("");
+    }
+  });
+
+  it("drops rows with no id, which could not be linked to", async () => {
+    server.use(
+      http.get(`${apiVideos}/:id/recommendations`, () =>
+        HttpResponse.json([{ youtube_id: "rec1" }, { title: "orphan" }]),
+      ),
+    );
+
+    const videos = await getRecommendations("vid001", 8);
+
+    expect(videos.map((video) => video.youtubeId)).toEqual(["rec1"]);
   });
 });

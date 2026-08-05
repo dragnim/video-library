@@ -79,11 +79,14 @@ export function normaliseVideo(raw: Partial<RawVideo>): Video {
   };
 }
 
-/** Rows with no id are dropped; they would link nowhere. `total` is the server's. */
+/** Rows with no id are dropped; they would link nowhere. */
+export function normaliseVideos(raw: Partial<RawVideo>[]): Video[] {
+  return raw.filter((video) => video.youtube_id).map(normaliseVideo);
+}
+
+/** `total` is the server's count of matches, not the length of this page. */
 export function normaliseVideoPage(raw: Partial<RawVideoPage>): Page<Video> {
-  const items = (raw.data ?? [])
-    .filter((video) => video.youtube_id)
-    .map(normaliseVideo);
+  const items = normaliseVideos(raw.data ?? []);
 
   return { items, total: raw.total ?? items.length };
 }

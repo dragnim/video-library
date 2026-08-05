@@ -2,6 +2,7 @@ import type { Component } from "svelte";
 import Home from "../../routes/Home.svelte";
 import Events from "../../components/browse/Events.svelte";
 import Search from "../../routes/Search.svelte";
+import Watch from "../../routes/Watch.svelte";
 
 /**
  * Every route the app answers to. Flat: no nesting, no ranking, no path
@@ -15,4 +16,5 @@ export const routes: Record<string, Component> = {
   "/": Home,
   "/events": Events,
   "/search": Search,
+  "/watch": Watch,
 };
