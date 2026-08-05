@@ -84,6 +84,22 @@ describe("Videos", () => {
     expect(requests[0].searchParams.get("per_page")).toBe("15");
   });
 
+  // The engine is per-mount, so a tab click rebuilds it. The response cache is
+  // what stops that costing another request.
+  it("costs no request when the user comes back to it", async () => {
+    const requests = recordListRequests();
+    setUrl("/?perpage=5");
+
+    const first = render(Videos);
+    await cards(5);
+    first.unmount();
+
+    render(Videos);
+    await cards(5);
+
+    expect(requests).toHaveLength(1);
+  });
+
   it("offers a way out of filters that match nothing", async () => {
     setUrl("/?q=nonexistent");
     render(Videos);

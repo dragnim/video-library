@@ -3,6 +3,7 @@
 import "@testing-library/jest-dom/vitest";
 
 import { afterAll, afterEach, beforeAll } from "vitest";
+import { clearResponseCache } from "../src/lib/api/client";
 import { installAnimate } from "./mocks/animate";
 import { installIntersectionObserver } from "./mocks/intersectionObserver";
 import { server } from "./mocks/server";
@@ -19,6 +20,10 @@ installIntersectionObserver();
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
 // Undo any server.use(...) a test installed, so per-test overrides don't leak.
-afterEach(() => server.resetHandlers());
+// The response cache goes with them: a handler a test replaces must be reached.
+afterEach(() => {
+  server.resetHandlers();
+  clearResponseCache();
+});
 
 afterAll(() => server.close());
