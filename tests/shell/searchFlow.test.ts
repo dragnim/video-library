@@ -35,7 +35,7 @@ describe("the featured strip", () => {
     setUrl("/search?q=apl");
     render(App);
 
-    await screen.findByText(/Browse all/);
+    await screen.findByText(/Showing \d+ results/);
     expect(featuredStrip()).toBeNull();
   });
 
@@ -44,7 +44,7 @@ describe("the featured strip", () => {
     setUrl("/?event=dyalog-22");
     render(App);
 
-    await screen.findByText(/Browse all/);
+    await screen.findByText(/Showing \d+ results/);
     expect(featuredStrip()).toBeNull();
   });
 

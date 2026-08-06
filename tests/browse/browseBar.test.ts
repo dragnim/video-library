@@ -39,6 +39,31 @@ describe("BrowseBar", () => {
     expect(screen.getByText("Browse all 631")).toBeInTheDocument();
   });
 
+  describe("on results", () => {
+    it("counts what the filters matched rather than the library", () => {
+      setUrl("/search?q=apl");
+      const { rerender } = render(BrowseBar);
+      expect(screen.getByText("Searching...")).toBeInTheDocument();
+
+      void rerender({ total: 12 });
+      expect(screen.getByText("Showing 12 results")).toBeInTheDocument();
+    });
+
+    it("says one result, not 1 results", () => {
+      setUrl("/search?q=apl");
+      render(BrowseBar, { props: { total: 1 } });
+
+      expect(screen.getByText("Showing 1 result")).toBeInTheDocument();
+    });
+
+    it("keeps browsing wording for a sort, which is not a search", () => {
+      setUrl("/?sort=oldest");
+      render(BrowseBar, { props: { total: 631 } });
+
+      expect(screen.getByText("Browse all 631")).toBeInTheDocument();
+    });
+  });
+
   describe("Back", () => {
     const back = () => screen.queryByRole("button", { name: /Back/ });
 

@@ -15,14 +15,18 @@
 
   let { total = null, sorts = BROWSE_SORTS }: Props = $props();
 
-  const heading = $derived(
-    total === null ? "Browse all" : `Browse all ${total}`,
-  );
+  const searching = $derived(isSearch(filters.current));
 
-  // Results answer a question the user asked, so they get a way back to where
-  // they asked it. Unfiltered browsing is the front page and has nowhere to go.
-  // At depth 0 Back leaves the app, which is what a cold deep link looks like.
-  const showBack = $derived(isSearch(filters.current) && location.depth > 0);
+  const heading = $derived.by(() => {
+    if (!searching)
+      return total === null ? "Browse all" : `Browse all ${total}`;
+    if (total === null) return "Searching...";
+    return `Showing ${total} result${total === 1 ? "" : "s"}`;
+  });
+
+  // Only show back if we came from a search or link within the app.
+  // A URL that takes us directly to a watch or results page has nowhere to go back to.
+  const showBack = $derived(searching && location.depth > 0);
 </script>
 
 <div class="bar">

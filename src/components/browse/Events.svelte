@@ -5,7 +5,7 @@
 
   loadSummaries();
 
-  // A copy: sorting in place would mutate the roster's own array.
+  // A sorted copy
   const events = $derived(
     [...rosters.events].sort((a, b) => a.fullname.localeCompare(b.fullname)),
   );
