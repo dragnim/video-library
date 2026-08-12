@@ -24,7 +24,7 @@ describe("the shell", () => {
     render(App);
 
     expect(
-      await screen.findByRole("heading", { name: "Alice Cooper", level: 2 }),
+      await screen.findByRole("heading", { name: "Alice Cooper", level: 3 }),
     ).toBeInTheDocument();
   });
 

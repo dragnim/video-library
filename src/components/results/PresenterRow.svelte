@@ -26,7 +26,7 @@
 </script>
 
 <article class="row">
-  <h2><Link href={presenterHref(presenter.id)}>{presenter.name}</Link></h2>
+  <h3><Link href={presenterHref(presenter.id)}>{presenter.name}</Link></h3>
 
   <p class="meta">
     {#if when}<span>{when}</span>{/if}
@@ -58,16 +58,16 @@
     border-bottom: 1px solid var(--dyalog-video-library-rule);
   }
 
-  h2 {
+  h3 {
     font-size: 1.5rem;
   }
 
-  h2 :global(a) {
+  h3 :global(a) {
     text-decoration: none;
     color: var(--dyalog-video-library-link);
   }
 
-  h2 :global(a:hover) {
+  h3 :global(a:hover) {
     color: var(--dyalog-video-library-accent);
   }
 
@@ -93,7 +93,7 @@
   }
 
   @media (max-width: 640px) {
-    h2 {
+    h3 {
       font-size: 1.25rem;
     }
   }

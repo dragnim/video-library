@@ -18,7 +18,7 @@ describe("the presenter list", () => {
   it("lists the roster alphabetically", async () => {
     render(Presenters);
 
-    const headings = await screen.findAllByRole("heading", { level: 2 });
+    const headings = await screen.findAllByRole("heading", { level: 3 });
     expect(headings.map((heading) => heading.textContent)).toEqual([
       "Alice Cooper",
       "Bob Wilson",
@@ -46,5 +46,35 @@ describe("the presenter list", () => {
 
     expect(row).toHaveTextContent("5 videos");
     expect(row).toHaveTextContent("Dyalog '22, Dyalog '23, APL Quest");
+  });
+});
+
+describe("the alphabet bar", () => {
+  it("groups the roster under its initials", async () => {
+    render(Presenters);
+
+    const letters = await screen.findAllByRole("heading", { level: 2 });
+
+    expect(letters.map((letter) => letter.textContent?.trim())).toEqual([
+      "A",
+      "B",
+      "J",
+    ]);
+  });
+
+  it("links a letter the roster has to its section", async () => {
+    render(Presenters);
+
+    const link = await screen.findByRole("link", { name: "J" });
+
+    expect(link).toHaveAttribute("href", "#presenters-J");
+  });
+
+  it("offers no link for a letter no presenter starts with", async () => {
+    render(Presenters);
+
+    await screen.findByRole("link", { name: "J" });
+
+    expect(screen.queryByRole("link", { name: "Q" })).toBeNull();
   });
 });
