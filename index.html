@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dyalog Video Library</title>
 
-    <!-- Mock WordPress environment for development. -->
+    <!--
+      Mock WordPress environment for development.
+
+      Order matters as much as presence. On the live page the theme's sheets are
+      enqueued before ours (functions.php enqueues `dyalog-wordpress-theme`, then
+      `dyalog-vl-style`), so these four stay above the app's styles, which Vite
+      injects into this head at runtime. The Elementor kit is the exception and
+      is loaded at the end of the body — see the comment there.
+    -->
     <link
       rel="stylesheet"
       href="/wp-content/plugins/elementor/assets/css/frontend.min.css"
@@ -19,22 +27,64 @@
       href="/wp-content/themes/hello-elementor/style.min.css"
     />
     <link rel="stylesheet" href="/wp-content/themes/dyalog-2026/style.css" />
-    <link
-      rel="stylesheet"
-      href="/wp-content/uploads/elementor/css/post-6.css"
-    />
   </head>
 
-  <!-- Mirrors the live page's body classes (page-id-7145). -->
+  <!--
+    Mirrors the live page's body classes (page-id-7145).
+
+    `elementor-page` deliberately carries no post-id suffix, as on live: the page
+    uses the Video Library page template rather than being Elementor-built. That
+    is what makes app.css's `body:not([class*="elementor-page-"]) .site-main`
+    rule apply here, and it also lets hello-elementor's own `.site-main`
+    max-width and padding through — which is why the app has to override them.
+  -->
   <body
-    class="wp-theme-hello-elementor wp-child-theme-dyalog-2026 elementor-default elementor-kit-6 elementor-page"
+    class="wp-theme-hello-elementor wp-child-theme-dyalog-2026 elementor-default elementor-kit-6 elementor-page page-id-7145"
   >
-    <!-- In production WordPress renders this container; in dev it lives here so
-         the app has something to mount into. Matches video-library.php. -->
-    <div id="dyalog-video-library"></div>
+    <!--
+      In production WordPress renders this container; in dev it lives here so the
+      app has something to mount into.
+
+      The wrapper and its classes mirror what video-library.php emits:
+      `<main <?php post_class( 'site-main' ); ?> role="main">` on page 7145. They
+      are not decoration — app.css's host-mutation block targets
+      `.site-main.post-7145` to force the app full-bleed out of the theme's
+      centred column, and without them those rules never run.
+    -->
+    <main
+      class="site-main post-7145 page type-page status-publish hentry"
+      role="main"
+    >
+      <div id="dyalog-video-library"></div>
+    </main>
+
+    <!-- Also from video-library.php, which prints it after the main element. -->
+    <style>
+      .site-main {
+        margin-top: 0;
+      }
+      .page {
+        margin: 0;
+      }
+    </style>
 
     <!-- Dev-only scaffolding: live, WordPress enqueues dist/config.js here. -->
     <script src="/config.example.js"></script>
     <script type="module" src="/src/main.ts"></script>
+
+    <!--
+      The Elementor kit, last on purpose.
+
+      On live it is enqueued after the app's stylesheet, so where the two tie on
+      specificity the kit wins. `.elementor-kit-6 h3` and `h3.svelte-<hash>` are
+      both (0,1,1), which is how live card titles take the kit's colour, size and
+      weight rather than the app's. A <link> here sits after the styles Vite
+      injects into the head, reproducing that order — put it in the head instead
+      and every such tie silently flips, making local disagree with production.
+    -->
+    <link
+      rel="stylesheet"
+      href="/wp-content/uploads/elementor/css/post-6.css"
+    />
   </body>
 </html>
