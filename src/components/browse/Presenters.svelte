@@ -44,7 +44,7 @@
   }
 
   /* Clears the sticky bar when the bar scrolls the heading into view. */
-  .letter {
+  :global(#dyalog-video-library) .letter {
     scroll-margin-top: 3rem;
     padding-top: 1rem;
     font-size: 1.125rem;

@@ -238,7 +238,7 @@
     box-shadow: var(--dyalog-video-library-card-hover-shadow);
   }
 
-  h1 {
+  :global(#dyalog-video-library) h1 {
     margin-bottom: 0.75rem;
     font-size: 2em;
   }
@@ -254,7 +254,7 @@
     font-weight: 700;
   }
 
-  .suggested {
+  :global(#dyalog-video-library) .suggested {
     padding-top: 1rem;
     font-weight: 700;
   }

@@ -204,6 +204,51 @@ describe("buttons against the kit", () => {
   });
 });
 
+describe("headings against the kit", () => {
+  // `.elementor-kit-6 h3` styles colour, size, weight, line-height and letter
+  // spacing at 0,1,1, which ties with a component's scoped `h3` and wins on
+  // source order, because WordPress enqueues the kit after us. app.css reverts
+  // the kit at the id's 1,0,0, so a component's own heading rule has to sit
+  // above that to be seen at all. Dropping the id looks like tidying and hands
+  // every heading in the app back to whatever the kit says today.
+  it.each([
+    ["components/results/VideoCard.svelte", "h3"],
+    ["components/results/VideoRow.svelte", "h2"],
+    ["components/browse/Events.svelte", "h3"],
+    ["components/results/PresenterRow.svelte", "h3"],
+    ["components/browse/AdvancedOptions.svelte", "h3"],
+    ["routes/Watch.svelte", "h1"],
+    // A heading styled through a class rather than its tag needs the id just
+    // as much: `.heading` is 0,1,0 and the revert above is 1,0,0, so without it
+    // the wordmark renders at the browser's h1 size. SearchBar's is a
+    // `<svelte:element>`, which is why it does not read as a heading in the
+    // markup.
+    ["components/chrome/SearchBar.svelte", ".heading"],
+    ["components/browse/Events.svelte", ".type"],
+    ["components/browse/Presenters.svelte", ".letter"],
+    ["routes/Watch.svelte", ".suggested"],
+  ])("%s raises %s to the mount id", (file, selector) => {
+    expect(styles(file)).toContain(
+      `:global(#dyalog-video-library) ${selector}`,
+    );
+  });
+
+  it("reverts the kit's heading typography in the sheet", () => {
+    const block = /:where\(h1, h2, h3, h4, h5, h6\) \{([^}]*)\}/.exec(app);
+
+    expect(block).not.toBeNull();
+    for (const property of [
+      "font-size",
+      "font-weight",
+      "line-height",
+      "letter-spacing",
+      "word-spacing",
+    ]) {
+      expect(block?.[1]).toContain(`${property}: revert`);
+    }
+  });
+});
+
 describe("colours come from tokens", () => {
   // A literal in a component is a colour the palette cannot reach, and the
   // handoff white was in eight components before it was one token.

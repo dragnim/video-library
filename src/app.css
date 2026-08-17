@@ -119,6 +119,33 @@
   font-family: inherit;
 }
 
+/*
+ * The rest of what the kit puts on a heading, taken back.
+ *
+ * `.elementor-kit-6 h3` sets colour, size, weight, line-height and letter
+ * spacing at 0,1,1 — the same specificity as a component's scoped `h3`, so the
+ * winner is whichever sheet WordPress happens to enqueue last. It enqueues the
+ * kit last, which is why a card title rendered at the kit's size and not the
+ * 1.25rem the component asks for.
+ *
+ * `:where()` keeps this at the id's 1,0,0, so a component that raises its own
+ * heading rule to `:global(#dyalog-video-library)` — 1,0,1 — still wins. Every
+ * component that styles a heading does; the headings block in
+ * tests/styles/css-foundations.test.ts is the list.
+ *
+ * `revert` rather than `inherit` for the font properties: it rolls the property
+ * back to the browser's own heading styling and discards the kit along with it,
+ * so an undeclared weight stays bold instead of collapsing to body text.
+ */
+#dyalog-video-library :where(h1, h2, h3, h4, h5, h6) {
+  font-size: revert;
+  font-weight: revert;
+  line-height: revert;
+  letter-spacing: revert;
+  word-spacing: revert;
+  color: inherit;
+}
+
 #dyalog-video-library :focus-visible {
   outline: 2px solid var(--dyalog-video-library-secondary);
   outline-offset: 2px;

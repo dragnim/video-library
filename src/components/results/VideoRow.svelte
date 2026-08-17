@@ -91,16 +91,16 @@
     padding: 0.75rem 2rem;
   }
 
-  h2 {
+  :global(#dyalog-video-library) h2 {
     font-size: 1.875rem;
   }
 
-  h2 :global(a) {
+  :global(#dyalog-video-library) h2 :global(a) {
     text-decoration: none;
     color: var(--dyalog-video-library-link);
   }
 
-  h2 :global(a:hover) {
+  :global(#dyalog-video-library) h2 :global(a:hover) {
     color: var(--dyalog-video-library-accent);
   }
 
@@ -147,7 +147,7 @@
       padding: 0.75rem 1.25rem;
     }
 
-    h2 {
+    :global(#dyalog-video-library) h2 {
       font-size: 1.5rem;
     }
   }

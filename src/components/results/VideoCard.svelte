@@ -81,14 +81,14 @@
       var(--dyalog-video-library-radius) 0 0;
   }
 
-  h3 {
+  :global(#dyalog-video-library) h3 {
     padding: 0.75rem;
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--dyalog-video-library-link);
   }
 
-  .card:hover h3 {
+  :global(#dyalog-video-library) .card:hover h3 {
     color: var(--dyalog-video-library-accent);
   }
 

@@ -76,7 +76,7 @@
     flex-direction: column;
   }
 
-  .type {
+  :global(#dyalog-video-library) .type {
     padding-top: 1rem;
     font-size: 1.125rem;
     font-weight: 700;
@@ -92,16 +92,16 @@
     border-bottom: 1px solid var(--dyalog-video-library-rule);
   }
 
-  h3 {
+  :global(#dyalog-video-library) h3 {
     font-size: 1.5rem;
   }
 
-  h3 :global(a) {
+  :global(#dyalog-video-library) h3 :global(a) {
     text-decoration: none;
     color: var(--dyalog-video-library-link);
   }
 
-  h3 :global(a:hover) {
+  :global(#dyalog-video-library) h3 :global(a:hover) {
     color: var(--dyalog-video-library-accent);
   }
 
@@ -119,7 +119,7 @@
   }
 
   @media (max-width: 640px) {
-    h3 {
+    :global(#dyalog-video-library) h3 {
       font-size: 1.25rem;
     }
 

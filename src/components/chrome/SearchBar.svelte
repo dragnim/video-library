@@ -98,7 +98,7 @@
     gap: 0.5rem;
   }
 
-  .heading {
+  :global(#dyalog-video-library) .heading {
     margin-right: 0.5rem;
     font-size: 1.2rem;
     font-weight: 400;
@@ -148,7 +148,7 @@
       align-items: stretch;
     }
 
-    .heading {
+    :global(#dyalog-video-library) .heading {
       font-size: 1.8rem;
     }
 
