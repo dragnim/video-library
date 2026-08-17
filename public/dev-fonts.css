@@ -1,0 +1,111 @@
+/*
+ * Dev-only: the same faces post-6.css declares, served same-origin.
+ *
+ * Fonts are CORS-restricted in a way stylesheets and images are not, so the
+ * absolute `https://dyalogprod.gos.dyalog.com/...` sources in post-6.css load on
+ * the live page and are blocked from http://localhost:5173. The rules still
+ * apply, so the page asks for Klavika and silently renders a system fallback —
+ * every metric an inch out, which is no basis for a spacing decision.
+ *
+ * These re-declare the same family, weight and style against a `/dev-fonts/`
+ * path that vite.config.ts proxies to the host, so the browser sees a
+ * same-origin request and CORS never applies. Nothing is downloaded into the
+ * repo: Klavika is licensed and this repo is public.
+ *
+ * Loaded after post-6.css in index.html, because two @font-face rules for the
+ * same family, weight and style resolve to whichever came last.
+ *
+ * The descriptors mirror post-6.css exactly rather than improving on it — the
+ * point is to render what the live page renders. That includes leaving IBM Plex
+ * Sans at `font-weight: normal` even though it is a variable font that could
+ * declare a 100-900 range.
+ */
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaLight.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaLight.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaLightItalic.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaLightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaRegular.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaRegular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaRegularItalic.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaRegularItalic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaMedium.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaMedium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaMediumItalic.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaMediumItalic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaBold.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaBold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "Klavika";
+  src:
+    url("/dev-fonts/KlavikaBoldItalic.woff2") format("woff2"),
+    url("/dev-fonts/KlavikaBoldItalic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+  font-display: auto;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("/dev-fonts/font_IBMPlexSans-VariableFont_wdth-wght.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: auto;
+}

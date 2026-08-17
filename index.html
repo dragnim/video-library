@@ -86,5 +86,13 @@
       rel="stylesheet"
       href="/wp-content/uploads/elementor/css/post-6.css"
     />
+
+    <!--
+      Last of all: the same faces post-6.css just declared, re-pointed at a
+      same-origin path so the browser will actually fetch them. Two @font-face
+      rules for one family, weight and style resolve to whichever came last, so
+      this has to sit below the kit. See public/dev-fonts.css.
+    -->
+    <link rel="stylesheet" href="/dev-fonts.css" />
   </body>
 </html>
