@@ -30,6 +30,20 @@
   --dyalog-video-library-accent: var(--e-global-color-accent, #8986ca);
 
   /*
+   * The typeface, named rather than inherited.
+   *
+   * Deliberately not bound to the kit, unlike the four colours above. The kit
+   * sets Klavika on the body and the app used to pick it up by inheriting,
+   * which meant anything winning on `body` — a kit edit, a plugin, a browser
+   * extension — silently changed the typeface of the whole library. Naming it
+   * here at the id's 1,0,0 makes the app render Klavika because it says so.
+   *
+   * WordPress still loads the font itself: this names a family, it does not
+   * ship one. public/dev-fonts.css is how `npm run dev` gets hold of it.
+   */
+  --dyalog-video-library-font: "Klavika", sans-serif;
+
+  /*
    * Shades of a bound token are mixed from it rather than hard-coded, so a kit
    * edit pulls them along instead of leaving half the palette behind. The
    * handoff value each one replaces is in the comment.
@@ -87,6 +101,7 @@
    !important declarations unnecessary. */
 #dyalog-video-library {
   box-sizing: border-box;
+  font-family: var(--dyalog-video-library-font);
   color: var(--dyalog-video-library-text);
   line-height: 1.5;
 }
@@ -111,9 +126,9 @@
   max-width: 100%;
 }
 
-/* Typography comes from the page: Klavika is loaded by WordPress and the app
-   ships no fonts. Elementor and the browser both style these elements
-   directly, so they are put back to inheriting rather than restated. */
+/* Headings and form controls are styled directly by Elementor and by the
+   browser, so they are put back to inheriting the family the mount element
+   names above rather than restating it. */
 #dyalog-video-library
   :where(h1, h2, h3, h4, h5, h6, button, input, select, textarea) {
   font-family: inherit;

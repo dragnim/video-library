@@ -75,6 +75,9 @@ describe("design tokens", () => {
     ["control-height", "32px"],
     ["grid-columns", "3"],
     ["grid-gap", "20px"],
+    // Named, not bound to the kit: inheriting it from the body is what let the
+    // whole library change typeface without anything in the app changing.
+    ["font", '"Klavika", sans-serif'],
   ])("--dyalog-video-library-%s is %s", (token, value) => {
     expect(app).toMatch(
       new RegExp(`--dyalog-video-library-${token}\\s*:\\s*${value}\\s*;`, "i"),
