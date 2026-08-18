@@ -55,14 +55,30 @@
     justify-content: center;
   }
 
-  /* Every route starts clear of the tab band above it. */
+  /*
+   * Every route starts clear of the tab band above it, and ends clear of the
+   * WordPress footer below it.
+   *
+   * The bottom margin used to be the terms footer's presence. Moving that to its
+   * own route left every page — watch, home, search, all of them — ending flush
+   * against the bottom of the page.
+   */
   .outlet {
     margin-top: 0.75rem;
+    margin-bottom: 1.5rem;
   }
 
-  /* Focused programmatically on a route change, so it gets no ring: the
-     global :focus-visible rule covers focus the user asked for. */
-  .outlet:focus {
+  /*
+   * Focused programmatically on a route change, so it gets no ring: the global
+   * :focus-visible rule covers focus the user asked for.
+   *
+   * The mount id, because that global rule is `#dyalog-video-library
+   * :focus-visible` at 1,0,0 and this one was `.outlet:focus` at 0,3,0 — it lost,
+   * and every keyboard navigation drew a two-pixel outline around the whole page.
+   * :focus-visible as well as :focus, since the losing rule named only the latter.
+   */
+  :global(#dyalog-video-library) .outlet:focus,
+  :global(#dyalog-video-library) .outlet:focus-visible {
     outline: none;
   }
 </style>

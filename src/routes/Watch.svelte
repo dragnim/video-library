@@ -202,8 +202,9 @@
   </article>
 
   {#if suggestions.length > 0}
-    <h2 class="suggested">Suggested videos</h2>
-    <hr />
+    <!-- The rule is the heading's own bottom edge, as it is on the browse bar. A
+         separate <hr /> put its own margins between the two. -->
+    <h2 class="suggested">Suggested Videos</h2>
     <ResultGrid items={suggestions} />
   {/if}
 {/if}
@@ -238,8 +239,12 @@
   /* A card, from the same tokens as the ones on every other surface. The resting
      shadow only: there is nothing to hover here, the page is already the video.
      overflow clips the player's square corners to the card's radius. */
+  /* The bottom margin is what sets the heading below it off the card, exactly as
+     the featured strip's does for the browse bar. Without it the heading has only
+     its own 0.625rem and sits far tighter here than it does there. */
   .detail {
     margin-top: 0.75rem;
+    margin-bottom: var(--dyalog-video-library-strip-gap);
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
@@ -283,9 +288,29 @@
     margin: 0.75rem 0;
   }
 
+  /*
+   * Reads as the Browse line does: the same step, weight and label colour.
+   *
+   * The spacing is the browse bar's too: 0.625rem above and below the text with
+   * the rule as its bottom border, and 0.875rem before what follows.
+   *
+   * Restated here rather than taking the .video-library-label class, because
+   * this is a heading and the reset in app.css reverts a heading's size and
+   * weight at the mount id's 1,0,0 — a class at 0,1,0 would lose to it. It stays
+   * a heading because it names the section below it.
+   */
   :global(#dyalog-video-library) .suggested {
-    padding-top: 1rem;
-    font-weight: var(--dyalog-video-library-weight-bold);
+    padding: 0.625rem 0;
+    margin-bottom: 0.875rem;
+    border-bottom: 1px solid var(--dyalog-video-library-rule);
+
+    /* The text face, against the display face the heading reset gives it. This
+       line is a label that happens to be a heading, and it has to read as the
+       Browse line does. */
+    font-family: var(--dyalog-video-library-font-text);
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    color: var(--dyalog-video-library-muted);
   }
 
   hr {

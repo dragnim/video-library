@@ -290,6 +290,17 @@ describe("the row's two columns", () => {
   });
 });
 
+describe("the route outlet takes no ring", () => {
+  // It is focused programmatically after every SPA navigation so a screen reader
+  // lands on the new content. A ring there outlines the entire page, and the
+  // rule saying so has to outrank the global :focus-visible at 1,0,0.
+  it("silences the outlet's outline at the mount id", () => {
+    expect(styles("App.svelte")).toContain(
+      ":global(#dyalog-video-library) .outlet:focus-visible",
+    );
+  });
+});
+
 describe("titles are clamped", () => {
   // An unclamped title made its own card taller than every other card in the
   // row, and in the strip it ate into the hero's thumbnail.
@@ -327,11 +338,18 @@ describe("rules span their container", () => {
 });
 
 describe("the two faces", () => {
-  // Klavika announces, IBM Plex Sans is read. The pairing is expressed once —
-  // the mount names the text face and the reset names the display face for
-  // headings — so a component naming a family is a third face by accident.
+  // Klavika announces, IBM Plex Sans is read. A component may name either of
+  // those two — a heading that has to read as a label needs to say so, since the
+  // reset hands every heading the display face — but naming anything else is a
+  // third face by accident.
   it.each(components)("%s names no typeface of its own", (file) => {
-    expect(styles(file)).not.toMatch(/font-family\s*:/);
+    const declarations = styles(file).match(/font-family\s*:\s*[^;]+;/g) ?? [];
+
+    for (const declaration of declarations) {
+      expect(declaration).toMatch(
+        /var\(--dyalog-video-library-font-(?:display|text)\)|inherit/,
+      );
+    }
   });
 
   it("pairs the faces in the sheet and nowhere else", () => {
