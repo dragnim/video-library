@@ -4,6 +4,7 @@
   import ListControls from "./ListControls.svelte";
   import { back, location } from "../../lib/router/location.svelte";
   import { filters } from "../../lib/state/filters.svelte";
+  import { rosters } from "../../lib/state/rosters.svelte";
   import { BROWSE_SORTS, isSearch } from "../../lib/utils/browseFilters";
 
   interface Props {
@@ -17,11 +18,28 @@
 
   const searching = $derived(isSearch(filters.current));
 
+  /**
+   * Counted from the roster the Presenters tab lists, so the two agree, and left
+   * off entirely until it lands rather than announcing "from 0 presenters".
+   * Gated on the count rather than the roster's status: events and presenters
+   * settle separately, so a failed event roster still leaves presenters usable.
+   */
+  const presenterCount = $derived(rosters.presenters.length);
+
   const heading = $derived.by(() => {
-    if (!searching)
-      return total === null ? "Browse all" : `Browse all ${total}`;
-    if (total === null) return "Searching...";
-    return `Showing ${total} result${total === 1 ? "" : "s"}`;
+    if (searching) {
+      if (total === null) return "Searching...";
+      return `Showing ${total} result${total === 1 ? "" : "s"}`;
+    }
+
+    if (total === null) return "Browse all videos";
+
+    const videos = `Browse all ${total} video${total === 1 ? "" : "s"}`;
+    if (presenterCount === 0) return videos;
+
+    return `${videos} from ${presenterCount} presenter${
+      presenterCount === 1 ? "" : "s"
+    }`;
   });
 
   // Only show back if we came from a search or link within the app.
@@ -59,10 +77,14 @@
 
   /* Takes the free space, so the controls stay right and the heading stays
      beside the Back button when there is one. */
+  /* Sized like the date on a card but coloured as a label, which is what it is
+     — the same --muted the FEATURED and FROM THIS EVENT labels use. A span
+     rather than a heading, so nothing in the heading reset reaches it. */
   .heading {
     margin-right: auto;
-    font-size: 0.9375rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    color: var(--dyalog-video-library-muted);
     white-space: nowrap;
   }
 
@@ -74,8 +96,8 @@
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
     color: var(--dyalog-video-library-primary);
-    font-size: 0.9375rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-base);
+    font-weight: var(--dyalog-video-library-weight-bold);
     white-space: nowrap;
     cursor: pointer;
   }

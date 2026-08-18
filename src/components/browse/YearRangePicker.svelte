@@ -110,7 +110,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    font-size: 0.8125rem;
+    font-size: var(--dyalog-video-library-size-sm);
   }
 
   select {
@@ -131,7 +131,7 @@
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
     color: var(--dyalog-video-library-primary);
-    font-size: 0.8125rem;
+    font-size: var(--dyalog-video-library-size-sm);
     cursor: pointer;
   }
 

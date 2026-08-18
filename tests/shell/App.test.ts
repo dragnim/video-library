@@ -16,7 +16,7 @@ describe("the shell", () => {
     setUrl("/");
     render(App);
 
-    expect(screen.getByText("Browse all")).toBeInTheDocument();
+    expect(screen.getByText("Browse all videos")).toBeInTheDocument();
   });
 
   it("renders the presenter list at /presenters", async () => {
@@ -33,7 +33,7 @@ describe("the shell", () => {
     render(App);
 
     expect(location.pathname).toBe("/nothing-here");
-    expect(screen.getByText("Browse all")).toBeInTheDocument();
+    expect(screen.getByText("Browse all videos")).toBeInTheDocument();
   });
 
   it("sets the document title", () => {

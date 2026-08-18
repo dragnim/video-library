@@ -65,7 +65,9 @@ describe("Videos", () => {
     render(Videos);
 
     await cards(5);
-    expect(screen.getByText("Browse all 15")).toBeInTheDocument();
+    expect(
+      screen.getByText("Browse all 15 videos from 4 presenters"),
+    ).toBeInTheDocument();
 
     observer.intersect();
 

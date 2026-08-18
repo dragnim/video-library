@@ -33,10 +33,10 @@ beforeEach(() => {
 describe("BrowseBar", () => {
   it("counts the library once the first page has landed", () => {
     const { rerender } = render(BrowseBar);
-    expect(screen.getByText("Browse all")).toBeInTheDocument();
+    expect(screen.getByText("Browse all videos")).toBeInTheDocument();
 
     void rerender({ total: 631 });
-    expect(screen.getByText("Browse all 631")).toBeInTheDocument();
+    expect(screen.getByText("Browse all 631 videos")).toBeInTheDocument();
   });
 
   describe("on results", () => {
@@ -60,7 +60,7 @@ describe("BrowseBar", () => {
       setUrl("/?sort=oldest");
       render(BrowseBar, { props: { total: 631 } });
 
-      expect(screen.getByText("Browse all 631")).toBeInTheDocument();
+      expect(screen.getByText("Browse all 631 videos")).toBeInTheDocument();
     });
   });
 

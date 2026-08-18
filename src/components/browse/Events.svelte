@@ -78,8 +78,8 @@
 
   :global(#dyalog-video-library) .type {
     padding-top: 1rem;
-    font-size: 1.125rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-md);
+    font-weight: var(--dyalog-video-library-weight-bold);
     color: var(--dyalog-video-library-muted);
   }
 
@@ -93,7 +93,7 @@
   }
 
   :global(#dyalog-video-library) h3 {
-    font-size: 1.5rem;
+    font-size: var(--dyalog-video-library-size-xl);
   }
 
   :global(#dyalog-video-library) h3 :global(a) {
@@ -108,9 +108,10 @@
   .meta {
     display: flex;
     gap: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
     white-space: nowrap;
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   /* Separates the facts without a character in the markup. */
@@ -120,7 +121,7 @@
 
   @media (max-width: 640px) {
     :global(#dyalog-video-library) h3 {
-      font-size: 1.25rem;
+      font-size: var(--dyalog-video-library-size-lg);
     }
 
     .row {

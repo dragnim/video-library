@@ -103,7 +103,9 @@ describe("the advanced-options toggle", () => {
     render(App);
 
     await vi.waitFor(() => {
-      expect(screen.getByText("Browse all 15")).toBeInTheDocument();
+      expect(
+        screen.getByText("Browse all 15 videos from 4 presenters"),
+      ).toBeInTheDocument();
     });
     const settled = requests.length;
 

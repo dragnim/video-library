@@ -6,7 +6,6 @@ export interface FeaturedConfig {
   hero: string;
   heroEyebrow: string;
   secondaryIds: string[];
-  eventSlug: string | null;
 }
 
 const defaults: FeaturedConfig = {
@@ -15,13 +14,22 @@ const defaults: FeaturedConfig = {
   hero: "",
   heroEyebrow: "",
   secondaryIds: [],
-  eventSlug: null,
 };
 
-/** The layout has exactly two secondary slots. */
-const SECONDARY_SLOTS = 2;
+/** The layout has one card beside the hero. */
+const SECONDARY_SLOTS = 1;
 
-const FEATURED_KEYS = Object.keys(defaults);
+/**
+ * `eventSlug` is read only to say it is no longer read.
+ *
+ * The event card names the last of Dyalog's own meetings, worked out from the
+ * videos, so pinning one by hand would let the label lie. Kept in the known keys
+ * so a config that still carries it gets told why it stopped mattering, rather
+ * than an unhelpful "unknown key".
+ */
+const RETIRED_KEYS = ["eventSlug"];
+
+const FEATURED_KEYS = [...Object.keys(defaults), ...RETIRED_KEYS];
 
 function warn(message: string): void {
   console.warn(`DYALOG_VIDEO_CONFIG: ${message}`);
@@ -99,7 +107,12 @@ export function parseConfig(raw: unknown): FeaturedConfig | null {
   const hero = readString(featured.hero, "hero", defaults.hero);
   if (hero === "") return null;
 
-  const eventSlug = readString(featured.eventSlug, "eventSlug", "");
+  if (featured.eventSlug !== undefined) {
+    warn(
+      "featured.eventSlug is no longer used: the event card names the last " +
+        "Dyalog meeting, taken from the videos. It can be removed.",
+    );
+  }
 
   return {
     hero,
@@ -109,7 +122,6 @@ export function parseConfig(raw: unknown): FeaturedConfig | null {
       defaults.heroEyebrow,
     ),
     secondaryIds: readSecondaryIds(featured.secondaryIds),
-    eventSlug: eventSlug === "" ? null : eventSlug,
   };
 }
 

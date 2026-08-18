@@ -15,7 +15,6 @@ describe("parseConfig", () => {
       hero: "aaa",
       heroEyebrow: "",
       secondaryIds: [],
-      eventSlug: null,
     });
   });
 
@@ -25,15 +24,13 @@ describe("parseConfig", () => {
         featured: {
           hero: "aaa",
           heroEyebrow: "Editor's pick",
-          secondaryIds: ["bbb", "ccc"],
-          eventSlug: "dyalog-23",
+          secondaryIds: ["bbb"],
         },
       }),
     ).toEqual({
       hero: "aaa",
       heroEyebrow: "Editor's pick",
-      secondaryIds: ["bbb", "ccc"],
-      eventSlug: "dyalog-23",
+      secondaryIds: ["bbb"],
     });
   });
 
@@ -43,13 +40,27 @@ describe("parseConfig", () => {
     expect(warn).toHaveBeenCalledWith(expect.stringContaining("heroEyebow"));
   });
 
-  it("warns and keeps two when given three secondaries", () => {
+  it("warns and keeps one when given more secondaries than there are slots", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const config = parseConfig({
-      featured: { hero: "aaa", secondaryIds: ["bbb", "ccc", "ddd"] },
+      featured: { hero: "aaa", secondaryIds: ["bbb", "ccc"] },
     });
-    expect(config?.secondaryIds).toEqual(["bbb", "ccc"]);
+    expect(config?.secondaryIds).toEqual(["bbb"]);
     expect(warn).toHaveBeenCalledWith(expect.stringContaining("secondaryIds"));
+  });
+
+  it("says why a configured eventSlug stopped mattering", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const config = parseConfig({
+      featured: { hero: "aaa", eventSlug: "dyalog-23" },
+    });
+
+    // Not an unknown key: the operator is told it is retired, and the rest of
+    // the block still parses.
+    expect(config?.hero).toBe("aaa");
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("no longer used"),
+    );
   });
 });
 

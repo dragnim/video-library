@@ -41,7 +41,51 @@
    * WordPress still loads the font itself: this names a family, it does not
    * ship one. public/dev-fonts.css is how `npm run dev` gets hold of it.
    */
-  --dyalog-video-library-font: "Klavika", sans-serif;
+  --dyalog-video-library-font-display: "Klavika", sans-serif;
+  --dyalog-video-library-font-text: "IBM Plex Sans", sans-serif;
+
+  /*
+   * The type scale.
+   *
+   * Seven steps, replacing sixteen ad-hoc sizes that had accumulated one
+   * component at a time — including a 0.84375rem and two `em` values that
+   * resized themselves depending on what they were nested in.
+   *
+   * All rem, so they answer to the root and not to their container.
+   */
+  --dyalog-video-library-size-xs: 0.75rem;
+  --dyalog-video-library-size-sm: 0.9375rem;
+  --dyalog-video-library-size-base: 1rem;
+  --dyalog-video-library-size-md: 1.125rem;
+  --dyalog-video-library-size-lg: 1.4rem;
+  --dyalog-video-library-size-xl: 1.5rem;
+  --dyalog-video-library-size-2xl: 1.875rem;
+
+  /*
+   * The three weights Klavika actually has.
+   *
+   * It ships 300, 400, 500 and 700. Five rules used to ask for 600, which does
+   * not exist, so the browser rounded them up to Bold and the intended
+   * mid-weight was never seen. Those are now medium.
+   */
+  --dyalog-video-library-weight-regular: 400;
+  --dyalog-video-library-weight-medium: 500;
+  --dyalog-video-library-weight-bold: 700;
+
+  /*
+   * Heading rhythm.
+   *
+   * Unitless line height so it tracks the size rather than freezing at one
+   * pixel value, and a shade of negative tracking, which Klavika wants at
+   * heading sizes and does not want at body sizes. Applied to every heading in
+   * the reset below, so a component only restates them to disagree.
+   */
+  --dyalog-video-library-heading-line-height: 1.3;
+  --dyalog-video-library-heading-tracking: -0.2px;
+
+  /* Secondary lines — presenter, date, event — set looser than the 1.5 the
+     mount carries, because they stack as separate facts rather than prose. */
+  --dyalog-video-library-meta-line-height: 1.8;
 
   /*
    * Shades of a bound token are mixed from it rather than hard-coded, so a kit
@@ -64,28 +108,49 @@
   --dyalog-video-library-page-bg: #fbfaf9;
   /* Cards and form controls, which sit a step above the page background. */
   --dyalog-video-library-surface: #ffffff;
-  --dyalog-video-library-rule: #e3e3e3;
+  /* Deliberately the same value as the card border: a separator inside a card
+     and the card's own edge are the same hairline, so they should not drift
+     apart. Two tokens rather than one because they are different jobs. */
+  --dyalog-video-library-rule: #e6e6e6;
   --dyalog-video-library-divider-light: #ecebe8;
   --dyalog-video-library-chip: #f1f0ee;
   --dyalog-video-library-chip-border: #e0dedb;
   --dyalog-video-library-muted: #6d7680;
-  --dyalog-video-library-card-border: #dcdad6;
-  --dyalog-video-library-card-hover-border: #c9b8ab;
-  --dyalog-video-library-card-hover-shadow: 0 2px 8px rgba(6, 26, 41, 0.12);
+
+  /* Darker than --text, which is bound to the kit and therefore not ours to
+     pick. For the few places that need to sit heavier than body copy without
+     being a heading. */
+  --dyalog-video-library-text-strong: #232222;
+  --dyalog-video-library-card-border: #e6e6e6;
+
+  /*
+   * Card lift.
+   *
+   * Both are diffuse and centred — no offset, no spread — so a card reads as
+   * sitting off the page rather than lit from above. Hover deepens and widens
+   * the same shadow rather than swapping it for a different shape, which is why
+   * only the alpha and the blur differ.
+   */
+  --dyalog-video-library-card-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+  --dyalog-video-library-card-hover-shadow: 0 0 30px rgba(0, 0, 0, 0.18);
+
+  /* Long enough for the shadow to read as growing rather than switching. */
+  --dyalog-video-library-card-transition: box-shadow 300ms ease;
+
+  /* A floating panel is not a card: it needs to read as above the page from the
+     moment it opens, so it keeps the tighter directional lift. */
+  --dyalog-video-library-panel-shadow: 0 2px 8px rgba(6, 26, 41, 0.12);
   --dyalog-video-library-skeleton: #ecebe8;
-  --dyalog-video-library-radius: 3px;
+  --dyalog-video-library-radius: 5px;
 
   /* Every select, input and button in the advanced-search panel, so the three
      columns' controls line up in one row. */
   --dyalog-video-library-control-height: 32px;
 
-  /* Over a thumbnail: the scrim's three stops, the three colours the text above
-     it uses, and the letterbox a thumbnail is laid on. */
-  --dyalog-video-library-scrim-strong: rgba(6, 26, 41, 0.96);
+  /* Over a thumbnail, and the letterbox a thumbnail is laid on. Only the consent
+     player lays text over an image now that the featured caption sits below it,
+     so the scrim's outer stops and the dimmer on-scrim text went with it. */
   --dyalog-video-library-scrim-mid: rgba(6, 26, 41, 0.72);
-  --dyalog-video-library-scrim-soft: rgba(6, 26, 41, 0.42);
-  --dyalog-video-library-eyebrow: #ffa877;
-  --dyalog-video-library-on-scrim: #cfe0ec;
   --dyalog-video-library-on-scrim-strong: #ffffff;
   --dyalog-video-library-thumb-bg: #111111;
 
@@ -101,7 +166,7 @@
    !important declarations unnecessary. */
 #dyalog-video-library {
   box-sizing: border-box;
-  font-family: var(--dyalog-video-library-font);
+  font-family: var(--dyalog-video-library-font-text);
   color: var(--dyalog-video-library-text);
   line-height: 1.5;
 }
@@ -129,9 +194,32 @@
 /* Headings and form controls are styled directly by Elementor and by the
    browser, so they are put back to inheriting the family the mount element
    names above rather than restating it. */
-#dyalog-video-library
-  :where(h1, h2, h3, h4, h5, h6, button, input, select, textarea) {
+/*
+ * A rule spans its container, wherever it sits.
+ *
+ * The browser's default is `margin: 0.5em auto`, and an auto cross-axis margin
+ * cancels flex stretch — so an <hr> inside a column flex container collapses to
+ * its content width, which for an <hr> is nothing. The list row's separator was
+ * invisible for exactly this reason while the grid card's, sitting in a plain
+ * block, was fine.
+ *
+ * Vertical margins are left to the component; only the inline ones are forced.
+ */
+#dyalog-video-library :where(hr) {
+  margin-inline: 0;
+}
+
+/* Form controls carry their own family in every browser, so they are put back
+   to the text face the mount names. */
+#dyalog-video-library :where(button, input, select, textarea) {
   font-family: inherit;
+}
+
+/* Headings are the display face. Klavika for anything that announces, IBM Plex
+   Sans for anything that is read — the mount sets the latter, so this is the
+   only place the pairing is expressed. */
+#dyalog-video-library :where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--dyalog-video-library-font-display);
 }
 
 /*
@@ -155,9 +243,9 @@
 #dyalog-video-library :where(h1, h2, h3, h4, h5, h6) {
   font-size: revert;
   font-weight: revert;
-  line-height: revert;
-  letter-spacing: revert;
   word-spacing: revert;
+  line-height: var(--dyalog-video-library-heading-line-height);
+  letter-spacing: var(--dyalog-video-library-heading-tracking);
   color: inherit;
 }
 

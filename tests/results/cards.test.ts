@@ -96,10 +96,11 @@ describe("VideoCard", () => {
     expect(link.getAttribute("href")).toContain("presenter_id=999");
   });
 
-  it("joins a pair of presenters with an ampersand", () => {
+  it("joins a pair of presenters with a comma, as it does three", () => {
     const { container } = render(VideoCard, { props: { video } });
 
-    expect(container.textContent).toContain("John Smith & Jane Doe");
+    expect(container.textContent).toContain("John Smith, Jane Doe");
+    expect(container.textContent).not.toContain("&");
   });
 
   it("joins three presenters with commas", () => {

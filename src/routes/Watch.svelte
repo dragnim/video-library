@@ -212,8 +212,8 @@
     border: 0;
     background: none;
     color: var(--dyalog-video-library-link);
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-bold);
     text-decoration: none;
     cursor: pointer;
   }
@@ -235,28 +235,30 @@
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
-    box-shadow: var(--dyalog-video-library-card-hover-shadow);
+    box-shadow: var(--dyalog-video-library-panel-shadow);
   }
 
   :global(#dyalog-video-library) h1 {
     margin-bottom: 0.75rem;
-    font-size: 2em;
+    font-size: var(--dyalog-video-library-size-2xl);
   }
 
   .presenters {
-    font-weight: 700;
+    font-weight: var(--dyalog-video-library-weight-regular);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   .meta {
     display: flex;
     justify-content: space-between;
     margin: 0.75rem 0;
-    font-weight: 700;
+    font-weight: var(--dyalog-video-library-weight-regular);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   :global(#dyalog-video-library) .suggested {
     padding-top: 1rem;
-    font-weight: 700;
+    font-weight: var(--dyalog-video-library-weight-bold);
   }
 
   hr {

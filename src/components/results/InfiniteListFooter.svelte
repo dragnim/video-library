@@ -104,7 +104,7 @@
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
     color: var(--dyalog-video-library-primary);
-    font-weight: 600;
+    font-weight: var(--dyalog-video-library-weight-medium);
     cursor: pointer;
   }
 

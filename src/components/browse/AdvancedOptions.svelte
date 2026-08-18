@@ -78,15 +78,15 @@
   :global(#dyalog-video-library) h3 {
     margin: 0;
     color: var(--dyalog-video-library-on-primary);
-    font-size: 0.9375rem;
-    font-weight: 600;
+    font-size: var(--dyalog-video-library-size-base);
+    font-weight: var(--dyalog-video-library-weight-medium);
   }
 
   .field {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    font-size: 0.8125rem;
+    font-size: var(--dyalog-video-library-size-sm);
   }
 
   select {
@@ -96,7 +96,7 @@
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
     color: var(--dyalog-video-library-text);
-    font-size: 0.8125rem;
+    font-size: var(--dyalog-video-library-size-sm);
   }
 
   @media (max-width: 640px) {

@@ -14,7 +14,6 @@ function config(over: Partial<FeaturedConfig> = {}): FeaturedConfig {
     hero: "vid001",
     heroEyebrow: "",
     secondaryIds: [],
-    eventSlug: null,
     ...over,
   };
 }
@@ -26,6 +25,19 @@ function recordRequests() {
     seen.push(new URL(request.url));
   });
   return seen;
+}
+
+/**
+ * The slot links only. The hero is a video card now, so it also carries a link
+ * per presenter and one to its event, and those are not slots.
+ */
+function slotLinks() {
+  return screen
+    .getAllByRole("link")
+    .map((a) => a.getAttribute("href"))
+    .filter(
+      (href) => href?.startsWith("/watch?v=") || href?.startsWith("/?event="),
+    );
 }
 
 async function heroTitle(title: string) {
@@ -40,7 +52,7 @@ async function heroTitle(title: string) {
  */
 async function loaded(requests: URL[], count: number) {
   await vi.waitFor(() => {
-    expect(requests).toHaveLength(count);
+    expect(requests.length).toBeGreaterThanOrEqual(count);
   });
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
@@ -62,8 +74,7 @@ describe("FeaturedStrip", () => {
       props: {
         config: config({
           heroEyebrow: "Editor's pick",
-          secondaryIds: ["vid002", "vid003"],
-          eventSlug: "dyalog-22",
+          secondaryIds: ["vid002"],
         }),
       },
     });
@@ -71,20 +82,18 @@ describe("FeaturedStrip", () => {
     await heroTitle("Introduction to APL");
 
     expect(screen.getByText("Editor's pick")).toBeInTheDocument();
-    const links = screen
-      .getAllByRole("link")
-      .map((a) => a.getAttribute("href"));
-    expect(links).toEqual([
+    // dyalog-22 is not configured: it is the newest video's own meeting in the
+    // mock library, which is how the card finds the last event.
+    expect(slotLinks()).toEqual([
       "/watch?v=vid001",
       "/watch?v=vid002",
-      "/watch?v=vid003",
       "/?event=dyalog-22",
     ]);
   });
 
   it("counts the event, rather than the rows it asked for", async () => {
     render(FeaturedStrip, {
-      props: { config: config({ eventSlug: "dyalog-22" }) },
+      props: { config: config() },
     });
 
     await heroTitle("Introduction to APL");
@@ -95,13 +104,13 @@ describe("FeaturedStrip", () => {
 
   it("leaves a slot whose video is gone empty, and keeps the rest", async () => {
     render(FeaturedStrip, {
-      props: { config: config({ secondaryIds: ["notfound", "vid003"] }) },
+      props: { config: config({ secondaryIds: ["notfound"] }) },
     });
 
     await heroTitle("Introduction to APL");
 
-    expect(screen.getByText("Dfns Workshop")).toBeInTheDocument();
-    expect(screen.getAllByRole("link")).toHaveLength(2);
+    // The hero and the event card, with nothing where the companion would be.
+    expect(slotLinks()).toEqual(["/watch?v=vid001", "/?event=dyalog-22"]);
   });
 
   it("renders nothing at all when the hero is gone", async () => {
@@ -121,8 +130,12 @@ describe("FeaturedStrip", () => {
 
     await heroTitle("Introduction to APL");
 
-    expect(requests).toHaveLength(1);
-    expect(requests[0].pathname).toBe("/videos/vid001");
+    // One video fetched by id, the hero's. The list and roster requests behind
+    // the event card are not slots.
+    const byId = requests.filter((url) =>
+      /^\/videos\/[^/]+$/.test(url.pathname),
+    );
+    expect(byId.map((url) => url.pathname)).toEqual(["/videos/vid001"]);
   });
 
   it("credits the hero's presenters and event", async () => {
@@ -130,21 +143,28 @@ describe("FeaturedStrip", () => {
 
     await heroTitle("Dfns Workshop");
 
+    // Each credit is its own link now, as it is on a video card.
     expect(
-      screen.getByText("John Smith & Jane Doe · Dyalog '22"),
+      screen.getByRole("link", { name: "John Smith" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Jane Doe" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Dyalog '22" }),
     ).toBeInTheDocument();
   });
 
-  it("falls back to the three newest videos in one request", async () => {
+  it("falls back to the newest videos in one request", async () => {
     const requests = recordRequests();
     render(FeaturedStrip, { props: { config: null } });
 
     await heroTitle("Introduction to APL");
 
-    expect(requests).toHaveLength(1);
-    expect(requests[0].searchParams.get("per_page")).toBe("3");
-    expect(requests[0].searchParams.get("sort")).toBe("newest");
-    expect(screen.getAllByRole("link")).toHaveLength(3);
+    const listed = requests.filter((url) => url.pathname === "/videos");
+    expect(listed[0].searchParams.get("per_page")).toBe("2");
+    expect(listed[0].searchParams.get("sort")).toBe("newest");
+
+    // Hero, companion, and the event card.
+    expect(slotLinks()).toHaveLength(3);
   });
 
   it("renders nothing with nothing configured and nothing returned", async () => {

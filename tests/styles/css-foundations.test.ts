@@ -53,31 +53,45 @@ function mediaBlock(source: string, query: string): string {
 describe("design tokens", () => {
   it.each([
     ["page-bg", "#fbfaf9"],
-    ["rule", "#e3e3e3"],
+    ["rule", "#e6e6e6"],
     ["divider-light", "#ecebe8"],
     ["chip", "#f1f0ee"],
     ["chip-border", "#e0dedb"],
     ["muted", "#6d7680"],
-    ["card-border", "#dcdad6"],
-    ["card-hover-border", "#c9b8ab"],
-    ["card-hover-shadow", "0 2px 8px rgba\\(6, 26, 41, 0\\.12\\)"],
+    ["text-strong", "#232222"],
+    ["card-border", "#e6e6e6"],
+    ["card-shadow", "0 0 25px rgba\\(0, 0, 0, 0\\.05\\)"],
+    ["card-hover-shadow", "0 0 30px rgba\\(0, 0, 0, 0\\.18\\)"],
+    ["panel-shadow", "0 2px 8px rgba\\(6, 26, 41, 0\\.12\\)"],
+    ["card-transition", "box-shadow 300ms ease"],
     ["skeleton", "#ecebe8"],
-    ["scrim-strong", "rgba\\(6, 26, 41, 0\\.96\\)"],
     ["scrim-mid", "rgba\\(6, 26, 41, 0\\.72\\)"],
-    ["scrim-soft", "rgba\\(6, 26, 41, 0\\.42\\)"],
-    ["eyebrow", "#ffa877"],
-    ["on-scrim", "#cfe0ec"],
     ["on-scrim-strong", "#ffffff"],
     ["thumb-bg", "#111111"],
     ["surface", "#ffffff"],
     ["on-primary", "#ffffff"],
-    ["radius", "3px"],
+    ["radius", "5px"],
     ["control-height", "32px"],
     ["grid-columns", "3"],
     ["grid-gap", "20px"],
     // Named, not bound to the kit: inheriting it from the body is what let the
     // whole library change typeface without anything in the app changing.
-    ["font", '"Klavika", sans-serif'],
+    ["font-display", '"Klavika", sans-serif'],
+    ["font-text", '"IBM Plex Sans", sans-serif'],
+    ["size-xs", "0\\.75rem"],
+    ["size-sm", "0\\.9375rem"],
+    ["size-base", "1rem"],
+    ["size-md", "1\\.125rem"],
+    ["size-lg", "1\\.4rem"],
+    ["size-xl", "1\\.5rem"],
+    ["size-2xl", "1\\.875rem"],
+    // Klavika has 300/400/500/700 and no 600, so a 600 silently renders as Bold.
+    ["weight-regular", "400"],
+    ["weight-medium", "500"],
+    ["weight-bold", "700"],
+    ["heading-line-height", "1\\.3"],
+    ["heading-tracking", "-0\\.2px"],
+    ["meta-line-height", "1\\.8"],
   ])("--dyalog-video-library-%s is %s", (token, value) => {
     expect(app).toMatch(
       new RegExp(`--dyalog-video-library-${token}\\s*:\\s*${value}\\s*;`, "i"),
@@ -143,19 +157,6 @@ describe("the two breakpoints", () => {
     expect(styles("components/results/ResultGrid.svelte")).not.toContain(
       "padding",
     );
-  });
-});
-
-describe("the scrim over a thumbnail", () => {
-  it("covers the whole thumbnail rather than its bottom edge", () => {
-    // Many thumbnails are slides with burned-in titles, so this is legibility,
-    // not decoration.
-    const strip = styles("components/browse/FeaturedStrip.svelte");
-    const scrim = strip.slice(strip.indexOf(".scrim"));
-
-    expect(scrim).toMatch(/inset:\s*0/);
-    expect(scrim).toMatch(/linear-gradient\( to top/);
-    expect(scrim).toContain("var(--dyalog-video-library-scrim-strong)");
   });
 });
 
@@ -228,6 +229,8 @@ describe("headings against the kit", () => {
     // markup.
     ["components/chrome/SearchBar.svelte", ".heading"],
     ["components/browse/Events.svelte", ".type"],
+    ["components/browse/FeaturedStrip.svelte", ".hero-card h3"],
+    ["components/browse/FeaturedStrip.svelte", ".event h3"],
     ["components/browse/Presenters.svelte", ".letter"],
     ["routes/Watch.svelte", ".suggested"],
   ])("%s raises %s to the mount id", (file, selector) => {
@@ -237,18 +240,67 @@ describe("headings against the kit", () => {
   });
 
   it("reverts the kit's heading typography in the sheet", () => {
-    const block = /:where\(h1, h2, h3, h4, h5, h6\) \{([^}]*)\}/.exec(app);
+    // Two blocks now match that selector — the display face, and this one.
+    const block =
+      /:where\(h1, h2, h3, h4, h5, h6\) \{([^}]*font-size: revert[^}]*)\}/.exec(
+        app,
+      );
 
     expect(block).not.toBeNull();
-    for (const property of [
-      "font-size",
-      "font-weight",
-      "line-height",
-      "letter-spacing",
-      "word-spacing",
-    ]) {
+    for (const property of ["font-size", "font-weight", "word-spacing"]) {
       expect(block?.[1]).toContain(`${property}: revert`);
     }
+
+    // These two the app has an opinion about, so they are set rather than
+    // reverted. Every heading gets them; a component restates them to disagree.
+    expect(block?.[1]).toContain(
+      "line-height: var(--dyalog-video-library-heading-line-height)",
+    );
+    expect(block?.[1]).toContain(
+      "letter-spacing: var(--dyalog-video-library-heading-tracking)",
+    );
+  });
+});
+
+describe("type comes from the scale", () => {
+  // Sixteen ad-hoc sizes had accumulated one component at a time, two of them
+  // in `em` so they resized with their container. A literal here is a step
+  // outside the scale, and a font-weight literal is how five rules came to ask
+  // for a 600 that Klavika does not have.
+  it.each(components)("%s sizes type from tokens", (file) => {
+    const declarations =
+      styles(file).match(/font-(?:size|weight)\s*:\s*[^;]+;/g) ?? [];
+
+    for (const declaration of declarations) {
+      expect(declaration).toMatch(/:\s*var\(--dyalog-video-library-/);
+    }
+  });
+});
+
+describe("rules span their container", () => {
+  // The browser's default hr margin is `0.5em auto`, and an auto cross-axis
+  // margin cancels flex stretch — so an <hr> in a column flex container has no
+  // width at all. Two of the app's four separators sit in one.
+  it("forces the inline margins off every rule", () => {
+    expect(app).toMatch(/:where\(hr\) \{\s*margin-inline: 0;/);
+  });
+});
+
+describe("the two faces", () => {
+  // Klavika announces, IBM Plex Sans is read. The pairing is expressed once —
+  // the mount names the text face and the reset names the display face for
+  // headings — so a component naming a family is a third face by accident.
+  it.each(components)("%s names no typeface of its own", (file) => {
+    expect(styles(file)).not.toMatch(/font-family\s*:/);
+  });
+
+  it("pairs the faces in the sheet and nowhere else", () => {
+    expect(app).toMatch(
+      /#dyalog-video-library \{[^}]*font-family: var\(--dyalog-video-library-font-text\)/,
+    );
+    expect(app).toMatch(
+      /:where\(h1, h2, h3, h4, h5, h6\) \{\s*font-family: var\(--dyalog-video-library-font-display\)/,
+    );
   });
 });
 

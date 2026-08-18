@@ -59,8 +59,8 @@
   span {
     padding: 0.125rem 0.375rem;
     border-radius: var(--dyalog-video-library-radius);
-    font-size: 0.9375rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-base);
+    font-weight: var(--dyalog-video-library-weight-bold);
     line-height: 1.4;
   }
 

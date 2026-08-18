@@ -100,8 +100,8 @@
 
   :global(#dyalog-video-library) .heading {
     margin-right: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: 400;
+    font-size: var(--dyalog-video-library-size-md);
+    font-weight: var(--dyalog-video-library-weight-regular);
     line-height: 1.3;
     letter-spacing: -0.5px;
     color: var(--dyalog-video-library-on-primary);
@@ -122,7 +122,7 @@
     border-radius: 6px;
     background-color: var(--dyalog-video-library-surface);
     color: var(--dyalog-video-library-text);
-    font-size: 1.1em;
+    font-size: var(--dyalog-video-library-size-md);
   }
 
   /* The mount id, since the kit styles `button:hover` and `:focus`, which
@@ -137,8 +137,8 @@
     border-radius: 6px;
     background-color: var(--dyalog-video-library-secondary);
     color: var(--dyalog-video-library-on-primary);
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-medium);
     cursor: pointer;
   }
 
@@ -149,7 +149,7 @@
     }
 
     :global(#dyalog-video-library) .heading {
-      font-size: 1.8rem;
+      font-size: var(--dyalog-video-library-size-2xl);
     }
 
     /* Touch targets. */

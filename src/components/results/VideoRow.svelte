@@ -60,14 +60,12 @@
     background: var(--dyalog-video-library-surface);
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
-    transition:
-      box-shadow 120ms ease,
-      border-color 120ms ease;
+    box-shadow: var(--dyalog-video-library-card-shadow);
+    transition: var(--dyalog-video-library-card-transition);
   }
 
   .row:hover {
     box-shadow: var(--dyalog-video-library-card-hover-shadow);
-    border-color: var(--dyalog-video-library-card-hover-border);
   }
 
   /* The thumbnail link, as a direct child. */
@@ -91,8 +89,11 @@
     padding: 0.75rem 2rem;
   }
 
+  /* Deliberately the same as the grid card's title: same step, same weight. A
+     row and a card are the same video in two layouts. */
   :global(#dyalog-video-library) h2 {
-    font-size: 1.875rem;
+    font-size: var(--dyalog-video-library-size-lg);
+    font-weight: var(--dyalog-video-library-weight-regular);
   }
 
   :global(#dyalog-video-library) h2 :global(a) {
@@ -116,21 +117,29 @@
   }
 
   .presenters {
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
+  /* .meta carries 0.5rem of its own below, so the bottom is trimmed to keep the
+     rule sitting evenly between the credits and the date. */
   hr {
+    margin: 0.75rem 0 0.25rem;
     border: 0;
     border-top: 1px solid var(--dyalog-video-library-rule);
   }
 
+  /* The date and the "in" before the event. The event itself is a link and
+     the theme colours those with !important, so it keeps its own colour. */
   .meta {
+    color: var(--dyalog-video-library-text-strong);
     display: flex;
     justify-content: space-between;
     margin: 0.5rem 0;
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   @media (max-width: 640px) {
@@ -145,10 +154,6 @@
 
     .body {
       padding: 0.75rem 1.25rem;
-    }
-
-    :global(#dyalog-video-library) h2 {
-      font-size: 1.5rem;
     }
   }
 </style>

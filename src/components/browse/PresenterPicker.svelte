@@ -178,7 +178,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    font-size: 0.8125rem;
+    font-size: var(--dyalog-video-library-size-sm);
   }
 
   input {
@@ -202,7 +202,7 @@
     background: var(--dyalog-video-library-surface);
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
-    box-shadow: var(--dyalog-video-library-card-hover-shadow);
+    box-shadow: var(--dyalog-video-library-panel-shadow);
     color: var(--dyalog-video-library-text);
   }
 
@@ -218,7 +218,7 @@
     background: none;
     color: inherit;
     text-align: left;
-    font-size: 0.8125rem;
+    font-size: var(--dyalog-video-library-size-sm);
     cursor: pointer;
   }
 
@@ -247,7 +247,7 @@
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-chip);
     color: var(--dyalog-video-library-text);
-    font-size: 0.8125rem;
+    font-size: var(--dyalog-video-library-size-sm);
     cursor: pointer;
   }
 

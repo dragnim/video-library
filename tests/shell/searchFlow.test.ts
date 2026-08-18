@@ -13,9 +13,9 @@ function setUrl(path: string) {
   window.dispatchEvent(new PopStateEvent("popstate", { state: null }));
 }
 
-/** The strip's own label, which nothing else renders. */
+/** The strip is the only labelled landmark on the page. */
 function featuredStrip() {
-  return screen.queryByText("FEATURED");
+  return screen.queryByRole("region", { name: "Featured" });
 }
 
 /** Credits only appear once the roster can name the ids. */

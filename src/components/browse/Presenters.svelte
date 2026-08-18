@@ -47,8 +47,8 @@
   :global(#dyalog-video-library) .letter {
     scroll-margin-top: 3rem;
     padding-top: 1rem;
-    font-size: 1.125rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-md);
+    font-weight: var(--dyalog-video-library-weight-bold);
     color: var(--dyalog-video-library-muted);
   }
 </style>

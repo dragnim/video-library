@@ -148,7 +148,14 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-weight: 700;
+  }
+
+  /* Reads as the Browse line does: a label, not data. The weight sits here
+     rather than on .sort because the select inherits colour from it. */
+  .sort label {
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    color: var(--dyalog-video-library-muted);
   }
 
   select {

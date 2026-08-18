@@ -51,9 +51,16 @@ export function eventHref(shortname: string): string {
   return `/search?${serialiseFilters({ event: shortname }).toString()}`;
 }
 
-/** dvl joins a pair with an ampersand and three or more with commas. */
+/**
+ * Commas throughout, including for a pair.
+ *
+ * dvl joined a pair with an ampersand and three or more with commas, so a
+ * two-name credit punctuated differently from a three-name one. One rule reads
+ * as a list either way.
+ *
+ * Shared with the event credits on a presenter row, which are a list of the
+ * same kind.
+ */
 export function separator(index: number, count: number): string {
-  if (index === count - 1) return "";
-
-  return count === 2 ? " & " : ", ";
+  return index === count - 1 ? "" : ", ";
 }

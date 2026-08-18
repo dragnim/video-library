@@ -59,7 +59,7 @@
   }
 
   :global(#dyalog-video-library) h3 {
-    font-size: 1.5rem;
+    font-size: var(--dyalog-video-library-size-xl);
   }
 
   :global(#dyalog-video-library) h3 :global(a) {
@@ -74,8 +74,9 @@
   .meta {
     display: flex;
     gap: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   /* Separates the facts without a character in the markup. */
@@ -84,8 +85,9 @@
   }
 
   .events {
-    font-size: 0.875rem;
+    font-size: var(--dyalog-video-library-size-sm);
     color: var(--dyalog-video-library-muted);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   .more {
@@ -94,7 +96,7 @@
 
   @media (max-width: 640px) {
     :global(#dyalog-video-library) h3 {
-      font-size: 1.25rem;
+      font-size: var(--dyalog-video-library-size-lg);
     }
   }
 </style>

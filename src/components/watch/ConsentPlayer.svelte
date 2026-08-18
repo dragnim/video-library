@@ -123,7 +123,7 @@
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-scrim-mid);
     color: var(--dyalog-video-library-on-scrim-strong);
-    font-size: 0.875rem;
+    font-size: var(--dyalog-video-library-size-sm);
     text-align: left;
   }
 

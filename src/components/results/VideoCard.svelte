@@ -53,14 +53,12 @@
     background: var(--dyalog-video-library-surface);
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
-    transition:
-      box-shadow 120ms ease,
-      border-color 120ms ease;
+    box-shadow: var(--dyalog-video-library-card-shadow);
+    transition: var(--dyalog-video-library-card-transition);
   }
 
   .card:hover {
     box-shadow: var(--dyalog-video-library-card-hover-shadow);
-    border-color: var(--dyalog-video-library-card-hover-border);
   }
 
   /* The title link, as a direct child. A class passed to Link would not carry
@@ -81,10 +79,11 @@
       var(--dyalog-video-library-radius) 0 0;
   }
 
+  /* Bottom trimmed: the credit line below reads as belonging to the title. */
   :global(#dyalog-video-library) h3 {
-    padding: 0.75rem;
-    font-size: 1.25rem;
-    font-weight: 600;
+    padding: 0.75rem 0.75rem 0.25rem;
+    font-size: var(--dyalog-video-library-size-lg);
+    font-weight: var(--dyalog-video-library-weight-regular);
     color: var(--dyalog-video-library-link);
   }
 
@@ -94,20 +93,25 @@
 
   .presenters {
     padding: 0 0 0 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   .meta {
     padding: 0.5rem 0.75rem;
   }
 
+  /* The date and the "in" before the event. The event itself is a link and
+     the theme colours those with !important, so it keeps its own colour. */
   .meta p {
+    color: var(--dyalog-video-library-text-strong);
     display: flex;
     justify-content: space-between;
     margin: 1rem 0;
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
+    line-height: var(--dyalog-video-library-meta-line-height);
   }
 
   hr {
