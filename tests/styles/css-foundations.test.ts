@@ -290,6 +290,16 @@ describe("the row's two columns", () => {
   });
 });
 
+describe("the tab strip's own spacing", () => {
+  // app.css zeroes list padding inside the mount at 1,0,0, so the strip's gap
+  // above itself has to be stated at the id or it silently does nothing.
+  it("sets its top padding at the mount id", () => {
+    expect(styles("components/browse/Tabs.svelte")).toMatch(
+      /:global\(#dyalog-video-library\) ul \{\s*padding-top:/,
+    );
+  });
+});
+
 describe("the route outlet takes no ring", () => {
   // It is focused programmatically after every SPA navigation so a screen reader
   // lands on the new content. A ring there outlines the entire page, and the

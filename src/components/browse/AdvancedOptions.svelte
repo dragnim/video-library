@@ -28,7 +28,10 @@
   <div class="column">
     <h3>Filter by Event</h3>
     <span class="field">
-      <label for="video-library-event">Event</label>
+      <!-- The heading above says what this is. The label stays for a screen
+           reader, which reads a control by its label and not by a nearby
+           heading. -->
+      <label class="sr-only" for="video-library-event">Event</label>
       <!-- dvl's "Any" string sentinel is not ported: it had to be mapped back to
            "" wherever the value was read. The option carries "" itself. -->
       <select
@@ -46,11 +49,21 @@
 </div>
 
 <style>
+  /*
+   * All the space above, none below.
+   *
+   * The controls sit centred between the search row and the tabs, and the space
+   * below them is not this panel's to give: 10px of it is the search row's own
+   * bottom padding and 16px is the tab strip's top padding, 26px in total. So
+   * the top padding is that same 26px and the bottom is nothing — measured, not
+   * guessed, because padding here is only one of three contributors and matching
+   * 1rem against 1rem left the panel sitting 26px high in its own space.
+   */
   .panel {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
-    padding: 0.75rem 0 1rem;
+    padding: 1.625rem 0 0;
   }
 
   /* Heading, then label, then control in every column, so the controls line up
@@ -61,7 +74,7 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    gap: 0.375rem;
+    gap: 0.5rem;
     flex: 0 0 auto;
   }
 
@@ -73,12 +86,20 @@
     align-items: stretch;
   }
 
-  /* The mount id, since the kit styles headings and would otherwise take this
-     one to its own dark colour against the navy band. */
+  /*
+   * The mount id, since the kit styles headings and would otherwise take this
+   * one to its own dark colour against the navy band.
+   *
+   * The text face and the same step as the tabs and the From and To beneath it:
+   * these are labels for the controls in their column, and they sit among them
+   * rather than announcing a section of the page. The heading reset hands every
+   * heading the display face, so this has to say otherwise.
+   */
   :global(#dyalog-video-library) h3 {
     margin: 0;
     color: var(--dyalog-video-library-on-primary);
-    font-size: var(--dyalog-video-library-size-base);
+    font-family: var(--dyalog-video-library-font-text);
+    font-size: var(--dyalog-video-library-size-sm);
     font-weight: var(--dyalog-video-library-weight-medium);
   }
 

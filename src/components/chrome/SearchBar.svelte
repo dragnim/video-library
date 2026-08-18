@@ -88,8 +88,10 @@
     color: var(--dyalog-video-library-on-primary);
   }
 
+  /* Asymmetric on purpose: the row wants a little more air above it than below,
+     where the tab band follows on. */
   .inner {
-    padding: 10px 0.4rem;
+    padding: 15px 0.4rem 10px;
   }
 
   form {

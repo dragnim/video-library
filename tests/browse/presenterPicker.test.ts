@@ -209,3 +209,14 @@ describe("a click outside", () => {
     expect(box()).toHaveAttribute("aria-expanded", "false");
   });
 });
+
+// The chips used to appear from nothing, which pushed the tab strip below them
+// down the page the moment a presenter was chosen.
+describe("the chip row's space", () => {
+  it("is there before anything is chosen", () => {
+    const { container } = render(PresenterPicker);
+
+    expect(container.querySelector(".chosen-slot")).not.toBeNull();
+    expect(container.querySelector(".chosen")).toBeNull();
+  });
+});

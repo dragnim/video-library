@@ -106,7 +106,9 @@
 </script>
 
 <div class="picker" {@attach open && dismiss}>
-  <label for="video-library-presenter">Presenter</label>
+  <!-- Hidden for the same reason as the event select's: "Filter by Presenter"
+       sits directly above it, and a control still needs a label of its own. -->
+  <label class="sr-only" for="video-library-presenter">Presenter</label>
 
   <!-- Focus stays on the input and aria-activedescendant names the highlighted
        option, so the options are not themselves focus stops. -->
@@ -152,24 +154,29 @@
     {/each}
   </div>
 
-  {#if selected.length !== 0}
-    <ul class="chosen">
-      {#each selected as presenter (presenter.id)}
-        <li>
-          <!-- The whole token removes the filter, rather than a glyph inside it
-               too small to be the 44px target the token already is. -->
-          <button
-            type="button"
-            class="chip"
-            aria-label={removeLabel(presenter.name)}
-            onclick={() => remove(presenter.id)}
-          >
-            {presenter.name}<span aria-hidden="true">×</span>
-          </button>
-        </li>
-      {/each}
-    </ul>
-  {/if}
+  <!-- The row is always here, even with nothing in it. Rendering it only when a
+       presenter is chosen made the whole tab strip below jump down the moment
+       someone picked one, and back up when they cleared it. -->
+  <div class="chosen-slot">
+    {#if selected.length !== 0}
+      <ul class="chosen">
+        {#each selected as presenter (presenter.id)}
+          <li>
+            <!-- The whole token removes the filter, rather than a glyph inside
+                 it too small to be the 44px target the token already is. -->
+            <button
+              type="button"
+              class="chip"
+              aria-label={removeLabel(presenter.name)}
+              onclick={() => remove(presenter.id)}
+            >
+              {presenter.name}<span aria-hidden="true">×</span>
+            </button>
+          </li>
+        {/each}
+      </ul>
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -225,6 +232,21 @@
   :global(#dyalog-video-library) [role="option"][aria-selected="true"],
   :global(#dyalog-video-library) [role="option"]:hover {
     background: var(--dyalog-video-library-divider-light);
+  }
+
+  /*
+   * Reserved, not conditional.
+   *
+   * One control's height, which comfortably holds one chip, so the band's height
+   * does not depend on whether a presenter is chosen. More than one row of chips
+   * still grows it — that is a deliberate limit rather than an oversight, since
+   * reserving for every possible row would leave a permanent hole.
+   */
+  .chosen-slot {
+    /* One chip exactly, rather than one control's height: a chip is a little
+       shorter than a select, and the difference was dead space under the input
+       whether or not anyone had chosen a presenter. */
+    min-height: calc(var(--dyalog-video-library-size-sm) * 1.5 + 0.25rem + 2px);
   }
 
   .chosen {

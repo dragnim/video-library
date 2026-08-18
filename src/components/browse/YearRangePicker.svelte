@@ -106,10 +106,18 @@
     gap: 0.5rem;
   }
 
+  /*
+   * Inline, not stacked.
+   *
+   * The other two columns lost their second line of text when their labels went
+   * to the screen reader, and From and To cannot: they say which select is which.
+   * Beside their selects instead of above them, all three columns are a heading
+   * and one row of controls, and the controls line up across the panel.
+   */
   .field {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    align-items: center;
+    gap: 0.375rem;
     font-size: var(--dyalog-video-library-size-sm);
   }
 

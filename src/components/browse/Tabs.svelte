@@ -56,8 +56,20 @@
     display: flex;
     list-style: none;
     margin: 0;
-    padding-top: 0.5rem;
     gap: 0.5rem;
+  }
+
+  /*
+   * The mount id, because app.css zeroes padding on every ol and ul inside the
+   * mount at 1,0,0 — a scoped `ul` rule is 0,1,1 and loses to it. The padding
+   * here had no effect at all, at either value, and the only gap above the tabs
+   * was the search row's own bottom padding.
+   *
+   * This is the whole gap between the tabs and whatever sits above them: the
+   * search row, or the filter panel when it is open.
+   */
+  :global(#dyalog-video-library) ul {
+    padding-top: 1rem;
   }
 
   /*
