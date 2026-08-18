@@ -38,6 +38,10 @@ describe("the browse strip", () => {
       "href",
       "/presenters",
     );
+    expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute(
+      "href",
+      "/terms",
+    );
   });
 
   it("marks the route the user is on, and only that one", () => {

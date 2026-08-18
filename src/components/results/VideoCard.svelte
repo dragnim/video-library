@@ -9,16 +9,30 @@
     separator,
   } from "./presenters";
 
-  let { video }: { video: Video } = $props();
+  interface Props {
+    video: Video;
+    /** Says what the card is, for the one in the featured strip. Grid cards
+        pass nothing, so nothing renders. */
+    label?: string;
+    /** Grows to fill the height it is given, spending the difference on the
+        thumbnail. For a card in a column that has to end level with something
+        beside it; a grid card sizes itself. */
+    fill?: boolean;
+  }
+
+  let { video, label = "", fill = false }: Props = $props();
 
   const presenters = $derived(presenterLabels(video.presenterIds));
 </script>
 
-<article class="card">
+<article class={["card", fill && "fill"]}>
   <!-- Thumbnail and title are one link, so the grid is one tab stop per card.
        The image is decorative: the title beside it names the destination. -->
   <Link href={`/watch?v=${video.youtubeId}`}>
     <img src={video.thumbnail} alt="" loading="lazy" decoding="async" />
+    {#if label !== ""}
+      <span class="video-library-label">{label}</span>
+    {/if}
     <h3>{video.title}</h3>
   </Link>
 
@@ -71,6 +85,23 @@
     color: inherit;
   }
 
+  /*
+   * Filling, for a card that has to end level with a neighbour.
+   *
+   * The article grows, the link inside it already does, and the thumbnail takes
+   * the remainder — aspect-ratio has to give way or it would keep dictating the
+   * height and the slack would pool under the meta row instead.
+   */
+  .card.fill {
+    flex: 1;
+  }
+
+  .card.fill img {
+    flex: 1;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
   img {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -79,12 +110,39 @@
       var(--dyalog-video-library-radius) 0 0;
   }
 
+  .video-library-label {
+    padding: 0.75rem 0.75rem 0;
+  }
+
+  /* With a label above it the title does not need its own top padding too. */
+  :global(#dyalog-video-library) .video-library-label + h3 {
+    padding-top: 0.25rem;
+  }
+
   /* Bottom trimmed: the credit line below reads as belonging to the title. */
+  /*
+   * Clamped and reserved.
+   *
+   * Clamped so one long title cannot make its card taller than the rest of the
+   * row, and reserved to the same two lines so a one-line title does not make a
+   * shorter card either. Every card in a grid then agrees without the grid
+   * having to stretch anything.
+   */
   :global(#dyalog-video-library) h3 {
     padding: 0.75rem 0.75rem 0.25rem;
+    min-height: calc(
+      var(--dyalog-video-library-title-lines) *
+        var(--dyalog-video-library-heading-line-height) * 1em + 1rem
+    );
     font-size: var(--dyalog-video-library-size-lg);
     font-weight: var(--dyalog-video-library-weight-regular);
     color: var(--dyalog-video-library-link);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--dyalog-video-library-title-lines);
+    line-clamp: var(--dyalog-video-library-title-lines);
+    overflow: hidden;
+    overflow-wrap: anywhere;
   }
 
   :global(#dyalog-video-library) .card:hover h3 {
@@ -102,10 +160,11 @@
     padding: 0.5rem 0.75rem;
   }
 
-  /* The date and the "in" before the event. The event itself is a link and
-     the theme colours those with !important, so it keeps its own colour. */
+  /* The date and the "in" before the event, treated as the labels elsewhere are.
+     The event itself is a link and the theme colours those with !important, so
+     it keeps its own colour. */
   .meta p {
-    color: var(--dyalog-video-library-text-strong);
+    color: var(--dyalog-video-library-muted);
     display: flex;
     justify-content: space-between;
     margin: 1rem 0;

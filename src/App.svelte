@@ -1,7 +1,6 @@
 <script lang="ts">
   import SearchBar from "./components/chrome/SearchBar.svelte";
   import Tabs from "./components/browse/Tabs.svelte";
-  import TermsFooter from "./components/chrome/TermsFooter.svelte";
   import { location } from "./lib/router/location.svelte";
   import { routes } from "./lib/router/routes";
   import { loadRosters } from "./lib/state/rosters.svelte";
@@ -47,8 +46,6 @@
     <div class="outlet" tabindex="-1" bind:this={outlet}>
       <Current />
     </div>
-    <hr />
-    <TermsFooter />
   </div>
 </div>
 
@@ -67,11 +64,5 @@
      global :focus-visible rule covers focus the user asked for. */
   .outlet:focus {
     outline: none;
-  }
-
-  hr {
-    margin-top: 1.25rem;
-    border: 0;
-    border-top: 1px solid var(--dyalog-video-library-rule);
   }
 </style>

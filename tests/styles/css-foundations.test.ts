@@ -58,7 +58,6 @@ describe("design tokens", () => {
     ["chip", "#f1f0ee"],
     ["chip-border", "#e0dedb"],
     ["muted", "#6d7680"],
-    ["text-strong", "#232222"],
     ["card-border", "#e6e6e6"],
     ["card-shadow", "0 0 25px rgba\\(0, 0, 0, 0\\.05\\)"],
     ["card-hover-shadow", "0 0 30px rgba\\(0, 0, 0, 0\\.18\\)"],
@@ -70,10 +69,13 @@ describe("design tokens", () => {
     ["thumb-bg", "#111111"],
     ["surface", "#ffffff"],
     ["on-primary", "#ffffff"],
+    ["band", "#003b5c"],
+    ["tab-hover", "#ffb88f"],
     ["radius", "5px"],
     ["control-height", "32px"],
     ["grid-columns", "3"],
     ["grid-gap", "20px"],
+    ["strip-gap", "1\\.375rem"],
     // Named, not bound to the kit: inheriting it from the body is what let the
     // whole library change typeface without anything in the app changing.
     ["font-display", '"Klavika", sans-serif'],
@@ -91,6 +93,7 @@ describe("design tokens", () => {
     ["weight-bold", "700"],
     ["heading-line-height", "1\\.3"],
     ["heading-tracking", "-0\\.2px"],
+    ["title-lines", "2"],
     ["meta-line-height", "1\\.8"],
   ])("--dyalog-video-library-%s is %s", (token, value) => {
     expect(app).toMatch(
@@ -200,7 +203,6 @@ describe("buttons against the kit", () => {
     ["components/browse/PresenterPicker.svelte", ".chip"],
     ["components/results/InfiniteListFooter.svelte", ".load-more"],
     ["components/chrome/SearchBar.svelte", "button"],
-    ["components/chrome/TermsFooter.svelte", ".toggle"],
   ])("%s raises %s to the mount id", (file, selector) => {
     expect(styles(file)).toContain(
       `:global(#dyalog-video-library) ${selector}`,
@@ -274,6 +276,44 @@ describe("type comes from the scale", () => {
     for (const declaration of declarations) {
       expect(declaration).toMatch(/:\s*var\(--dyalog-video-library-/);
     }
+  });
+});
+
+describe("the row's two columns", () => {
+  // A bare `11fr` is `minmax(auto, 11fr)`, which will not shrink past the
+  // track's min-content. One long URL in a description was enough to take width
+  // off the thumbnail, so rows did not agree with each other.
+  it("gives both tracks a zero minimum", () => {
+    expect(styles("components/results/VideoRow.svelte")).toContain(
+      "grid-template-columns: minmax(0, 11fr) minmax(0, 20fr)",
+    );
+  });
+});
+
+describe("titles are clamped", () => {
+  // An unclamped title made its own card taller than every other card in the
+  // row, and in the strip it ate into the hero's thumbnail.
+  it.each([
+    "components/results/VideoCard.svelte",
+    "components/results/VideoRow.svelte",
+    "components/browse/FeaturedStrip.svelte",
+  ])("%s clamps to the shared line count", (file) => {
+    expect(styles(file)).toContain(
+      "line-clamp: var(--dyalog-video-library-title-lines)",
+    );
+  });
+});
+
+describe("one label treatment", () => {
+  // Three components render this line. It lived in each of them until one of the
+  // copies came back uppercased and tracked out, so the type and colour are
+  // settled in the sheet and only the spacing is a component's business.
+  it("settles the label's type and colour in the sheet", () => {
+    const block = /\.video-library-label \{([^}]*)\}/.exec(app);
+
+    expect(block?.[1]).toContain("var(--dyalog-video-library-size-sm)");
+    expect(block?.[1]).toContain("var(--dyalog-video-library-weight-regular)");
+    expect(block?.[1]).toContain("var(--dyalog-video-library-muted)");
   });
 });
 

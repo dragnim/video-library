@@ -43,6 +43,19 @@ export interface RawPresenter {
 
 const placeholderThumbnail = `${assetsPrefix}/placeholder.png`;
 
+/**
+ * Stands in for a title the CMS left blank.
+ *
+ * One row in the live library has `title: ""`, which rendered an empty heading:
+ * a card with no name, a watch page whose h1 said nothing and whose tab title
+ * was the site name alone. Falling back names the gap instead of hiding it, so
+ * whoever keeps the CMS can see which row needs attention.
+ *
+ * Trimmed and `||` rather than `??`, because the empty string is the case in
+ * hand and whitespace reads the same to a reader.
+ */
+const placeholderTitle = "Untitled video";
+
 /** The API sends "2025-07-01 00:00:00". Read as UTC so the day can't shift. */
 function toDate(value: string | undefined): Date | null {
   if (!value) return null;
@@ -68,7 +81,7 @@ function toDate(value: string | undefined): Date | null {
 export function normaliseVideo(raw: Partial<RawVideo>): Video {
   return {
     youtubeId: raw.youtube_id ?? "",
-    title: raw.title ?? "",
+    title: raw.title?.trim() || placeholderTitle,
     presenterIds: raw.presenter_id ?? [],
     event: raw.event ?? "",
     eventSlug: raw.event_shortname ?? "",

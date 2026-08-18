@@ -152,7 +152,7 @@
         <img src={video.thumbnail} alt="" loading="lazy" decoding="async" />
       </span>
       {#if eyebrow !== ""}
-        <span class="hero-label">{eyebrow}</span>
+        <span class="video-library-label hero-label">{eyebrow}</span>
       {/if}
       <h3 class="title">{video.title}</h3>
     </Link>
@@ -193,13 +193,19 @@
         <div class="column">
           <!-- The same component the grid renders, so the two cannot drift. -->
           {#if loaded.secondaries[0]}
-            <VideoCard video={loaded.secondaries[0]} />
+            <VideoCard
+              video={loaded.secondaries[0]}
+              label={loaded.eyebrow}
+              fill
+            />
           {/if}
 
           {#if loaded.event}
             <Link href={`/?event=${encodeURIComponent(loaded.event.slug)}`}>
               <div class="event">
-                <span class="event-label">Videos from our latest event</span>
+                <span class="video-library-label"
+                  >Videos from our latest event</span
+                >
                 <h3 class="event-name">{loaded.event.name}</h3>
                 <span class="event-count">
                   {loaded.event.total}
@@ -218,20 +224,20 @@
   /* The top margin stands in for the FEATURED label that used to sit here and
      hold the strip off the tabs above it. */
   .strip {
-    margin-top: 1.375rem;
-    margin-bottom: 1.375rem;
+    margin-top: var(--dyalog-video-library-strip-gap);
+    margin-bottom: var(--dyalog-video-library-strip-gap);
   }
 
   .layout {
     display: grid;
     grid-template-columns: 1.55fr 1fr;
-    gap: 1.375rem;
+    gap: var(--dyalog-video-library-strip-gap);
   }
 
   .column {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--dyalog-video-library-strip-gap);
   }
 
   /*
@@ -247,11 +253,6 @@
   .column > :global(a) {
     display: block;
     text-decoration: none;
-  }
-
-  /* Pins the event card to the bottom of the column. */
-  .column :global(a:last-child) {
-    margin-top: auto;
   }
 
   /* The same surface, edge and lift as a video card, from the same tokens. */
@@ -284,8 +285,24 @@
     background: var(--dyalog-video-library-thumb-bg);
   }
 
+  /*
+   * Takes the slack rather than leaving it under the date.
+   *
+   * The card is a grid item, so it stretches to whatever the column beside it
+   * needs — two cards and the gap between them. Its own content is shorter, and
+   * the difference used to pool at the bottom of the card as a band of empty
+   * white. Growing the thumbnail spends it instead, and object-fit means the
+   * image crops rather than distorts.
+   *
+   * The floor is low on purpose. Whichever side is intrinsically taller sets the
+   * row, and the other one is left with slack it has nowhere to put: at 330px
+   * the hero won that contest and the leftover appeared under the event card
+   * instead. Low enough that the column always governs, the thumbnail takes the
+   * difference and both columns end level.
+   */
   .hero-card .thumb {
-    height: 330px;
+    flex: 1;
+    min-height: 220px;
     border-radius: var(--dyalog-video-library-radius)
       var(--dyalog-video-library-radius) 0 0;
   }
@@ -296,15 +313,8 @@
     object-fit: cover;
   }
 
-  /* Reads exactly as the Browse line does: same step, same weight, same label
-     colour, and no uppercasing or tracking. Shared with the event card's. */
-  .hero-label,
-  .event-label {
-    font-size: var(--dyalog-video-library-size-sm);
-    font-weight: var(--dyalog-video-library-weight-regular);
-    color: var(--dyalog-video-library-muted);
-  }
-
+  /* Type and colour come from .video-library-label in app.css; this is only
+     where it sits. */
   .hero-label {
     padding: 0.75rem 0.75rem 0;
   }
@@ -315,12 +325,25 @@
     padding-top: 0.25rem;
   }
 
+  /*
+   * Clamped, but not reserved: the thumbnail above already takes up whatever the
+   * text leaves, so a one-line title costs nothing here.
+   *
+   * The measure is wider than the 30ch it was, so that two lines hold a hundred
+   * characters and the longest titles in the library survive the clamp.
+   */
   :global(#dyalog-video-library) .hero-card h3 {
-    max-width: 30ch;
+    max-width: 45ch;
     padding: 0.75rem 0.75rem 0.25rem;
     font-size: var(--dyalog-video-library-size-2xl);
     font-weight: var(--dyalog-video-library-weight-regular);
     color: var(--dyalog-video-library-link);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--dyalog-video-library-title-lines);
+    line-clamp: var(--dyalog-video-library-title-lines);
+    overflow: hidden;
+    overflow-wrap: anywhere;
   }
 
   :global(#dyalog-video-library) .hero-card:hover h3 {
@@ -346,7 +369,7 @@
     font-size: var(--dyalog-video-library-size-sm);
     font-weight: var(--dyalog-video-library-weight-regular);
     line-height: var(--dyalog-video-library-meta-line-height);
-    color: var(--dyalog-video-library-text-strong);
+    color: var(--dyalog-video-library-muted);
   }
 
   hr {
@@ -354,6 +377,8 @@
     border-top: 1px solid var(--dyalog-video-library-rule);
   }
 
+  /* Lifts as a video card does: it is a card, and it sat flat beside two that
+     did not. */
   .event {
     display: flex;
     flex-direction: column;
@@ -362,6 +387,12 @@
     background: var(--dyalog-video-library-surface);
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
+    box-shadow: var(--dyalog-video-library-card-shadow);
+    transition: var(--dyalog-video-library-card-transition);
+  }
+
+  .event:hover {
+    box-shadow: var(--dyalog-video-library-card-hover-shadow);
   }
 
   /* Titled as a video card is titled: Klavika from the heading reset, the same
@@ -387,7 +418,9 @@
       grid-template-columns: 1fr;
     }
 
+    /* One column here, so nothing is beside it to match: a height again. */
     .hero-card .thumb {
+      flex: none;
       height: 220px;
     }
   }

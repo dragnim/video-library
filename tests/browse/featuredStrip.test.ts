@@ -81,7 +81,8 @@ describe("FeaturedStrip", () => {
 
     await heroTitle("Introduction to APL");
 
-    expect(screen.getByText("Editor's pick")).toBeInTheDocument();
+    // The hero and the card beside it both carry it.
+    expect(screen.getAllByText("Editor's pick")).toHaveLength(2);
     // dyalog-22 is not configured: it is the newest video's own meeting in the
     // mock library, which is how the card finds the last event.
     expect(slotLinks()).toEqual([

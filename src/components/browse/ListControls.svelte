@@ -167,6 +167,12 @@
   }
 
   @media (max-width: 640px) {
+    /* One arrangement on a narrow screen, so there is nothing to choose. The
+       layout state forces the grid to match; see layout.svelte.ts. */
+    .toggle {
+      display: none;
+    }
+
     .icon,
     select {
       min-height: 44px;

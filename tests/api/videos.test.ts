@@ -126,7 +126,7 @@ describe("listVideos", () => {
 
     expect(page.items[0]).toMatchObject({
       youtubeId: "vid001",
-      title: "",
+      title: "Untitled video",
       presenterIds: [],
       description: "",
       presentedAt: null,

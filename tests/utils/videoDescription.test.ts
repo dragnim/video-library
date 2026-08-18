@@ -3,6 +3,8 @@
 
 import { describe, expect, it } from "vitest";
 import {
+  descriptionBlocks,
+  withoutBoilerplate,
   descriptionParagraphs,
   type DescriptionToken,
 } from "../../src/lib/utils/videoDescription";
@@ -149,5 +151,144 @@ describe("timestamps", () => {
       { kind: "timestamp", text: "2:30", seconds: 150 },
       { kind: "timestamp", text: "15:04", seconds: 904 },
     ]);
+  });
+});
+
+// Authors type bullets as characters, because plain text gives them no other way
+// to draw a list.
+describe("descriptionBlocks", () => {
+  function kinds(description: string) {
+    return descriptionBlocks(description).map((block) => block.kind);
+  }
+
+  it("keeps an ordinary line a paragraph", () => {
+    expect(kinds("just a sentence")).toEqual(["paragraph"]);
+  });
+
+  it("keeps a blank line as the gap the author left", () => {
+    expect(kinds("first\n\nsecond")).toEqual([
+      "paragraph",
+      "break",
+      "paragraph",
+    ]);
+  });
+
+  it.each(["•", "-", "*", "–", "—", "·", "▪"])(
+    "reads %s as an item marker",
+    (marker) => {
+      expect(kinds(`${marker} one`)).toEqual(["list"]);
+    },
+  );
+
+  it("gathers adjacent items into one list", () => {
+    const blocks = descriptionBlocks("Write a function that:\n• one\n• two");
+
+    expect(blocks.map((block) => block.kind)).toEqual(["paragraph", "list"]);
+    const list = blocks[1];
+    expect(list.kind === "list" && list.items).toHaveLength(2);
+  });
+
+  it("starts a second list after something interrupts the first", () => {
+    expect(kinds("• one\nthen\n• two")).toEqual(["list", "paragraph", "list"]);
+  });
+
+  it("drops the marker, which the list draws itself", () => {
+    const blocks = descriptionBlocks("• has a right argument");
+    const list = blocks[0];
+
+    expect(list.kind === "list" && list.items[0]).toEqual([
+      { kind: "text", text: "has a right argument" },
+    ]);
+  });
+
+  // The marker needs a space after it, or a sentence opening with a dash and a
+  // number becomes a list of one.
+  it.each(["-5 degrees below", "*emphasis* matters", "•no space"])(
+    "leaves %s alone",
+    (line) => {
+      expect(kinds(line)).toEqual(["paragraph"]);
+    },
+  );
+
+  it("still links an address inside an item", () => {
+    const blocks = descriptionBlocks("• see apl.wiki/APL_Quest");
+    const list = blocks[0];
+    const item = list.kind === "list" ? list.items[0] : [];
+
+    expect(item.some((token) => token.kind === "link")).toBe(true);
+  });
+});
+
+// Dyalog appends a promotional block before publishing. 245 descriptions carry a
+// dashed line; only 214 of them are that block.
+describe("withoutBoilerplate", () => {
+  const block = [
+    "In accordance with tradition, Morten looks back.",
+    "",
+    "-------------------",
+    "",
+    "GET STARTED",
+    "",
+    "Download the latest version:",
+    "https://www.dyalog.com/downloads",
+    "",
+    "-------------------",
+    "",
+    "#FutureOfDyalog #LLMsInAPL #APL",
+  ].join("\n");
+
+  it("takes the block, its fences and its hashtags", () => {
+    expect(withoutBoilerplate(block)).toBe(
+      "In accordance with tradition, Morten looks back.",
+    );
+  });
+
+  it("leaves a description that never had one", () => {
+    const plain = "Just a description.\n\nWith two paragraphs.";
+    expect(withoutBoilerplate(plain)).toBe(plain);
+  });
+
+  // The case that rules out cutting on the dashes alone: one fence, and what
+  // follows it is content.
+  it("keeps content that merely sits after a dashed line", () => {
+    const slides = [
+      "2024 Innovations In Compiler Technology Workshop",
+      "-------------------",
+      "Slides : https://drive.google.com/drive/folders/1KxBZNWswHhym",
+    ].join("\n");
+
+    expect(withoutBoilerplate(slides)).toBe(slides);
+  });
+
+  it("keeps a fenced section it does not recognise", () => {
+    const other = [
+      "Opening.",
+      "-------------------",
+      "CHAPTERS",
+      "-------------------",
+      "Closing prose.",
+    ].join("\n");
+
+    expect(withoutBoilerplate(other)).toBe(other);
+  });
+
+  it("keeps real prose that follows the block", () => {
+    const trailing = block.replace(
+      "#FutureOfDyalog #LLMsInAPL #APL",
+      "One more thought.",
+    );
+
+    expect(withoutBoilerplate(trailing)).toContain("One more thought.");
+    expect(withoutBoilerplate(trailing)).not.toContain("GET STARTED");
+  });
+
+  it("leaves no trailing blank lines behind", () => {
+    expect(withoutBoilerplate(block)).not.toMatch(/\n\s*$/);
+  });
+
+  it("is applied before the description is split into blocks", () => {
+    const kinds = descriptionBlocks(block).map((b) => b.kind);
+
+    expect(kinds).toEqual(["paragraph"]);
   });
 });

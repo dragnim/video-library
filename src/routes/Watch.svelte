@@ -158,41 +158,47 @@
     >.
   </p>
 {:else if video}
-  <!-- Keyed on the id: consent is asked again per video, and the iframe is
-       replaced rather than reused. -->
-  {#key youtubeId}
-    <ConsentPlayer
-      {youtubeId}
-      title={`Watch YouTube video ${video.title}`}
-      thumbnail={video.thumbnail}
-      {startSeconds}
-    />
-  {/key}
-
+  <!-- The player and what it is are one card, as a thumbnail and its title are
+       on every other surface. -->
   <article class="detail">
-    <h1>{video.title}</h1>
+    <!-- Keyed on the id: consent is asked again per video, and the iframe is
+         replaced rather than reused. -->
+    {#key youtubeId}
+      <ConsentPlayer
+        {youtubeId}
+        title={`Watch YouTube video ${video.title}`}
+        thumbnail={video.thumbnail}
+        {startSeconds}
+      />
+    {/key}
 
-    {#if presenters.length > 0}
-      <p class="presenters">
-        {#each presenters as presenter, index (presenter.id)}
-          <Link href={presenterHref(presenter.id)}>{presenter.label}</Link
-          >{separator(index, presenters.length)}
-        {/each}
-      </p>
-    {/if}
+    <div class="body">
+      <h1>{video.title}</h1>
 
-    <p class="meta">
-      <span>{formatDate(video.presentedAt, "long")}</span>
-      {#if video.eventSlug}
-        <span>
-          in <Link href={eventHref(video.eventSlug)}
-            >{video.event || video.eventSlug}</Link
-          >
-        </span>
+      {#if presenters.length > 0}
+        <p class="presenters">
+          {#each presenters as presenter, index (presenter.id)}
+            <Link href={presenterHref(presenter.id)}>{presenter.label}</Link
+            >{separator(index, presenters.length)}
+          {/each}
+        </p>
       {/if}
-    </p>
 
-    <VideoDescription description={video.description} {youtubeId} />
+      <p class="meta">
+        <span>{formatDate(video.presentedAt, "long")}</span>
+        {#if video.eventSlug}
+          <span>
+            in <Link href={eventHref(video.eventSlug)}
+              >{video.event || video.eventSlug}</Link
+            >
+          </span>
+        {/if}
+      </p>
+
+      <hr />
+
+      <VideoDescription description={video.description} {youtubeId} />
+    </div>
   </article>
 
   {#if suggestions.length > 0}
@@ -229,21 +235,35 @@
     color: var(--dyalog-video-library-muted);
   }
 
+  /* A card, from the same tokens as the ones on every other surface. The resting
+     shadow only: there is nothing to hover here, the page is already the video.
+     overflow clips the player's square corners to the card's radius. */
   .detail {
     margin-top: 0.75rem;
-    padding: 0.75rem;
     border: 1px solid var(--dyalog-video-library-card-border);
     border-radius: var(--dyalog-video-library-radius);
     background: var(--dyalog-video-library-surface);
-    box-shadow: var(--dyalog-video-library-panel-shadow);
+    box-shadow: var(--dyalog-video-library-card-shadow);
+    overflow: hidden;
   }
 
+  /* A touch more than the 0.75rem a card uses: this text is the page rather than
+     one tile in a grid, and it sits under a full-width player. */
+  .body {
+    padding: 1.375rem 1.375rem 0.75rem;
+  }
+
+  /* A card's weight, a size above a card's: this is the page's own heading, not
+     one of many in a grid. */
   :global(#dyalog-video-library) h1 {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
     font-size: var(--dyalog-video-library-size-2xl);
+    font-weight: var(--dyalog-video-library-weight-regular);
   }
 
+  /* Credits and meta, as a card states them. */
   .presenters {
+    font-size: var(--dyalog-video-library-size-sm);
     font-weight: var(--dyalog-video-library-weight-regular);
     line-height: var(--dyalog-video-library-meta-line-height);
   }
@@ -252,8 +272,15 @@
     display: flex;
     justify-content: space-between;
     margin: 0.75rem 0;
+    font-size: var(--dyalog-video-library-size-sm);
     font-weight: var(--dyalog-video-library-weight-regular);
     line-height: var(--dyalog-video-library-meta-line-height);
+    color: var(--dyalog-video-library-muted);
+  }
+
+  /* Inside the card, where 1.25rem would be a gulf. */
+  .body hr {
+    margin: 0.75rem 0;
   }
 
   :global(#dyalog-video-library) .suggested {

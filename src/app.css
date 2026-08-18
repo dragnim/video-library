@@ -83,6 +83,16 @@
   --dyalog-video-library-heading-line-height: 1.3;
   --dyalog-video-library-heading-tracking: -0.2px;
 
+  /*
+   * How many lines a video title gets before it is cut with an ellipsis.
+   *
+   * Titles run from three words to a hundred characters, and an unclamped one
+   * makes its own card taller than every other card in the row. Two lines is
+   * enough for all but the longest, and the full title is still in the DOM for a
+   * screen reader and on the watch page for a reader.
+   */
+  --dyalog-video-library-title-lines: 2;
+
   /* Secondary lines — presenter, date, event — set looser than the 1.5 the
      mount carries, because they stack as separate facts rather than prose. */
   --dyalog-video-library-meta-line-height: 1.8;
@@ -92,17 +102,23 @@
    * edit pulls them along instead of leaving half the palette behind. The
    * handoff value each one replaces is in the comment.
    */
-  --dyalog-video-library-primary-dark: color-mix(
-    in srgb,
-    var(--dyalog-video-library-primary) 85%,
-    black
-  ); /* handoff: #0a2f49 */
   --dyalog-video-library-link: color-mix(
     in srgb,
     var(--dyalog-video-library-secondary) 85%,
     black
   ); /* handoff: #c9430d */
   --dyalog-video-library-on-primary: #ffffff;
+
+  /*
+   * The search and tab band, and the colour a tab takes when hovered.
+   *
+   * Named for the job rather than derived from --primary, as it was: it used to
+   * be color-mix(--primary 85%, black), which resolved to about #2c3950 from the
+   * kit. This is a different hue, not a shade of that, so mixing it would have
+   * been a lie and a kit edit would have pulled it somewhere unintended.
+   */
+  --dyalog-video-library-band: #003b5c;
+  --dyalog-video-library-tab-hover: #ffb88f;
 
   /* No kit counterpart: hard-coded from the handoff. */
   --dyalog-video-library-page-bg: #fbfaf9;
@@ -117,10 +133,6 @@
   --dyalog-video-library-chip-border: #e0dedb;
   --dyalog-video-library-muted: #6d7680;
 
-  /* Darker than --text, which is bound to the kit and therefore not ours to
-     pick. For the few places that need to sit heavier than body copy without
-     being a heading. */
-  --dyalog-video-library-text-strong: #232222;
   --dyalog-video-library-card-border: #e6e6e6;
 
   /*
@@ -159,6 +171,11 @@
      the result: the results grid and the skeleton grid standing in for it. */
   --dyalog-video-library-grid-columns: 3;
   --dyalog-video-library-grid-gap: 20px;
+
+  /* The featured strip's gutter: between the hero and the column beside it, and
+     between the two cards in that column. One value, because they sit at right
+     angles to each other and a reader sees them as the same gap. */
+  --dyalog-video-library-strip-gap: 1.375rem;
 }
 
 /* Minimal reset, scoped to the mount id. An id is 1,0,0 and outranks
@@ -280,6 +297,22 @@ body:not([class*="elementor-page-"]) .site-main {
   width: 100%;
   max-width: 1230px;
   padding: 0 0.4rem;
+}
+
+/*
+ * The small line that says what a thing is rather than what it is called: the
+ * Browse count, a featured card's "Featured Video", the event card's "Videos
+ * from our latest event".
+ *
+ * Global because three components want the identical treatment and copies of it
+ * had already started to drift — one arrived uppercased and tracked out because
+ * it was sharing a class with something else. Spacing stays with each component;
+ * only the type and colour are settled here.
+ */
+.video-library-label {
+  font-size: var(--dyalog-video-library-size-sm);
+  font-weight: var(--dyalog-video-library-weight-regular);
+  color: var(--dyalog-video-library-muted);
 }
 
 /*

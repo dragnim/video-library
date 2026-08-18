@@ -41,7 +41,7 @@ describe("normaliseVideo", () => {
   it("defaults every field when the payload is empty", () => {
     expect(normaliseVideo({})).toEqual({
       youtubeId: "",
-      title: "",
+      title: "Untitled video",
       presenterIds: [],
       event: "",
       eventSlug: "",
@@ -50,6 +50,15 @@ describe("normaliseVideo", () => {
       presentedAt: null,
       publishedAt: null,
     });
+  });
+
+  it.each([
+    ["missing", {}],
+    ["empty", { title: "" }],
+    ["whitespace", { title: "   " }],
+  ])("names a %s title rather than rendering an empty heading", (_, raw) => {
+    // One live row has title: "", which showed as a card with no name.
+    expect(normaliseVideo(raw).title).toBe("Untitled video");
   });
 
   it("returns null rather than an Invalid Date", () => {

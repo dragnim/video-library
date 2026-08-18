@@ -43,12 +43,19 @@ describe("the shell", () => {
     expect(document.title).toBe("Dyalog Video Library");
   });
 
-  it("keeps the terms panel closed until asked", () => {
-    setUrl("/");
+  it("renders the terms at /terms rather than in a panel on every page", () => {
+    setUrl("/terms");
     render(App);
 
     expect(
-      screen.getByRole("button", { name: "Terms of Use" }),
-    ).toHaveAttribute("aria-expanded", "false");
+      screen.getByRole("heading", { name: "Terms of Use", level: 2 }),
+    ).toBeInTheDocument();
+  });
+
+  it("keeps the terms off the pages that are not the terms", () => {
+    setUrl("/");
+    render(App);
+
+    expect(screen.queryByText(/Acceptance of Terms/)).toBeNull();
   });
 });

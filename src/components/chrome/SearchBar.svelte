@@ -84,7 +84,7 @@
   .band {
     display: flex;
     justify-content: center;
-    background-color: var(--dyalog-video-library-primary-dark);
+    background-color: var(--dyalog-video-library-band);
     color: var(--dyalog-video-library-on-primary);
   }
 
