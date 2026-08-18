@@ -290,6 +290,22 @@ describe("the row's two columns", () => {
   });
 });
 
+describe("selects draw their own chevron", () => {
+  // The browser pins its own to the border edge and padding-right does not move
+  // it, so every select strips it and paints the token instead. Dropping
+  // `appearance: none` brings the native one back alongside ours.
+  it.each([
+    "components/browse/YearRangePicker.svelte",
+    "components/browse/AdvancedOptions.svelte",
+    "components/browse/ListControls.svelte",
+  ])("%s strips the native chevron and paints the token", (file) => {
+    const source = styles(file);
+
+    expect(source).toContain("appearance: none");
+    expect(source).toContain("var(--dyalog-video-library-chevron)");
+  });
+});
+
 describe("the tab strip's own spacing", () => {
   // app.css zeroes list padding inside the mount at 1,0,0, so the strip's gap
   // above itself has to be stated at the id or it silently does nothing.

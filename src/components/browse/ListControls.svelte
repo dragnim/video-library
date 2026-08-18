@@ -159,11 +159,20 @@
   }
 
   select {
-    padding: 0.25rem 0.5rem;
+    /* Room for the chevron. The browser draws it inside the padding box, so
+       without this it sits hard against the border and reads as clipped. */
+    padding: 0.25rem 1.5rem 0.25rem 0.5rem;
     border: 1px solid var(--dyalog-video-library-chip-border);
     border-radius: var(--dyalog-video-library-radius);
-    background: var(--dyalog-video-library-surface);
     color: inherit;
+    /* Ours, not the browser's: appearance strips the native one, which sits hard
+       against the border and cannot be moved with padding. */
+    appearance: none;
+    background-color: var(--dyalog-video-library-surface);
+    background-image: var(--dyalog-video-library-chevron);
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 10px 6px;
   }
 
   @media (max-width: 640px) {
