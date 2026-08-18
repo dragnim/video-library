@@ -208,6 +208,31 @@
   box-sizing: inherit;
 }
 
+/*
+ * ── The reset below outranks component styles. Read this before debugging one. ──
+ *
+ * Every rule from here to the end of the reset is scoped `#dyalog-video-library`,
+ * which is 1,0,0. Svelte writes a component's scoping class as `:where(.hash)`,
+ * which contributes nothing — so a rule like `p { margin-bottom: 1rem }` inside a
+ * component is 0,0,1 and loses to this silently. No warning, no error: the
+ * declaration simply does nothing.
+ *
+ * A component that needs any of these properties has to say so at the mount id:
+ *
+ *   :global(#dyalog-video-library) .thing { ... }
+ *
+ * The properties this reset takes, and where each one has already caught someone:
+ *
+ *   margin on p, ol, ul, headings ..... the Terms page had no paragraph spacing
+ *   padding on ol, ul ................. the tab strip's gap above itself did nothing
+ *   margin-inline on hr ............... the list row's rule had no width at all
+ *   font-family, size, weight on headings ... every title took Elementor's instead
+ *   outline on :focus-visible ......... the route outlet ringed the whole page
+ *
+ * The kit is the reason for all of it: Elementor styles bare elements at 0,1,1 and
+ * loads after us, so anything left unreset is its to decide. Narrowing the reset
+ * would trade this sharp edge for that one.
+ */
 #dyalog-video-library :where(h1, h2, h3, h4, h5, h6, p, ol, ul, figure) {
   margin: 0;
 }
@@ -238,6 +263,36 @@
  */
 #dyalog-video-library :where(hr) {
   margin-inline: 0;
+}
+
+/*
+ * Every select in the app, in one place.
+ *
+ * Four of them across three components, and each had its own copy of this: when
+ * the chevron needed replacing it had to be replaced three times. The differences
+ * between the copies were incidental — one lacked a height, one took its colour
+ * by inheritance — rather than deliberate.
+ *
+ * `appearance: none` is what makes the chevron ours. The browser pins its own to
+ * the border edge and padding-right does not move it, so the right padding here
+ * is room for the one painted from --chevron.
+ *
+ * A component still owns its own touch target: the 44px minimums at the narrow
+ * breakpoint stay where they are, and min-height outranks this height.
+ */
+#dyalog-video-library select {
+  height: var(--dyalog-video-library-control-height);
+  padding: 0 1.5rem 0 0.5rem;
+  border: 1px solid var(--dyalog-video-library-chip-border);
+  border-radius: var(--dyalog-video-library-radius);
+  appearance: none;
+  background-color: var(--dyalog-video-library-surface);
+  background-image: var(--dyalog-video-library-chevron);
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 10px 6px;
+  color: var(--dyalog-video-library-text);
+  font-size: var(--dyalog-video-library-size-sm);
 }
 
 /* Form controls carry their own family in every browser, so they are put back

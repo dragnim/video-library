@@ -292,17 +292,23 @@ describe("the row's two columns", () => {
 
 describe("selects draw their own chevron", () => {
   // The browser pins its own to the border edge and padding-right does not move
-  // it, so every select strips it and paints the token instead. Dropping
+  // it, so a select strips it and paints the token instead. Dropping
   // `appearance: none` brings the native one back alongside ours.
+  it("strips the native chevron and paints the token, once", () => {
+    const block = /#dyalog-video-library select \{([^}]*)\}/.exec(app);
+
+    expect(block?.[1]).toContain("appearance: none");
+    expect(block?.[1]).toContain("var(--dyalog-video-library-chevron)");
+  });
+
+  // Four selects across three components had a copy of that block each, and the
+  // chevron had to be replaced in all three when it changed.
   it.each([
     "components/browse/YearRangePicker.svelte",
     "components/browse/AdvancedOptions.svelte",
     "components/browse/ListControls.svelte",
-  ])("%s strips the native chevron and paints the token", (file) => {
-    const source = styles(file);
-
-    expect(source).toContain("appearance: none");
-    expect(source).toContain("var(--dyalog-video-library-chevron)");
+  ])("%s keeps no copy of its own", (file) => {
+    expect(styles(file)).not.toContain("var(--dyalog-video-library-chevron)");
   });
 });
 

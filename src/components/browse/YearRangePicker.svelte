@@ -121,24 +121,6 @@
     font-size: var(--dyalog-video-library-size-sm);
   }
 
-  select {
-    height: var(--dyalog-video-library-control-height);
-    /* Room for the chevron. The browser draws it inside the padding box, so
-       without this it sits hard against the border and reads as clipped. */
-    padding: 0 1.5rem 0 0.5rem;
-    border: 1px solid var(--dyalog-video-library-chip-border);
-    border-radius: var(--dyalog-video-library-radius);
-    color: var(--dyalog-video-library-text);
-    /* Ours, not the browser's: appearance strips the native one, which sits hard
-       against the border and cannot be moved with padding. */
-    appearance: none;
-    background-color: var(--dyalog-video-library-surface);
-    background-image: var(--dyalog-video-library-chevron);
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 10px 6px;
-  }
-
   /* The mount id, since the kit styles `button:hover` and `:focus`, which
      outranks the scoping hash. `:global`, or Svelte prunes the rule. */
   :global(#dyalog-video-library) .all {
