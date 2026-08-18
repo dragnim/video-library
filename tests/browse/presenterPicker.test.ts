@@ -219,4 +219,13 @@ describe("the chip row's space", () => {
     expect(container.querySelector(".chosen-slot")).not.toBeNull();
     expect(container.querySelector(".chosen")).toBeNull();
   });
+
+  // The list is anchored to the input until a chip is there and to the whole
+  // picker after, so it never covers the presenter just added and never hangs a
+  // row low with nothing chosen. The class is what switches it.
+  it("says whether anything is chosen, for the list to sit clear of", () => {
+    const { container } = render(PresenterPicker);
+
+    expect(container.querySelector(".picker")).not.toHaveClass("chosen-any");
+  });
 });

@@ -105,7 +105,10 @@
   };
 </script>
 
-<div class="picker" {@attach open && dismiss}>
+<div
+  class={["picker", selected.length !== 0 && "chosen-any"]}
+  {@attach open && dismiss}
+>
   <!-- Hidden for the same reason as the event select's: "Filter by Presenter"
        sits directly above it, and a control still needs a label of its own. -->
   <label class="sr-only" for="video-library-presenter">Presenter</label>
@@ -197,9 +200,19 @@
     color: var(--dyalog-video-library-text);
   }
 
+  /*
+   * Under the input, or under the chips.
+   *
+   * `top: 100%` measures the whole picker, and the picker now always includes the
+   * reserved chip row — so on its own it left the list hanging a row below the
+   * input with nothing chosen. The input's own height is right for that case, and
+   * wrong once a chip is there, where the list would cover the thing it just
+   * added. So: the input's height until something is chosen, the picker's full
+   * height after. The reserved row means neither state moves anything below.
+   */
   [role="listbox"] {
     position: absolute;
-    top: 100%;
+    top: var(--dyalog-video-library-control-height);
     left: 0;
     z-index: 10;
     min-width: 220px;
@@ -242,6 +255,10 @@
    * still grows it — that is a deliberate limit rather than an oversight, since
    * reserving for every possible row would leave a permanent hole.
    */
+  .chosen-any [role="listbox"] {
+    top: 100%;
+  }
+
   .chosen-slot {
     /* One chip exactly, rather than one control's height: a chip is a little
        shorter than a select, and the difference was dead space under the input

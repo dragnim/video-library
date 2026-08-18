@@ -34,9 +34,18 @@
 
 <div class="frame">
   {#if playing}
+    <!--
+      `allow` as well as the autoplay parameter on the URL.
+
+      A cross-origin frame gets no autoplay permission by default, so the
+      parameter alone is ignored and the viewer has to press play a second time:
+      once to accept YouTube, once to actually start. The click that mounts this
+      frame is a user gesture, and this is what lets the frame inherit it.
+    -->
     <iframe
       {src}
       {title}
+      allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
       allowfullscreen
       class:loaded
       onload={() => (loaded = true)}

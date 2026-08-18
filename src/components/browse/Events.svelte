@@ -76,10 +76,14 @@
     flex-direction: column;
   }
 
+  /* A label, like the Browse line and the featured captions: the text face, the
+     same step and weight, the same muted colour. The heading reset hands every
+     heading the display face, so this has to say otherwise. */
   :global(#dyalog-video-library) .type {
     padding-top: 1rem;
-    font-size: var(--dyalog-video-library-size-md);
-    font-weight: var(--dyalog-video-library-weight-bold);
+    font-family: var(--dyalog-video-library-font-text);
+    font-size: var(--dyalog-video-library-size-sm);
+    font-weight: var(--dyalog-video-library-weight-regular);
     color: var(--dyalog-video-library-muted);
   }
 
@@ -92,8 +96,12 @@
     border-bottom: 1px solid var(--dyalog-video-library-rule);
   }
 
+  /* Titled as a video card is titled: same step, same weight, and Klavika from
+     the heading reset. An event in this list and a video in the grid are the same
+     kind of thing to click. */
   :global(#dyalog-video-library) h3 {
-    font-size: var(--dyalog-video-library-size-xl);
+    font-size: var(--dyalog-video-library-size-lg);
+    font-weight: var(--dyalog-video-library-weight-regular);
   }
 
   :global(#dyalog-video-library) h3 :global(a) {
@@ -105,11 +113,14 @@
     color: var(--dyalog-video-library-accent);
   }
 
+  /* The label treatment too: it was already the right step and weight, and the
+     colour is what it was missing. */
   .meta {
     display: flex;
     gap: 0.5rem;
     font-size: var(--dyalog-video-library-size-sm);
     font-weight: var(--dyalog-video-library-weight-regular);
+    color: var(--dyalog-video-library-muted);
     white-space: nowrap;
     line-height: var(--dyalog-video-library-meta-line-height);
   }
@@ -120,10 +131,6 @@
   }
 
   @media (max-width: 640px) {
-    :global(#dyalog-video-library) h3 {
-      font-size: var(--dyalog-video-library-size-lg);
-    }
-
     .row {
       flex-direction: column;
       gap: 0.125rem;

@@ -137,6 +137,22 @@ describe("the consent gate", () => {
     );
   });
 
+  // The autoplay parameter on its own is ignored: a cross-origin frame has no
+  // autoplay permission unless it is granted one, and the viewer ends up pressing
+  // play twice.
+  it("asks the frame to play, and grants it permission to", async () => {
+    setUrl("?v=vid001");
+    render(Watch);
+
+    await userEvent.click(
+      await screen.findByRole("button", { name: /YouTube/ }),
+    );
+    const frame = document.querySelector("iframe");
+
+    expect(frame?.getAttribute("src")).toContain("autoplay=1");
+    expect(frame?.getAttribute("allow")).toContain("autoplay");
+  });
+
   it("starts the player where ?time= points", async () => {
     setUrl("?v=vid001&time=535");
     render(Watch);

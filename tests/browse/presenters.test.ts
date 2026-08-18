@@ -41,8 +41,11 @@ describe("the presenter list", () => {
   it("counts the presenter's talks and the events they gave them at", async () => {
     render(Presenters);
 
-    const row = (await screen.findByRole("heading", { name: "John Smith" }))
-      .parentElement;
+    // The row itself, not whatever happens to wrap the name: the name and the
+    // events it links sit in a block of their own, with the dates alongside.
+    const row = (
+      await screen.findByRole("heading", { name: "John Smith" })
+    ).closest("article");
 
     expect(row).toHaveTextContent("5 videos");
     expect(row).toHaveTextContent("Dyalog '22, Dyalog '23, APL Quest");

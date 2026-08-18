@@ -64,14 +64,22 @@
     line-height: 1.4;
   }
 
-  a {
+  /*
+   * The mount id on both states.
+   *
+   * The kit styles `a` and `a:hover` at 0,1,1, and Svelte writes its scoping
+   * class as `:where(.hash)` — which adds no specificity, so a bare `a:hover`
+   * here tied with the kit and lost on source order. Hovering a letter took the
+   * kit's own link colour rather than ours.
+   */
+  :global(#dyalog-video-library) .bar a {
     color: var(--dyalog-video-library-link);
     text-decoration: none;
   }
 
-  a:hover {
-    color: var(--dyalog-video-library-on-primary);
-    background: var(--dyalog-video-library-primary);
+  :global(#dyalog-video-library) .bar a:hover {
+    color: var(--dyalog-video-library-text);
+    background: var(--dyalog-video-library-secondary);
   }
 
   span {

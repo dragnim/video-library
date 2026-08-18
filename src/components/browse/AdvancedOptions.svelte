@@ -52,18 +52,21 @@
   /*
    * All the space above, none below.
    *
-   * The controls sit centred between the search row and the tabs, and the space
-   * below them is not this panel's to give: 10px of it is the search row's own
-   * bottom padding and 16px is the tab strip's top padding, 26px in total. So
-   * the top padding is that same 26px and the bottom is nothing — measured, not
-   * guessed, because padding here is only one of three contributors and matching
-   * 1rem against 1rem left the panel sitting 26px high in its own space.
+   * The space below the controls is not this panel's to give: 10px belongs to the
+   * search row's own bottom padding and 16px to the tab strip's top padding, and
+   * the presenter column's reserved chip row adds 28px inside the panel. So
+   * measuring from the bottom of the control row there is about 54px below it and
+   * this is the only lever above it.
+   *
+   * 40px rather than the 54px that would balance exactly: matching it outright
+   * makes the band noticeably taller, and most of the difference is a row that
+   * is usually empty.
    */
   .panel {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
-    padding: 1.625rem 0 0;
+    padding: 2.5rem 0 0;
   }
 
   /* Heading, then label, then control in every column, so the controls line up
